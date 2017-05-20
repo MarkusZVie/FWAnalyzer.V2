@@ -21,6 +21,7 @@ public class CiscoAsaCodeSingelton {
 		ciscoAsaContextPage = "";
 		
 		
+		
 		try { //try to find it Online, if an error appiers loade file
 			ciscoAsaContextPage = loadeCiscoPageOnline();
 		} catch (IOException e) {
