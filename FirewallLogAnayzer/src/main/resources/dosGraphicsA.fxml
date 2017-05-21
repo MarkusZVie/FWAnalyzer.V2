@@ -6,7 +6,22 @@
 
 <AnchorPane fx:id="mainAP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.univie.FirewallLogAnayzer.GUI.DoSControllerA">
    <children>
-      <Label fx:id="mainLabel" layoutX="230.0" layoutY="14.0" prefHeight="17.0" prefWidth="141.0" text="DoS - A Section" />
-      <AnchorPane fx:id="apCenter" layoutY="43.0" prefHeight="353.0" prefWidth="600.0" />
+      <AnchorPane fx:id="apLinechart" prefHeight="400.0" prefWidth="600.0">
+         <children>
+            <Label layoutX="479.0" layoutY="24.0" text="DoS - C Section" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="apCenterZoom" layoutY="24.0" prefHeight="376.0" prefWidth="600.0">
+         <children>
+            <Label fx:id="mainLabel1" layoutX="445.0" prefHeight="17.0" prefWidth="141.0" text="DoS - B Section" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="apCenter" layoutY="20.0" prefHeight="383.0" prefWidth="600.0">
+         <children>
+            <Label fx:id="mainLabel" layoutX="445.0" layoutY="6.0" prefHeight="17.0" prefWidth="141.0" text="DoS - A Section" />
+         </children>
+      </AnchorPane>
+      <Button fx:id="backtochartBtn" layoutX="37.0" mnemonicParsing="false" onAction="#backtochart" prefHeight="27.0" prefWidth="128.0" text="back to pie" />
+      <Button fx:id="btn2" layoutX="37.0" mnemonicParsing="false" onAction="#btn2Method" prefHeight="27.0" prefWidth="128.0" text="back to bar" />
    </children>
 </AnchorPane>

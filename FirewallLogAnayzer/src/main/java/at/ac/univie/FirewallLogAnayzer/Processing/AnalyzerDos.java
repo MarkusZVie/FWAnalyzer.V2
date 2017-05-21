@@ -12,8 +12,8 @@ public class AnalyzerDos implements IProcessingAnalyse {
     public AnalyzerDos(){}
 
     @Override
-    public DoSDataList analyseDos(String dosProtocolType) {
-        System.out.println("analyseDos(): Analyse TCP-SYN-DoS: " + dosProtocolType);
+    public DoSDataList analyseDos(String dosProtocolType, int timeSlot) {
+        System.out.println("analyseDos(): Analyse " + dosProtocolType);
 
         // get Protocol dedicated LogRows
         ArrayList<LogRow> fpl = StaticDos.filterProtocol(dosProtocolType);
@@ -34,6 +34,10 @@ public class AnalyzerDos implements IProcessingAnalyse {
         DoSDataList ddlist = StaticDos.manageall(map);
         ddlist.setName(dosProtocolType+"-Data");
 
+        // add time per slot pro DosData in der DDList
+        // auch in manageall machbar
+        StaticDos.assignMpt(ddlist, timeSlot);
+
         return ddlist;
     }
 
@@ -42,8 +46,23 @@ public class AnalyzerDos implements IProcessingAnalyse {
 
     }
 
-
-
+    public ArrayList<DoSData> analyzeMpt(DoSDataList processedData, Double criticalValue){
+        ArrayList<DoSData> criticalIp = new ArrayList<>();
+        boolean tmp = false;
+        for (DoSData dd: processedData.getDataEdited()){
+            for (int i = 0; i < dd.getMptList().size(); i++) {
+                if (dd.getMptList().get(i) > criticalValue){
+                    //System.out.println("Danger Zone: " + dd.getMessages().get(0).getSrcIP());
+                    tmp = true;
+                }
+            }
+            if (tmp){
+                criticalIp.add(dd);
+                tmp = false;
+            }
+        }
+        return criticalIp;
+    }
 
     public ArrayList<DoSData> sortMessagePerMinute(DoSDataList processedData, String ascdesc){
         ArrayList<DoSData> dataraw = processedData.getDataEdited();

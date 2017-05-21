@@ -11,7 +11,7 @@ public interface IProcessingAnalyse {
 	// TCP - SYN -flood
 	// icmp - flood
 	// layer 7 - Application - flood
-	public DoSDataList analyseDos(String dosProtocolType);
+	public DoSDataList analyseDos(String dosProtocolType, int timeSlot);
 
 	public void analyseDDoS();
 
@@ -22,5 +22,7 @@ public interface IProcessingAnalyse {
 	public HashMap<String, Integer> sumMessagesPerCountry(HashMap<String, ArrayList<DoSData>> countrymap, String ascdesc);
 
 	public DoSData getSingleIP(DoSDataList processedData, String ip);
+
+	public ArrayList<DoSData> analyzeMpt(DoSDataList processedData, Double criticalValue);
 
 }
