@@ -20,6 +20,9 @@ public class Main extends Application {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Init Test haha");
 
+        // set resizeable false!
+        //primaryStage.setResizable(false);
+
         setRootLayout();
         //initFileTab();
         changeScene("/dosGraphicsA.fxml");

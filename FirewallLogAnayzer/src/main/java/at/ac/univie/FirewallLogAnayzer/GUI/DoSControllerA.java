@@ -75,6 +75,8 @@ public class DoSControllerA {
         HashMap<String, Integer> cc = countryCount;
 
 
+        //mainAP.setCenter(apCenter);
+
         initpiechart(cc);
         apCenterZoom.setVisible(false);
         apLinechart.setVisible(false);
@@ -95,6 +97,7 @@ public class DoSControllerA {
         if (!bc.getData().isEmpty()){
             System.out.println("Remove Series from Bar Chart");
             bc.getData().remove((bc.getData().size()-1));
+            bc.setTitle("");
         }
     }
 
@@ -113,6 +116,7 @@ public class DoSControllerA {
 
             singleLineChart.getData().clear();
             singleLineChart.layout();
+            singleLineChart.setTitle("");
         }
         // remove Line Chart Data single/multiple
     }
@@ -153,7 +157,15 @@ public class DoSControllerA {
             });
         }
 
+        chart.setMaxHeight(Double.MAX_VALUE);chart.setMaxWidth(Double.MAX_VALUE);
+        chart.setMaxSize(Double.MAX_VALUE,Double.MAX_VALUE);
+
         apCenter.getChildren().addAll(chart,caption);
+        //apCenter.setBottomAnchor(chart,0.0);
+        //apCenter.setBottomAnchor(caption,0.0);
+
+
+
 
     }
 
@@ -166,6 +178,7 @@ public class DoSControllerA {
             bc.getData().removeAll(bc.getData());
             bc.getData().remove(xxAxisBar);
             bc.getData().remove(yyAxisBar);
+            bc.getData().remove(bc.getTitle());
         }
         bc = new BarChart(xxAxisBar, yyAxisBar);
         bc.setTitle("IPs of " + country);
@@ -258,6 +271,7 @@ public class DoSControllerA {
             singleLineChart.getData().remove(yAxisSingleLine);
         }
         singleLineChart = new LineChart(xAxisSingleLine, yAxisSingleLine);
+        singleLineChart.setTitle("Differences of messages from IP: " + singleData.getMessages().get(0).getSrcIP());
         //singleLineChart.setTitle("Single Linechart");
 
         XYChart.Series series1 = new XYChart.Series();

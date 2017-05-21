@@ -1,27 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="mainAP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.univie.FirewallLogAnayzer.GUI.DoSControllerA">
+<AnchorPane fx:id="mainAP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.univie.FirewallLogAnayzer.GUI.DoSControllerA">
    <children>
-      <AnchorPane fx:id="apLinechart" prefHeight="400.0" prefWidth="600.0">
+      <AnchorPane fx:id="apCenter" layoutY="50.0" prefHeight="647.0" prefWidth="1280.0">
          <children>
-            <Label layoutX="479.0" layoutY="24.0" text="DoS - C Section" />
+            <Label fx:id="mainLabel" layoutX="820.0" prefHeight="17.0" prefWidth="141.0" text="DoS - A Section" />
+         </children>
+         <padding>
+            <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+         </padding>
+      </AnchorPane>
+      <AnchorPane fx:id="apLinechart" layoutY="50.0" prefHeight="647.0" prefWidth="1280.0">
+         <children>
+            <Label layoutX="820.0" text="DoS - C Section" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="apCenterZoom" layoutY="24.0" prefHeight="376.0" prefWidth="600.0">
+      <AnchorPane fx:id="apCenterZoom" layoutY="50.0" prefHeight="647.0" prefWidth="1280.0">
          <children>
-            <Label fx:id="mainLabel1" layoutX="445.0" prefHeight="17.0" prefWidth="141.0" text="DoS - B Section" />
+            <Label fx:id="mainLabel1" layoutX="820.0" prefHeight="17.0" prefWidth="141.0" text="DoS - B Section" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="apCenter" layoutY="20.0" prefHeight="383.0" prefWidth="600.0">
-         <children>
-            <Label fx:id="mainLabel" layoutX="445.0" layoutY="6.0" prefHeight="17.0" prefWidth="141.0" text="DoS - A Section" />
-         </children>
-      </AnchorPane>
-      <Button fx:id="backtochartBtn" layoutX="37.0" mnemonicParsing="false" onAction="#backtochart" prefHeight="27.0" prefWidth="128.0" text="back to pie" />
-      <Button fx:id="btn2" layoutX="37.0" mnemonicParsing="false" onAction="#btn2Method" prefHeight="27.0" prefWidth="128.0" text="back to bar" />
+      <Button fx:id="backtochartBtn" layoutX="36.0" layoutY="11.0" mnemonicParsing="false" onAction="#backtochart" prefHeight="27.0" prefWidth="128.0" text="back to pie" />
+      <Button fx:id="btn2" layoutX="36.0" layoutY="11.0" mnemonicParsing="false" onAction="#btn2Method" prefHeight="27.0" prefWidth="128.0" text="back to bar" />
+      <Label layoutX="403.0" layoutY="20.0" prefHeight="35.0" prefWidth="336.0" text="DoS Graphical Analysis">
+         <font>
+            <Font size="29.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
