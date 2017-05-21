@@ -8,8 +8,6 @@ import at.ac.univie.FirewallLogAnayzer.Input.IInputHandler;
 import at.ac.univie.FirewallLogAnayzer.Input.InputHandler;
 import at.ac.univie.FirewallLogAnayzer.Processing.AnalyzerDos;
 import at.ac.univie.FirewallLogAnayzer.Processing.IProcessingAnalyse;
-import com.sun.org.apache.xerces.internal.impl.xpath.XPath;
-import com.sun.org.apache.xml.internal.dtm.*;
 import com.sun.org.apache.xpath.internal.operations.Number;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,13 +20,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 
 public class DoSControllerA {
@@ -50,36 +46,33 @@ public class DoSControllerA {
     private NumberAxis yyAxisBar;
 
     @FXML Label mainLabel;
-    @FXML private AnchorPane mainAP;
-    @FXML private AnchorPane apCenter;
-
     @FXML private Button backtochartBtn;
     @FXML private Button btn2;
 
-    @FXML private AnchorPane apCenterZoom;
-    @FXML private AnchorPane apLinechart;
+    @FXML private AnchorPane mainAP;
+    @FXML private StackPane apPie;
+    @FXML private StackPane apBar;
+    @FXML private StackPane apLineSingle;
 
 
     @FXML
     public void initialize() {
         System.out.println("init DoSController-A");
 
+        // ...
         tmpCallMainCode();
-        // DOS
+
+        // Get Data from parsed File
         da = new AnalyzerDos();
         ddl = da.analyseDos("icmp", 60);
-
-        // Sort country to Controller-Objekt
         countrymap = da.messagesOfCountry(ddl);
         HashMap<String, Integer> countryCount = da.sumMessagesPerCountry(countrymap, "asc");
         HashMap<String, Integer> cc = countryCount;
 
-
-        //mainAP.setCenter(apCenter);
-
+        //Create Piechart at first
         initpiechart(cc);
-        apCenterZoom.setVisible(false);
-        apLinechart.setVisible(false);
+        apBar.setVisible(false);
+        apLineSingle.setVisible(false);
 
         backtochartBtn.setVisible(false);
         btn2.setVisible(false);
@@ -87,9 +80,9 @@ public class DoSControllerA {
 
     // back to pie
     public void backtochart(){
-        apCenter.setVisible(true);
-        apCenterZoom.setVisible(false);
-        apLinechart.setVisible(false);
+        apPie.setVisible(true);
+        apBar.setVisible(false);
+        apLineSingle.setVisible(false);
 
         backtochartBtn.setVisible(false);
         btn2.setVisible(false);
@@ -103,9 +96,9 @@ public class DoSControllerA {
 
     // back to bar
     public void btn2Method(){
-        apCenter.setVisible(false);
-        apCenterZoom.setVisible(true);
-        apLinechart.setVisible(false);
+        apPie.setVisible(false);
+        apBar.setVisible(true);
+        apLineSingle.setVisible(false);
 
         backtochartBtn.setVisible(true);
         btn2.setVisible(false);
@@ -132,20 +125,19 @@ public class DoSControllerA {
         chart.setTitle("country pie chart of messages");
         chart.setLabelLineLength(10);
         chart.setLegendSide(Side.RIGHT);
-
         chart.setCursor(Cursor.CROSSHAIR);
         chart.setLabelsVisible(true);
 
         final Label caption = new Label();
-        caption.setTextFill(Color.GRAY);
-        caption.setStyle("-fx-font: 16 arial;");
+        caption.setTextFill(Color.DARKGRAY);
+        caption.setStyle("-fx-font: 18 arial;");
 
         for (final PieChart.Data data : chart.getData()) {
             data.getNode().addEventHandler(MouseEvent.MOUSE_MOVED, new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent e) {
-                    caption.setTranslateX(e.getSceneX());
-                    caption.setTranslateY(e.getSceneY());
+                    caption.setTranslateX(e.getSceneX()-700);
+                    caption.setTranslateY(e.getSceneY()-500);
                     caption.setText(data.getName() + " " + data.getPieValue());
                 }
             });
@@ -157,15 +149,7 @@ public class DoSControllerA {
             });
         }
 
-        chart.setMaxHeight(Double.MAX_VALUE);chart.setMaxWidth(Double.MAX_VALUE);
-        chart.setMaxSize(Double.MAX_VALUE,Double.MAX_VALUE);
-
-        apCenter.getChildren().addAll(chart,caption);
-        //apCenter.setBottomAnchor(chart,0.0);
-        //apCenter.setBottomAnchor(caption,0.0);
-
-
-
+        apPie.getChildren().addAll(chart,caption);
 
     }
 
@@ -194,23 +178,21 @@ public class DoSControllerA {
             bc.getData().add(series1);
         }
 
-
         bc.setCursor(Cursor.CROSSHAIR);
         bc.setLegendVisible(true);
-
         bc.isResizable();
 
         final Label caption = new Label("");
-        caption.setTextFill(Color.BLACK);
-        caption.setStyle("-fx-font: 12 arial;");
+        caption.setTextFill(Color.DARKGRAY);
+        caption.setStyle("-fx-font: 18 arial;");
 
         for (final XYChart.Series<String, Number> data:bc.getData() ){
             for (final XYChart.Data<String, Number> item: data.getData()){
                 item.getNode().addEventHandler(MouseEvent.MOUSE_MOVED, new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
-                        caption.setTranslateX(event.getSceneX());
-                        caption.setTranslateY(event.getSceneY());
+                        caption.setTranslateX(event.getSceneX()-700);
+                        caption.setTranslateY(event.getSceneY()-500);
                         caption.setText(item.getXValue() + ": " + item.getYValue() + " messages");
                     }
                 });
@@ -223,7 +205,7 @@ public class DoSControllerA {
                 });
             }
         }
-        apCenterZoom.getChildren().addAll(bc,caption);
+        apBar.getChildren().addAll(bc,caption);
     }
 
     public void initLineChart(ArrayList<DoSData> countrydata){
@@ -249,15 +231,7 @@ public class DoSControllerA {
             }
             lineChart.getData().add(series1);
         }
-        apCenterZoom.getChildren().add(lineChart);
-        /*
-        Legende ausblenden
-        -> Hover an!
-        1280-720 px
-        Zoom funktion?
-        ticks?
-        zuerst IPs anzeigen und dann einzelne XY Charts machen?
-         */
+        apBar.getChildren().add(lineChart);
     }
 
     public void initLineChartSingle(DoSData singleData){
@@ -271,8 +245,8 @@ public class DoSControllerA {
             singleLineChart.getData().remove(yAxisSingleLine);
         }
         singleLineChart = new LineChart(xAxisSingleLine, yAxisSingleLine);
-        singleLineChart.setTitle("Differences of messages from IP: " + singleData.getMessages().get(0).getSrcIP());
-        //singleLineChart.setTitle("Single Linechart");
+        singleLineChart.setTitle("differences bewteen message occurance from IP: " + singleData.getMessages().get(0).getSrcIP());
+
 
         XYChart.Series series1 = new XYChart.Series();
         for (int i = 0; i < singleData.getStd().getDifferences().size(); i++) {
@@ -284,7 +258,7 @@ public class DoSControllerA {
 
         }
         singleLineChart.getData().add(series1);
-        apLinechart.getChildren().add(singleLineChart);
+        apLineSingle.getChildren().add(singleLineChart);
     }
 
     public void zoomIp(String country){
@@ -293,9 +267,9 @@ public class DoSControllerA {
         System.out.println("IP's: " + countryData.size());
 
 
-        apCenter.setVisible(false);
-        apCenterZoom.setVisible(false);
-        apLinechart.setVisible(true);
+        apPie.setVisible(false);
+        apBar.setVisible(false);
+        apLineSingle.setVisible(true);
 
         backtochartBtn.setVisible(false);
         btn2.setVisible(true);
@@ -306,9 +280,9 @@ public class DoSControllerA {
     }
 
     public void zoomSingleIp(String ip){
-        apCenter.setVisible(false);
-        apCenterZoom.setVisible(false);
-        apLinechart.setVisible(true);
+        apPie.setVisible(false);
+        apBar.setVisible(false);
+        apLineSingle.setVisible(true);
 
         backtochartBtn.setVisible(false);
         btn2.setVisible(true);
@@ -321,8 +295,8 @@ public class DoSControllerA {
 
     public void zoomCountryShowIps(String country){
         // Zeige alle IPs als Barchart 1xIP hat <IPString,MessageCount>
-        apCenter.setVisible(false);
-        apCenterZoom.setVisible(true);
+        apPie.setVisible(false);
+        apBar.setVisible(true);
         backtochartBtn.setVisible(true);
 
         btn2.setVisible(false);
@@ -342,8 +316,6 @@ public class DoSControllerA {
         } catch (LogIdNotFoundException e) {
             e.printStackTrace();
         }
-
-
     }
 
 }
