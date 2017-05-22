@@ -170,7 +170,7 @@ public class AnalyzerDos implements IProcessingAnalyse {
                 tmpCount = tmpCount + c.getMessages().size();
             }
             countryCount.put(entry.getKey().toString(), tmpCount);
-            System.out.println("#country: " + entry.getKey().toString() + " | ips: " + entry.getValue().size() + " | having count messages: " + tmpCount);
+            //System.out.println("#country: " + entry.getKey().toString() + " | ips: " + entry.getValue().size() + " | having count messages: " + tmpCount);
         }
         return countryCount;
     }

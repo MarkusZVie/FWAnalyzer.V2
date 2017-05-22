@@ -24,6 +24,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.*;
 
 
@@ -78,8 +79,17 @@ public class DoSControllerA {
         btn2.setVisible(false);
     }
 
+    public void backtoMenu() throws IOException {
+        System.out.println("Going to Analyze Menu");
+        try {
+            Main.changeScene("/analyzeMenu.fxml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     // back to pie
-    public void backtochart(){
+    public void backtoPieChart(){
         apPie.setVisible(true);
         apBar.setVisible(false);
         apLineSingle.setVisible(false);
@@ -95,7 +105,7 @@ public class DoSControllerA {
     }
 
     // back to bar
-    public void btn2Method(){
+    public void backtoBarChart(){
         apPie.setVisible(false);
         apBar.setVisible(true);
         apLineSingle.setVisible(false);
@@ -144,7 +154,7 @@ public class DoSControllerA {
             data.getNode().addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent e) {
-                    zoomCountryShowIps(data.getName());
+                    goMultipleIpLineChart(data.getName());
                 }
             });
         }
@@ -200,7 +210,7 @@ public class DoSControllerA {
                 item.getNode().addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent e) {
-                        zoomSingleIp(item.getXValue());
+                        goSingleIpLineChart(item.getXValue());
                     }
                 });
             }
@@ -253,7 +263,7 @@ public class DoSControllerA {
             //series1 = new XYChart.Series();
             series1.setName(singleData.getMessages().get(0).getDateTime().toString());
             String sTmp = Objects.toString(singleData.getMessages().get(i).getDateTime(), null);
-            System.out.println(sTmp);
+            //System.out.println(sTmp);
             series1.getData().add(new XYChart.Data(sTmp, singleData.getStd().getDifferences().get(i)));
 
         }
@@ -279,7 +289,7 @@ public class DoSControllerA {
 
     }
 
-    public void zoomSingleIp(String ip){
+    public void goSingleIpLineChart(String ip){
         apPie.setVisible(false);
         apBar.setVisible(false);
         apLineSingle.setVisible(true);
@@ -293,7 +303,7 @@ public class DoSControllerA {
         initLineChartSingle(ddSingle);
     }
 
-    public void zoomCountryShowIps(String country){
+    public void goMultipleIpLineChart(String country){
         // Zeige alle IPs als Barchart 1xIP hat <IPString,MessageCount>
         apPie.setVisible(false);
         apBar.setVisible(true);

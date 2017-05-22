@@ -21,20 +21,12 @@ import java.io.IOException;
 public class InputTabController {
 
     // Falscher IMPORT !!
-    @FXML
-    private TextField pathfield;
-    @FXML
-    private Button btn1;
-    @FXML
-    private Button parsebtn;
-    @FXML
-    private Label validlabell;
-
-    @FXML
-    private Label parsestatus;
-
-    @FXML
-    private Button changebtn;
+    @FXML private TextField pathfield;
+    @FXML private Button btn1;
+    @FXML private Button parsebtn;
+    @FXML private Label validlabell;
+    @FXML private Label parsestatus;
+    @FXML private Button changebtn;
 
     private String path;
 
@@ -48,9 +40,8 @@ public class InputTabController {
     }
 
     public void presschangebtn() throws IOException {
-        System.out.println("Changing Scene Example");
-
-        Main.changeScene("/analyzeTab1.fxml");
+        System.out.println("Going to Analyze Menu");
+        Main.changeScene("/analyzeMenu.fxml");
     }
 
     @FXML

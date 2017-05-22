@@ -8,14 +8,14 @@
 
 <AnchorPane fx:id="mainAP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.univie.FirewallLogAnayzer.GUI.DoSControllerA">
    <children>
-      <Label layoutX="403.0" layoutY="20.0" prefHeight="35.0" prefWidth="336.0" text="DoS Graphical Analysis">
+      <Label layoutX="472.0" layoutY="21.0" prefHeight="35.0" prefWidth="336.0" text="DoS Graphical Analysis">
          <font>
             <Font size="29.0" />
          </font>
       </Label>
-      <Button fx:id="backtochartBtn" layoutX="36.0" layoutY="11.0" mnemonicParsing="false" onAction="#backtochart" prefHeight="27.0" prefWidth="128.0" text="back to pie" />
-      <Button fx:id="btn2" layoutX="36.0" layoutY="11.0" mnemonicParsing="false" onAction="#btn2Method" prefHeight="27.0" prefWidth="128.0" text="back to bar" />
-      <Button fx:id="backToMenu" layoutX="1100.0" layoutY="16.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="141.0" text="Analysis Menu" />
+      <Button fx:id="backtochartBtn" layoutX="36.0" layoutY="24.0" mnemonicParsing="false" onAction="#backtoPieChart" prefHeight="27.0" prefWidth="128.0" text="back to pie" />
+      <Button fx:id="btn2" layoutX="36.0" layoutY="24.0" mnemonicParsing="false" onAction="#backtoBarChart" prefHeight="27.0" prefWidth="128.0" text="back to bar" />
+      <Button fx:id="backToMenu" layoutX="1100.0" layoutY="25.0" mnemonicParsing="false" onAction="#backtoMenu" prefHeight="27.0" prefWidth="141.0" text="Analysis Menu" />
       <StackPane fx:id="apPie" layoutY="100.0" prefHeight="580.0" prefWidth="1280.0">
          <children>
             <Label fx:id="mainLabelA" prefHeight="17.0" prefWidth="141.0" text="DoS - A Section" StackPane.alignment="TOP_RIGHT" />
@@ -28,7 +28,7 @@
             <Insets left="20.0" right="20.0" />
          </padding>
       </StackPane>
-      <Label fx:id="mainLabelC" layoutX="837.0" layoutY="29.0" text="DoS - C Section" />
+      <Label fx:id="mainLabelC" layoutX="936.0" layoutY="30.0" text="DoS - C Section" />
       <StackPane fx:id="apBar" layoutY="100.0" prefHeight="580.0" prefWidth="1280.0">
          <padding>
             <Insets left="20.0" right="20.0" />
