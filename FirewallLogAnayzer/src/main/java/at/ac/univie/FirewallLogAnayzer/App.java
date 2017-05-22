@@ -9,11 +9,13 @@ import java.util.HashMap;
 
 import at.ac.univie.FirewallLogAnayzer.Data.DoSData;
 import at.ac.univie.FirewallLogAnayzer.Data.DoSDataList;
+import at.ac.univie.FirewallLogAnayzer.Data.LogRows;
 import at.ac.univie.FirewallLogAnayzer.Data.LogTypeSingelton;
 import at.ac.univie.FirewallLogAnayzer.Exceptions.LogIdNotFoundException;
 import at.ac.univie.FirewallLogAnayzer.Input.IInputHandler;
 import at.ac.univie.FirewallLogAnayzer.Input.InputHandler;
 import at.ac.univie.FirewallLogAnayzer.Processing.AnalyzerDos;
+import at.ac.univie.FirewallLogAnayzer.Processing.CompositionAnalysing;
 import at.ac.univie.FirewallLogAnayzer.Processing.IProcessingAnalyse;
 import at.ac.univie.FirewallLogAnayzer.Processing.StaticFunctions;
 import at.ac.univie.FirewallLogAnayzer.Processing.TemporairProcessing;
@@ -32,7 +34,7 @@ public class App
         // /Users/josefweber/Desktop/SyslogCatchAll-2017-03-14.txt
         // C:\Users\Lezard\Desktop\SyslogCatchAll-2017-03-14.txt
         try {
-		inputHandler.loadeFirewallLog("/Users/josefweber/Desktop/SyslogCatchAll-2017-03-14.txt", LogTypeSingelton.getInstance().getSupportedLogTypeList().get(0));
+		inputHandler.loadeFirewallLog("C:\\Users\\Lezard\\Desktop\\activeFWLogs", LogTypeSingelton.getInstance().getSupportedLogTypeList().get(0));
 	} catch (FileNotFoundException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
@@ -41,8 +43,22 @@ public class App
 		e.printStackTrace();
 	}
 
-	System.out.println("beep");
-	//test method
+	
+	//tempWeberPrositure();
+        
+	tempZilaPrositure();
+	
+
+    }
+
+	private static void tempZilaPrositure() {
+		CompositionAnalysing analysing = new CompositionAnalysing();
+		analysing.annalyseComposition(analysing.filterLogByLineCode(LogRows.getInstance().getLogRows()));
+		
+	}
+
+	private static void tempWeberPrositure() {
+		//test method
         //TemporairProcessing.doSomething();
         //TemporairProcessing.testPortScan();
 
@@ -93,8 +109,8 @@ public class App
         System.out.println("----");
         */
 
-
-    }
+		
+	}
 
 
 }
