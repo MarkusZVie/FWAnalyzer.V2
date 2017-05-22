@@ -25,8 +25,6 @@ public class ParserCisco extends Parser{
 
 	public void parse(String logFileContent) {
 		//read LogFile row by row
-		
-		
 		BufferedReader reader = new BufferedReader(new StringReader(logFileContent));
 		try {
 			String line = reader.readLine();
@@ -41,37 +39,32 @@ public class ParserCisco extends Parser{
 					reportingString = reportingString + "--------------------------------------------\n";
 					writeErrorLogInErrorLogTxt(reportingString);
 				}
-		    	
-		    	
 		        line = reader.readLine();
 		    }
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
 	}
 
 	private LogRow analyseRow(String line){
-		Date dateTime = searchForDateTime(line);
+		Date dateTime = searchForDateTime(line);		
 		String rowType ="";
 		String prorityCodeAndAsaCode="";
 		try {
 			rowType = StaticFunctions.searchTheNStringWithPreAndPostfix(line,1,"\tLocal4.","\t");
 			prorityCodeAndAsaCode = StaticFunctions.searchTheNStringWithPreAndPostfix(line,1,"\t%ASA-",": ");
 		} catch (StringNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		int prorityCode = Integer.parseInt(prorityCodeAndAsaCode.substring(0, 1));
 		String fwIPAdress = searchTheNIpInRow(line,1);
 		
-		int prorityCode = Integer.parseInt(prorityCodeAndAsaCode.substring(0, 1));
 		String asaCodeString = prorityCodeAndAsaCode.substring(2);
 		int asaCode = Integer.parseInt(asaCodeString);
 		String trimedLine = " "+ line.substring(line.indexOf("-"+asaCode+": ")+("-"+asaCode+": ").length())+ " ";	
 		ArrayList<String> asaCodeDescription = CiscoAsaCodeSingelton.getInstance().getBackgroundInfoAsaCode(asaCode);
-		ArrayList<String> asaSplitDescLine = ArraysplitLineBySimmilarities (line,asaCodeDescription,asaCode);
+		ArrayList<String> asaSplitDescLine = arraysplitLineBySimmilarities (line,asaCodeDescription,asaCode);
 		
-	
 		String protocol = findProtocol(asaSplitDescLine, trimedLine);	
 		String[] IPAndPort = findeIPAndPort(asaSplitDescLine,trimedLine,asaCodeDescription.get(0),asaCode);
 		String type = IPAndPort[0];
@@ -79,14 +72,13 @@ public class ParserCisco extends Parser{
 		String srcPort = IPAndPort[2];
 		String destIP = IPAndPort[3];
 		String destPort = IPAndPort[4];
-		
 		if(protocol == null || protocol.equals("")){
 			protocol = IPAndPort[5];
 		}
-		
 		IpLocation ipLocation = SavedLocationFromIP.getInstance().checkIpLocation(srcIP);
-		
-		LogRow logRow = new LogRow(srcIP, srcPort, destIP, destPort, protocol, trimedLine, asaCodeDescription.get(0), asaCodeDescription.get(1), asaCodeDescription.get(2), fwIPAdress, asaCode, asaSplitDescLine,prorityCode, dateTime, type, rowType,ipLocation);
+		LogRow logRow = new LogRow(srcIP, srcPort, destIP, destPort, protocol, trimedLine, asaCodeDescription.get(0), 
+								   asaCodeDescription.get(1), asaCodeDescription.get(2), fwIPAdress, asaCode, 
+								   asaSplitDescLine,prorityCode, dateTime, type, rowType,ipLocation);
 		return logRow;
 	}
 
@@ -307,13 +299,12 @@ public class ParserCisco extends Parser{
 		return null;
 	}
 
-	private ArrayList<String> ArraysplitLineBySimmilarities(String line, ArrayList<String> asaCodeDescription,int asaCode) {
+	private ArrayList<String> arraysplitLineBySimmilarities(String line, ArrayList<String> asaCodeDescription,int asaCode) {
 		
-		String trimedDescription = " "+ asaCodeDescription.get(0).substring(asaCodeDescription.get(0).indexOf(asaCode+": ")+(asaCode+": ").length())+ " ";
+		String trimedDescription = " "+ asaCodeDescription.get(0).substring(asaCodeDescription.get(0).indexOf(asaCode+": ")+
+									(asaCode+": ").length())+ " ";
 		trimedDescription= trimedDescription.replaceAll("\\s+", " "); //Delete Double Spaces
 		String trimedLine = " "+ line.substring(line.indexOf("-"+asaCode+": ")+("-"+asaCode+": ").length())+ " ";
-		
-		
 		ArrayList<String> splittedLine = new ArrayList<>();
 		ArrayList<String> foundWords = new ArrayList<>(); //when some unice words are double
 		
@@ -322,102 +313,71 @@ public class ParserCisco extends Parser{
 		boolean isForstFoundWord = true;
 		while(checker){		
 			String[] oWord1 = findTheNextValidWordGroupThatAppiersInLine(trimedDescription, trimedLine, beginCoubleIndex,0);
-			
-		
-			
 			while(isAreadyInList(foundWords, oWord1[0])){
 				beginCoubleIndex=Integer.parseInt(oWord1[1])+oWord1[0].length();
 				oWord1 = findTheNextValidWordGroupThatAppiersInLine(trimedDescription, trimedLine, beginCoubleIndex,0);
 			}
+			
 			if(!isAreadyInList(foundWords, oWord1[0])){
 				foundWords.add(oWord1[0]);
 			}else{
 				oWord1=null;
 			}
 			
-			
-			
 			if(oWord1!=null){
-				
-				String[] oWord2 = findTheNextValidWordGroupThatAppiersInLine(trimedDescription, trimedLine, Integer.parseInt(oWord1[1])+oWord1[0].length(),Integer.parseInt(oWord1[2]));
+				String[] oWord2 = findTheNextValidWordGroupThatAppiersInLine(trimedDescription, trimedLine, 
+						Integer.parseInt(oWord1[1])+oWord1[0].length(),Integer.parseInt(oWord1[2]));
 				if(Integer.parseInt(oWord1[1])==0){
 					if(Integer.parseInt(oWord1[2])>0){
 						splittedLine.add("undef");
 						splittedLine.add(trimedLine.substring(0, Integer.parseInt(oWord1[2])));
 					}
 				}
-				
-				if(oWord2!=null){	
-										
+				if(oWord2!=null){			
 					if(oWord1[0].equals(oWord2[0])){//in case of double word
-						 oWord2 = findTheNextValidWordGroupThatAppiersInLine(trimedDescription, trimedLine, Integer.parseInt(oWord2[1])+oWord1[0].length(),Integer.parseInt(oWord1[2]));
+						 oWord2 = findTheNextValidWordGroupThatAppiersInLine(trimedDescription, trimedLine, 
+								 Integer.parseInt(oWord2[1])+oWord1[0].length(),Integer.parseInt(oWord1[2]));
 					}
 					//descripion artifact
 					int beginIndex = Integer.parseInt(oWord1[1])+oWord1[0].length()+1;
 					int endIndex = Integer.parseInt(oWord2[1]);
-					
 					//if firstWord check if there is something before the word
 					if(isForstFoundWord && Integer.parseInt(oWord1[1])!=0){
-						splittedLine.add(trimedDescription.substring(0, Integer.parseInt(oWord1[1])).trim());//add pre description				
+						//add pre description	
+						splittedLine.add(trimedDescription.substring(0, Integer.parseInt(oWord1[1])).trim());			
 					}
-					
-					
-					
 					//save the Indexes for later add
 					int saveBeginIndex = beginIndex;
 					int saveEndIndex = endIndex;
-					
-					
-					
 					//update Searchindex for next double
 					beginCoubleIndex = endIndex;
-					
-					
 					//line artifact
 					beginIndex = Integer.parseInt(oWord1[2])+oWord1[0].length()+1;
 					endIndex = Integer.parseInt(oWord2[2]);
 				
 					if(isForstFoundWord && Integer.parseInt(oWord1[1])!=0){
-						splittedLine.add(trimedLine.substring(0, Integer.parseInt(oWord1[2])).trim());//add pre description				
+						//add pre description	
+						splittedLine.add(trimedLine.substring(0, Integer.parseInt(oWord1[2])).trim());			
 					}
 					isForstFoundWord = false;
-					
-					
-					
 					//add orginal lines
-					splittedLine.add(trimedDescription.substring(saveBeginIndex, saveEndIndex).trim()); //decription add, because eventual pre add
-					splittedLine.add(trimedLine.substring(beginIndex, endIndex).trim());				//line artifact add
-						
-					
-					
-					
-				}else{
-										
+						//decription add, because eventual pre add
+					splittedLine.add(trimedDescription.substring(saveBeginIndex, saveEndIndex).trim()); 
+						//line artifact add	
+					splittedLine.add(trimedLine.substring(beginIndex, endIndex).trim());							
+				}else{			
 					//last part of the line
 					int beginIndex = Integer.parseInt(oWord1[1])+oWord1[0].length()+1;
 					splittedLine.add(trimedDescription.substring(beginIndex).trim());
-					
-					
 					//line artifact
 					beginIndex = Integer.parseInt(oWord1[2])+oWord1[0].length()+1;
 					splittedLine.add(trimedLine.substring(beginIndex).trim());
 					checker = false;
-	
 				}
 			}else {
-				System.err.println("Does Not Happen");
+				System.err.println("Interprete LogRow Error (=Unexpected)");
 			}
 		}
-		//System.out.println(splittedLine.toString());
-		
-		//System.out.println(oWord2[0]);
-		
-		
-		
-		
-
-		
-
 		return splittedLine;
 	}
 	
@@ -430,11 +390,11 @@ public class ParserCisco extends Parser{
 		return false;
 	}
 
-	private String[] findTheNextValidWordGroupThatAppiersInLine (String trimedDescription,String trimedLine, int beginSearchIndexDesc, int beginSearchIndexLine){
+	private String[] findTheNextValidWordGroupThatAppiersInLine (String trimedDescription,
+			String trimedLine, int beginSearchIndexDesc, int beginSearchIndexLine){
 		int count=1;
 		boolean checker = true;
 		String[] saveLastValid = null;
-		boolean nextWord= false;
 		if(beginSearchIndexLine<0){
 			beginSearchIndexLine=0;
 		}
@@ -501,11 +461,9 @@ public class ParserCisco extends Parser{
 		try {
 			dateTime= searchDateTime(line,datePattern,sdf);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return dateTime;
-		
 	}
 
 	

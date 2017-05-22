@@ -21,6 +21,7 @@ public abstract class Parser {
 	
 	protected long numberOfRowsReaded;
 	protected long numberToRead;
+	private static final String ERROR_LOGFILE_PATH = "Files\\errorLog.txt";
 	
 
 	public synchronized long getNumberToRead() {
@@ -41,11 +42,11 @@ public abstract class Parser {
 		if (m.find()) {
 			return sdf.parse(m.group(0));
 		}
-		
 		return null;
 	}
 	
 	protected String searchTheNIpInRow(String line,int n){
+		//returns the IP Address with index = n (n=1 -> first Address)
 		String ipPattern = "\\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\b";
 		Pattern p = Pattern.compile(ipPattern);
 		Matcher m = p.matcher(line);
@@ -60,18 +61,11 @@ public abstract class Parser {
 	
 	protected void writeErrorLogInErrorLogTxt(String log){
 		//http://stackoverflow.com/questions/1625234/how-to-append-text-to-an-existing-file-in-java
-		
-        
-		try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("Files\\errorLog.txt", true)))) {
+		try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(ERROR_LOGFILE_PATH, true)))) {
 		    out.println(log);
 		}catch (IOException e) {
 		    System.err.println(e);
 		}
-           
-       
-           
-           
-     
 	}
 
 	

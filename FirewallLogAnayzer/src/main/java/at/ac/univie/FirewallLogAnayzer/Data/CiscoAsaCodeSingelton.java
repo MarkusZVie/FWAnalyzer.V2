@@ -17,11 +17,9 @@ public class CiscoAsaCodeSingelton {
 	private HashMap<Integer,ArrayList<String>> savedAsaCodeDescriptions = new HashMap<Integer,ArrayList<String>>(); 
 	private static final String ciscoURL = "http://www.cisco.com/en/US/docs/security/asa/asa80/system/message/logmsgs.html";
 	private static CiscoAsaCodeSingelton instance =null;
+	
 	private CiscoAsaCodeSingelton(){
 		ciscoAsaContextPage = "";
-		
-		
-		
 		try { //try to find it Online, if an error appiers loade file
 			ciscoAsaContextPage = loadeCiscoPageOnline();
 		} catch (IOException e) {
@@ -76,9 +74,6 @@ public class CiscoAsaCodeSingelton {
 			}else{
 				savedAsaCodeDescriptions.put(asaCode, asaCodeDescription);
 			}
-			
-			
-			
 			return asaCodeDescription;
 		}
 	}
@@ -92,12 +87,9 @@ public class CiscoAsaCodeSingelton {
 			int o = rawDescriptionInformation.indexOf('>', count);
 			if(rawDescriptionInformation.charAt(o+1)!='<'){
 				asaCodeDescriptionLine=asaCodeDescriptionLine+" "+(rawDescriptionInformation.substring(o+1, rawDescriptionInformation.indexOf('<', o+1)));
-				
 			}
 			count = o+1;
 		}
-		
-		
 		//There are 3 Typse of logs: PIX,ASA and PIX/ASA and we need to find that as the first marker
 		int firstMarker=0;
 		if(asaCodeDescriptionLine.indexOf("%PIX|ASA-")>0){
@@ -114,6 +106,7 @@ public class CiscoAsaCodeSingelton {
 			//It should never come to this code
 			System.err.println("PIX,ASA and PIX/ASA Not FOunt");
 		}
+		
 		String errorMessage="";
 		if(asaCodeDescriptionLine.indexOf("The following is an example")>=0){
 			errorMessage = asaCodeDescriptionLine.substring(firstMarker, asaCodeDescriptionLine.indexOf("The following is an example"));
@@ -121,14 +114,11 @@ public class CiscoAsaCodeSingelton {
 			errorMessage = asaCodeDescriptionLine.substring(firstMarker, asaCodeDescriptionLine.indexOf("Explanation"));
 		}
 		
-		
 		String explanation = asaCodeDescriptionLine.substring(asaCodeDescriptionLine.indexOf("Explanation&#160;&#160;&#160;")+29, asaCodeDescriptionLine.indexOf("Recommended Action"));
 		String recommendedAction = asaCodeDescriptionLine.substring(asaCodeDescriptionLine.indexOf("Recommended Action&#160;&#160;&#160;")+37,asaCodeDescriptionLine.length());
 		asaCodeDescription.add(errorMessage.trim());
 		asaCodeDescription.add(explanation.trim());
 		asaCodeDescription.add(recommendedAction.trim());
-		
-		
 		
 		return asaCodeDescription;
 	}
@@ -151,7 +141,6 @@ public class CiscoAsaCodeSingelton {
 			sb.append("Recommended Action:  " + entry.getValue().get(2));
 			sb.append(System.lineSeparator());
         }
-		
 		return sb.toString();
 	}
 	

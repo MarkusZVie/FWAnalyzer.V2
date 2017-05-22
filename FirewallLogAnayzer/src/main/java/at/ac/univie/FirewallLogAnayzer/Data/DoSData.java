@@ -2,7 +2,6 @@ package at.ac.univie.FirewallLogAnayzer.Data;
 
 
 
-import com.oracle.tools.packager.Log;
 
 import java.util.ArrayList;
 import java.util.Date;
