@@ -61,7 +61,8 @@ public class CiscoAsaCodeSingelton {
 			String rawDescriptionInformation="";
 			ArrayList<String> asaCodeDescription;
 			try {
-				rawDescriptionInformation = StaticFunctions.searchTheNStringWithPreAndPostfix(ciscoAsaContextPage, 1, "<h3 class=\"p_H_Head2\">"+asaCode, "<h3 class=\"p_H_Head2\">");
+				rawDescriptionInformation = StaticFunctions.searchTheNStringWithPreAndPostfix(ciscoAsaContextPage, 1, "<h3 class=\"p_H_Head2\">"+
+											asaCode, "<h3 class=\"p_H_Head2\">");
 				asaCodeDescription = cutOutOnlyTextBetweenTags(rawDescriptionInformation);
 			} catch (StringNotFoundException e) {
 				asaCodeDescription = new ArrayList<>();
@@ -86,7 +87,8 @@ public class CiscoAsaCodeSingelton {
 		while(rawDescriptionInformation.indexOf('>', count)!=rawDescriptionInformation.lastIndexOf('>')){
 			int o = rawDescriptionInformation.indexOf('>', count);
 			if(rawDescriptionInformation.charAt(o+1)!='<'){
-				asaCodeDescriptionLine=asaCodeDescriptionLine+" "+(rawDescriptionInformation.substring(o+1, rawDescriptionInformation.indexOf('<', o+1)));
+				asaCodeDescriptionLine=asaCodeDescriptionLine+" "+(rawDescriptionInformation.substring(o+1, 
+															rawDescriptionInformation.indexOf('<', o+1)));
 			}
 			count = o+1;
 		}
@@ -114,8 +116,10 @@ public class CiscoAsaCodeSingelton {
 			errorMessage = asaCodeDescriptionLine.substring(firstMarker, asaCodeDescriptionLine.indexOf("Explanation"));
 		}
 		
-		String explanation = asaCodeDescriptionLine.substring(asaCodeDescriptionLine.indexOf("Explanation&#160;&#160;&#160;")+29, asaCodeDescriptionLine.indexOf("Recommended Action"));
-		String recommendedAction = asaCodeDescriptionLine.substring(asaCodeDescriptionLine.indexOf("Recommended Action&#160;&#160;&#160;")+37,asaCodeDescriptionLine.length());
+		String explanation = asaCodeDescriptionLine.substring(asaCodeDescriptionLine.indexOf("Explanation&#160;&#160;&#160;")+29, 
+																			asaCodeDescriptionLine.indexOf("Recommended Action"));
+		String recommendedAction = asaCodeDescriptionLine.substring(asaCodeDescriptionLine.indexOf("Recommended Action&#160;&#160;&#160;")+37,
+																			asaCodeDescriptionLine.length());
 		asaCodeDescription.add(errorMessage.trim());
 		asaCodeDescription.add(explanation.trim());
 		asaCodeDescription.add(recommendedAction.trim());
