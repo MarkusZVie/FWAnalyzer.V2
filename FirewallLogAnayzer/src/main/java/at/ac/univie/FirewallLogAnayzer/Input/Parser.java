@@ -45,19 +45,7 @@ public abstract class Parser {
 		return null;
 	}
 	
-	protected String searchTheNIpInRow(String line,int n){
-		//returns the IP Address with index = n (n=1 -> first Address)
-		String ipPattern = "\\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\b";
-		Pattern p = Pattern.compile(ipPattern);
-		Matcher m = p.matcher(line);
-		int count = 1;
-		while (m.find()) {
-			if(count++==n){
-				return m.group(0);
-			}
-		}
-		return null;
-	}
+	
 	
 	protected void writeErrorLogInErrorLogTxt(String log){
 		//http://stackoverflow.com/questions/1625234/how-to-append-text-to-an-existing-file-in-java

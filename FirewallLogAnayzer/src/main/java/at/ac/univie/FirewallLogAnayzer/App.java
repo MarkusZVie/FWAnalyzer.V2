@@ -1,10 +1,12 @@
 package at.ac.univie.FirewallLogAnayzer;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import org.apache.commons.net.whois.WhoisClient;
 
 import at.ac.univie.FirewallLogAnayzer.Data.CompositionAnalysingSettings;
 import at.ac.univie.FirewallLogAnayzer.Data.CompositionCompositionLogRow;
@@ -26,6 +28,8 @@ import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByExplanat
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByLocationCity;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByLocationCountry;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByLogLineCode;
+import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByMinutes;
+import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByProtocol;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupBySrcIP;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByrecommendedAction;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.IGroupByFactory;
@@ -63,6 +67,7 @@ public class App
 
 	private static void tempZilaPrositure() {
 		ArrayList<LogRow> allLogRows = LogRows.getInstance().getLogRows();
+		
 		CompositionAnalysingSettings settings = new CompositionAnalysingSettings();
 		settings.setDontCareByRecommendedActionNonRequired(true);
 		settings.setDontCareByNoSrcIP(true);
@@ -70,10 +75,28 @@ public class App
 		
 		
 		CompositionCompositionLogRow cclr = CompositionAnalysing.groupByLogLine(filterdLogRowsBySetting, new GroupByDescriptionLogLine());
-		IGroupByFactory[] subGroups = {new GroupByExplanation(), new GroupByrecommendedAction(), new GroupByLocationCountry(), new GroupByLocationCity(), new GroupBySrcIP()};
+		IGroupByFactory[] subGroups = {new GroupByExplanation(), new GroupByrecommendedAction(), new GroupByProtocol() ,new GroupByLocationCountry(), new GroupByLocationCity(), new GroupBySrcIP(), new GroupByMinutes()};
 		cclr.makeSubComposition(subGroups);
 		CompositionAnalysing.printCCLogRow(cclr);
 		
+		CompositionAnalysing.getSetOfPersistencingTransferingIps(allLogRows, StaticFunctions.getLogBeginDate(allLogRows), StaticFunctions.getLogEndDate(allLogRows));
+		
+		
+		/*
+		StringBuilder result = new StringBuilder("");
+
+		WhoisClient whois = new WhoisClient();
+		try {
+			whois.connect(WhoisClient.DEFAULT_HOST);
+			String whoisData1 = whois.query("=" + "75.65.32.99");
+			result.append(whoisData1);
+			whois.disconnect();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("sss"+ result.toString());	
+		*/
 	}
 
 	private static void tempWeberPrositure() {
