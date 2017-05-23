@@ -6,9 +6,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
-
+import at.ac.univie.FirewallLogAnayzer.Data.CompositionCompositionLogRow;
 import at.ac.univie.FirewallLogAnayzer.Data.DoSData;
 import at.ac.univie.FirewallLogAnayzer.Data.DoSDataList;
+import at.ac.univie.FirewallLogAnayzer.Data.LogRow;
 import at.ac.univie.FirewallLogAnayzer.Data.LogRows;
 import at.ac.univie.FirewallLogAnayzer.Data.LogTypeSingelton;
 import at.ac.univie.FirewallLogAnayzer.Exceptions.LogIdNotFoundException;
@@ -19,6 +20,8 @@ import at.ac.univie.FirewallLogAnayzer.Processing.CompositionAnalysing;
 import at.ac.univie.FirewallLogAnayzer.Processing.IProcessingAnalyse;
 import at.ac.univie.FirewallLogAnayzer.Processing.StaticFunctions;
 import at.ac.univie.FirewallLogAnayzer.Processing.TemporairProcessing;
+import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByLogLineCode;
+import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupBySrcIP;
 
 
 /**
@@ -52,8 +55,10 @@ public class App
     }
 
 	private static void tempZilaPrositure() {
-		CompositionAnalysing analysing = new CompositionAnalysing();
-		analysing.annalyseComposition(analysing.filterLogByLineCode(LogRows.getInstance().getLogRows()));
+		ArrayList<LogRow> allLogRows = LogRows.getInstance().getLogRows();
+		CompositionCompositionLogRow cclr = CompositionAnalysing.groupByLogLine(allLogRows, new GroupByLogLineCode());
+		cclr.makeSubComposition(new GroupBySrcIP());
+		CompositionAnalysing.printCCLogRow(cclr);
 		
 	}
 
