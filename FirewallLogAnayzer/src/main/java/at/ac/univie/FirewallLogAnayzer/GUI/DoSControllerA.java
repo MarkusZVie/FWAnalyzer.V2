@@ -300,7 +300,13 @@ public class DoSControllerA {
         System.out.println();
         DoSData ddSingle = da.getSingleIP(ddl, ip);
         System.out.println("AAA " + ddSingle.getMessages().size());
-        initLineChartSingle(ddSingle);
+
+        if (ddSingle.getStd().getDifferences() == null){
+                System.out.println("no differences avaliable for this ip");
+        } else {
+            initLineChartSingle(ddSingle);
+        }
+
     }
 
     public void goMultipleIpLineChart(String country){

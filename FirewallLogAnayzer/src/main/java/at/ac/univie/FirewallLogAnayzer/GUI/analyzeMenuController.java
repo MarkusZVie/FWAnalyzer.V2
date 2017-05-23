@@ -31,7 +31,7 @@ public class analyzeMenuController {
     public void initialize() {
         System.out.println("Init Analyze Menu");
         ObservableList<String> items = FXCollections.observableArrayList(
-          "DoS","DDoS",".."
+          "ACL Analysis","..",".."
         );
 
         optionList.setItems(items);
@@ -52,7 +52,7 @@ public class analyzeMenuController {
     public void changeSettings(String selectedItem){
         System.out.println("clicked: " + selectedItem);
         switch (selectedItem) {
-            case "DoS":
+            case "ACL Analysis":
                 hb = new VBox();
 
                 HBox vb1 = new HBox(20);
