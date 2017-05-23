@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
+import at.ac.univie.FirewallLogAnayzer.Data.CompositionAnalysingSettings;
 import at.ac.univie.FirewallLogAnayzer.Data.CompositionCompositionLogRow;
 import at.ac.univie.FirewallLogAnayzer.Data.DoSData;
 import at.ac.univie.FirewallLogAnayzer.Data.DoSDataList;
@@ -20,8 +21,14 @@ import at.ac.univie.FirewallLogAnayzer.Processing.CompositionAnalysing;
 import at.ac.univie.FirewallLogAnayzer.Processing.IProcessingAnalyse;
 import at.ac.univie.FirewallLogAnayzer.Processing.StaticFunctions;
 import at.ac.univie.FirewallLogAnayzer.Processing.TemporairProcessing;
+import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByDescriptionLogLine;
+import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByExplanation;
+import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByLocationCity;
+import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByLocationCountry;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByLogLineCode;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupBySrcIP;
+import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByrecommendedAction;
+import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.IGroupByFactory;
 
 
 /**
@@ -56,8 +63,15 @@ public class App
 
 	private static void tempZilaPrositure() {
 		ArrayList<LogRow> allLogRows = LogRows.getInstance().getLogRows();
-		CompositionCompositionLogRow cclr = CompositionAnalysing.groupByLogLine(allLogRows, new GroupByLogLineCode());
-		cclr.makeSubComposition(new GroupBySrcIP());
+		CompositionAnalysingSettings settings = new CompositionAnalysingSettings();
+		settings.setDontCareByRecommendedActionNonRequired(true);
+		settings.setDontCareByNoSrcIP(true);
+		ArrayList<LogRow> filterdLogRowsBySetting = CompositionAnalysing.eliminateUnnecessaryRowsBySetting(allLogRows, settings);
+		
+		
+		CompositionCompositionLogRow cclr = CompositionAnalysing.groupByLogLine(filterdLogRowsBySetting, new GroupByDescriptionLogLine());
+		IGroupByFactory[] subGroups = {new GroupByExplanation(), new GroupByrecommendedAction(), new GroupByLocationCountry(), new GroupByLocationCity(), new GroupBySrcIP()};
+		cclr.makeSubComposition(subGroups);
 		CompositionAnalysing.printCCLogRow(cclr);
 		
 	}

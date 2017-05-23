@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import at.ac.univie.FirewallLogAnayzer.Processing.CompositionAnalysing;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupBySrcIP;
+import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.IGroupByFactory;
 
 public class CompositionCompositionLogRow {
 	private HashMap<String,CompositionCompositionLogRow> ccLogRow;
@@ -19,14 +20,17 @@ public class CompositionCompositionLogRow {
 		this.composition = composition;
 	}
 
-	public void makeSubComposition(GroupBySrcIP groupBySrcIP) {
+	public void makeSubComposition(IGroupByFactory[] subGroups) {
 		ccLogRow = new HashMap<String,CompositionCompositionLogRow>();
 		for(String key :composition.keySet()){
 			//search for each key the CompositionLogRow
 			CompositionLogRow clr = composition.get(key);
 			//put for every key a CompositionCompositionLogRow with the logRows from that CompositionCompositionLogRow (Content)
-			ccLogRow.put(key, CompositionAnalysing.groupByLogLine(clr.getContent(), groupBySrcIP));
-			ccLogRow.get(key).setDeepnessLevel(deepnessLevel+1);
+			if(deepnessLevel<subGroups.length){
+				ccLogRow.put(key, CompositionAnalysing.groupByLogLine(clr.getContent(), subGroups[deepnessLevel]));
+				ccLogRow.get(key).setDeepnessLevel(deepnessLevel+1);
+				ccLogRow.get(key).makeSubComposition(subGroups);
+			}
 		}
 	}
 	

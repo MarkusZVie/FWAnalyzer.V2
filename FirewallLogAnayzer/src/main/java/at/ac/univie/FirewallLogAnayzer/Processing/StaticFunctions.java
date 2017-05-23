@@ -81,6 +81,10 @@ public class StaticFunctions {
 		
 		
 	}
+	
+	public static String getNullString(){
+		return "undef";
+	}
 
 	public static SimpleDateFormat getSimpleDateFormat(){
 		return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
