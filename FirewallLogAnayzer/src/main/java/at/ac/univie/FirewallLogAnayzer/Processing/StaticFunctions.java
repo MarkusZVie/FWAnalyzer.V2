@@ -168,6 +168,26 @@ public class StaticFunctions {
 		
 	}
 
+	public static Date getLogBeginDate(ArrayList<LogRow> LogRows) {
+		Date beginDate = LogRows.get(0).getDateTime();
+		for(LogRow lr: LogRows){
+			if(lr.getDateTime().getTime()<beginDate.getTime()){
+				beginDate = lr.getDateTime();
+			}
+		}
+		return beginDate;
+	}
+
+	public static Date getLogEndDate(ArrayList<LogRow> LogRows) {
+		Date endDate = LogRows.get(0).getDateTime();
+		for(LogRow lr: LogRows){
+			if(lr.getDateTime().getTime()>endDate.getTime()){
+				endDate = lr.getDateTime();
+			}
+		}
+		return endDate;
+	}
+
 
 	
 }
