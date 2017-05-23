@@ -57,7 +57,7 @@ public class ParserCisco extends Parser{
 			e.printStackTrace();
 		}
 		int prorityCode = Integer.parseInt(prorityCodeAndAsaCode.substring(0, 1));
-		String fwIPAdress = searchTheNIpInRow(line,1);
+		String fwIPAdress = StaticFunctions.searchTheNIpInRow(line,1);
 		
 		String asaCodeString = prorityCodeAndAsaCode.substring(2);
 		int asaCode = Integer.parseInt(asaCodeString);
@@ -97,7 +97,7 @@ public class ParserCisco extends Parser{
 			//searchFor sourceIP
 			if(description.trim().contains("source_IP")|| description.trim().contains("source_address")||description.trim().contains("IP_address")){
 				ipAndPort[0]="incoming"; 					//If the source IP is outside than is incoming
-				ipAndPort[1]=searchTheNIpInRow(artifact, 1);
+				ipAndPort[1]=StaticFunctions.searchTheNIpInRow(artifact, 1);
 				ipAndPort[2]=checkIfPortIsAPart(artifact);
 					
 					
@@ -129,10 +129,10 @@ public class ParserCisco extends Parser{
 						if(!artifact.equals("<unknown>.")){
 							ipAndPort[0] = "incoming";
 							String srcArtifact = artifact.substring(artifact.indexOf("src ")+"src ".length(), artifact.indexOf(' ', artifact.indexOf("src ")+"src ".length()));
-							ipAndPort[1] = searchTheNIpInRow(srcArtifact,1);
+							ipAndPort[1] = StaticFunctions.searchTheNIpInRow(srcArtifact,1);
 							ipAndPort[2] = checkIfPortIsAPart(srcArtifact);
 							String destArtifact = artifact.substring(artifact.indexOf("dst ")+"dst ".length());
-							ipAndPort[3] = searchTheNIpInRow(destArtifact,1);
+							ipAndPort[3] = StaticFunctions.searchTheNIpInRow(destArtifact,1);
 							ipAndPort[4] = checkIfPortIsAPart(destArtifact);
 							ipAndPort[5] = artifact.substring(0, artifact.indexOf(' '));
 							
@@ -151,9 +151,9 @@ public class ParserCisco extends Parser{
 				int beginIndex = trimedLine.indexOf("IP = ")+"IP = ".length();
 				int endIndex = trimedLine.indexOf(' ', beginIndex);
 				if(endIndex <0){
-					ipAndPort[1] = searchTheNIpInRow(trimedLine.substring(beginIndex), 1);
+					ipAndPort[1] = StaticFunctions.searchTheNIpInRow(trimedLine.substring(beginIndex), 1);
 				}else{
-					ipAndPort[1] = searchTheNIpInRow(trimedLine.substring(beginIndex,endIndex), 1);
+					ipAndPort[1] = StaticFunctions.searchTheNIpInRow(trimedLine.substring(beginIndex,endIndex), 1);
 				}
 			}else {
 				ipAndPort[0] = "intern";
@@ -165,7 +165,7 @@ public class ParserCisco extends Parser{
 	}
 
 	private String checkIfPortIsAPart(String artifact) {
-		String ip = searchTheNIpInRow(artifact, 1);
+		String ip = StaticFunctions.searchTheNIpInRow(artifact, 1);
 		if(ip!=null){
 			int endOfIP = artifact.indexOf(ip)+ip.length();
 			if(endOfIP != artifact.length()){
@@ -206,7 +206,7 @@ public class ParserCisco extends Parser{
 			if(description.contains(keyword)){
 				//System.out.println(description);
 				//System.out.println(artifact);
-				String ip = searchTheNIpInRow(artifact, 1);
+				String ip = StaticFunctions.searchTheNIpInRow(artifact, 1);
 				if(ip!=null){
 					int endOfIP = artifact.indexOf(ip)+ip.length();
 					if(endOfIP != artifact.length()){

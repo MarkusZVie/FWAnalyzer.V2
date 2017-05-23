@@ -10,6 +10,8 @@ import java.net.InetAddress;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import at.ac.univie.FirewallLogAnayzer.Data.LogRow;
 import at.ac.univie.FirewallLogAnayzer.Data.LogRows;
@@ -80,6 +82,20 @@ public class StaticFunctions {
 		return result;
 		
 		
+	}
+	
+	public static String searchTheNIpInRow(String line,int n){
+		//returns the IP Address with index = n (n=1 -> first Address)
+		String ipPattern = "\\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\b";
+		Pattern p = Pattern.compile(ipPattern);
+		Matcher m = p.matcher(line);
+		int count = 1;
+		while (m.find()) {
+			if(count++==n){
+				return m.group(0);
+			}
+		}
+		return null;
 	}
 	
 	public static String getNullString(){

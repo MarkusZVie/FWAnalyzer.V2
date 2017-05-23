@@ -26,6 +26,8 @@ import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByExplanat
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByLocationCity;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByLocationCountry;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByLogLineCode;
+import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByMinutes;
+import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByProtocol;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupBySrcIP;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByrecommendedAction;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.IGroupByFactory;
@@ -70,7 +72,7 @@ public class App
 		
 		
 		CompositionCompositionLogRow cclr = CompositionAnalysing.groupByLogLine(filterdLogRowsBySetting, new GroupByDescriptionLogLine());
-		IGroupByFactory[] subGroups = {new GroupByExplanation(), new GroupByrecommendedAction(), new GroupByLocationCountry(), new GroupByLocationCity(), new GroupBySrcIP()};
+		IGroupByFactory[] subGroups = {new GroupByExplanation(), new GroupByrecommendedAction(), new GroupByProtocol() ,new GroupByLocationCountry(), new GroupByLocationCity(), new GroupBySrcIP(), new GroupByMinutes()};
 		cclr.makeSubComposition(subGroups);
 		CompositionAnalysing.printCCLogRow(cclr);
 		
