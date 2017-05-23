@@ -82,7 +82,7 @@ public class DoSControllerA {
     public void backtoMenu() throws IOException {
         System.out.println("Going to Analyze Menu");
         try {
-            Main.changeScene("/analyzeMenu.fxml");
+            Main.changeSceneBorderPane("/analyzeMenu.fxml");
         } catch (IOException e) {
             e.printStackTrace();
         }
