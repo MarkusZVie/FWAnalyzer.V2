@@ -31,6 +31,8 @@ import at.ac.univie.FirewallLogAnayzer.Input.InputHandler;
 import at.ac.univie.FirewallLogAnayzer.Processing.AnalyzerDos;
 import at.ac.univie.FirewallLogAnayzer.Processing.CompositionAnalysing;
 import at.ac.univie.FirewallLogAnayzer.Processing.IProcessingAnalyseGenerel;
+import at.ac.univie.FirewallLogAnayzer.Processing.IProcessingAnalyseThreats;
+import at.ac.univie.FirewallLogAnayzer.Processing.ProcessingAnalyseThreats;
 import at.ac.univie.FirewallLogAnayzer.Processing.StaticFunctions;
 import at.ac.univie.FirewallLogAnayzer.Processing.TemporairProcessing;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByDescriptionLogLine;
@@ -76,31 +78,17 @@ public class App
     }
 
 	private static void tempZilaPrositure() {
-		ArrayList<LogRow> allLogRows = LogRows.getInstance().getLogRows();
 		
-		CompositionAnalysingSettings settings = new CompositionAnalysingSettings();
-		settings.setDontCareByRecommendedActionNonRequired(true);
-		settings.setDontCareByNoSrcIP(true);
-		settings.setGroupByedOnly(new GroupByLogLineCode(), "710003");
-		ArrayList<LogRow> filterdLogRowsBySetting = CompositionAnalysing.eliminateUnnecessaryRowsBySetting(allLogRows, settings);
-		
-		
-		CompositionCompositionLogRow cclr = CompositionAnalysing.groupByLogLine(filterdLogRowsBySetting, new GroupByDescriptionLogLine());
-		IGroupByFactory[] subGroups = {new GroupByExplanation(), new GroupByrecommendedAction(), new GroupByProtocol() ,new GroupByLocationCountry(), new GroupByLocationCity(), new GroupBySrcIP(), new GroupByMinutes()};
-		cclr.makeSubComposition(subGroups);
-		CompositionAnalysing.printCCLogRow(cclr);
-		
-		HashMap<String, Double> thredScore = CompositionAnalysing.getSetOfPersistencingTransferingIps(allLogRows, StaticFunctions.getLogBeginDate(allLogRows), StaticFunctions.getLogEndDate(allLogRows));
-
-		ArrayList<HashPairDoubleValue> sortedThreadScore = new ArrayList<>();
-		for(String key :thredScore.keySet()){
-			sortedThreadScore.add(new HashPairDoubleValue(key, thredScore.get(key)));
+		IProcessingAnalyseThreats threadAnalysing = new ProcessingAnalyseThreats();
+		HashMap<String, Double> threadScore = threadAnalysing.analyseForPortScanningOrFootPrinting();
+		ArrayList<HashPairDoubleValue> sortedThreadScore = threadAnalysing.genereateSortAbleFromDoubleHashMap(threadScore);
+		for(HashPairDoubleValue hpdv : sortedThreadScore){
+			System.out.println(hpdv.toString());
 		}
-		Collections.sort(sortedThreadScore);
+		threadAnalysing.analyseForDos();
 		
-		for(HashPairDoubleValue value: sortedThreadScore){
-			System.out.println(value.toString());
-		}
+		
+		
 		
 		/*
 		StringBuilder result = new StringBuilder("");

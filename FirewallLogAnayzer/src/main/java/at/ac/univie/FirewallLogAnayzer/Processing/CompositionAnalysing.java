@@ -15,6 +15,7 @@ import java.util.TreeSet;
 import at.ac.univie.FirewallLogAnayzer.Data.CompositionAnalysingSettings;
 import at.ac.univie.FirewallLogAnayzer.Data.CompositionCompositionLogRow;
 import at.ac.univie.FirewallLogAnayzer.Data.CompositionLogRow;
+import at.ac.univie.FirewallLogAnayzer.Data.CompositionSelection;
 import at.ac.univie.FirewallLogAnayzer.Data.LogRow;
 import at.ac.univie.FirewallLogAnayzer.Data.LogRows;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByDescriptionLogLine;
@@ -53,13 +54,20 @@ public abstract class CompositionAnalysing {
 					willBeAdded = false;
 				}
 			}
-			if(setting.getKey()==null||setting.getSelectOnlyGroubedByKey()==null){
-				IGroupByFactory gbf = setting.getSelectOnlyGroubedByKey();
-				String key = setting.getKey();
-				//if Key is not the same, it will be not added
-				if(!gbf.getKey(lr).equals(key)){
+			if(setting.getSelectOnlyGroubedByKey()!=null){
+				boolean isPartOfSelection = false;
+				for(CompositionSelection selection: setting.getSelectOnlyGroubedByKey()){
+					String key = selection.getSelectetKey();
+					IGroupByFactory gbf = selection.getGbf();
+					if(gbf.getKey(lr).equals(key)){
+						isPartOfSelection=true;
+					}
+				}
+				if(!isPartOfSelection){
 					willBeAdded = false;
 				}
+				
+				
 			}
 			if(willBeAdded){
 				filterdList.add(lr);

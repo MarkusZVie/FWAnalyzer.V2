@@ -5,26 +5,25 @@ import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.IGroupByFactory
 public class CompositionAnalysingSettings {
 	private boolean dontCareByRecommendedActionNonRequired;
 	private boolean dontCareByNoSrcIP;
-	private IGroupByFactory selectOnlyGroubedByKey;
-	private String key;
-	
-	public void setGroupByedOnly (IGroupByFactory gb, String key){
-		selectOnlyGroubedByKey = gb;
-		this.key = key;
-	}
-	
-	public IGroupByFactory getSelectOnlyGroubedByKey() {
-		return selectOnlyGroubedByKey;
-	}
+	private CompositionSelection[] selectOnlyGroubedByKey;
 
-	public String getKey() {
-		return key;
-	}
-
+	
 	public CompositionAnalysingSettings() {
 		dontCareByRecommendedActionNonRequired = false;
 		dontCareByNoSrcIP = false;
+		selectOnlyGroubedByKey = null;
 	}
+	
+
+	public CompositionSelection[] getSelectOnlyGroubedByKey() {
+		return selectOnlyGroubedByKey;
+	}
+
+	public void setSelectOnlyGroubedByKey(CompositionSelection[] selectOnlyGroubedByKey) {
+		this.selectOnlyGroubedByKey = selectOnlyGroubedByKey;
+	}
+
+	
 
 	public boolean isDontCareByNoSrcIP() {
 		return dontCareByNoSrcIP;
