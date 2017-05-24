@@ -7,7 +7,7 @@ import at.ac.univie.FirewallLogAnayzer.Data.LogRow;
 
 import java.util.*;
 
-public class AnalyzerDos implements IProcessingAnalyse {
+public class AnalyzerDos implements IProcessingAnalyseGenerel {
 
     public AnalyzerDos(){}
 

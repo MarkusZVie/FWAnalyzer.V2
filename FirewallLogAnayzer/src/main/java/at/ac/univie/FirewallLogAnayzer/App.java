@@ -4,14 +4,24 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
+
 import org.apache.commons.net.whois.WhoisClient;
 
 import at.ac.univie.FirewallLogAnayzer.Data.CompositionAnalysingSettings;
 import at.ac.univie.FirewallLogAnayzer.Data.CompositionCompositionLogRow;
 import at.ac.univie.FirewallLogAnayzer.Data.DoSData;
 import at.ac.univie.FirewallLogAnayzer.Data.DoSDataList;
+import at.ac.univie.FirewallLogAnayzer.Data.HashPairDoubleValue;
 import at.ac.univie.FirewallLogAnayzer.Data.LogRow;
 import at.ac.univie.FirewallLogAnayzer.Data.LogRows;
 import at.ac.univie.FirewallLogAnayzer.Data.LogTypeSingelton;
@@ -20,7 +30,7 @@ import at.ac.univie.FirewallLogAnayzer.Input.IInputHandler;
 import at.ac.univie.FirewallLogAnayzer.Input.InputHandler;
 import at.ac.univie.FirewallLogAnayzer.Processing.AnalyzerDos;
 import at.ac.univie.FirewallLogAnayzer.Processing.CompositionAnalysing;
-import at.ac.univie.FirewallLogAnayzer.Processing.IProcessingAnalyse;
+import at.ac.univie.FirewallLogAnayzer.Processing.IProcessingAnalyseGenerel;
 import at.ac.univie.FirewallLogAnayzer.Processing.StaticFunctions;
 import at.ac.univie.FirewallLogAnayzer.Processing.TemporairProcessing;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByDescriptionLogLine;
@@ -71,6 +81,7 @@ public class App
 		CompositionAnalysingSettings settings = new CompositionAnalysingSettings();
 		settings.setDontCareByRecommendedActionNonRequired(true);
 		settings.setDontCareByNoSrcIP(true);
+		settings.setGroupByedOnly(new GroupByLogLineCode(), "710003");
 		ArrayList<LogRow> filterdLogRowsBySetting = CompositionAnalysing.eliminateUnnecessaryRowsBySetting(allLogRows, settings);
 		
 		
@@ -79,8 +90,17 @@ public class App
 		cclr.makeSubComposition(subGroups);
 		CompositionAnalysing.printCCLogRow(cclr);
 		
-		CompositionAnalysing.getSetOfPersistencingTransferingIps(allLogRows, StaticFunctions.getLogBeginDate(allLogRows), StaticFunctions.getLogEndDate(allLogRows));
+		HashMap<String, Double> thredScore = CompositionAnalysing.getSetOfPersistencingTransferingIps(allLogRows, StaticFunctions.getLogBeginDate(allLogRows), StaticFunctions.getLogEndDate(allLogRows));
+
+		ArrayList<HashPairDoubleValue> sortedThreadScore = new ArrayList<>();
+		for(String key :thredScore.keySet()){
+			sortedThreadScore.add(new HashPairDoubleValue(key, thredScore.get(key)));
+		}
+		Collections.sort(sortedThreadScore);
 		
+		for(HashPairDoubleValue value: sortedThreadScore){
+			System.out.println(value.toString());
+		}
 		
 		/*
 		StringBuilder result = new StringBuilder("");
@@ -106,7 +126,7 @@ public class App
 
 
         // DOS
-        IProcessingAnalyse da = new AnalyzerDos();
+        IProcessingAnalyseGenerel da = new AnalyzerDos();
         DoSDataList ddl = da.analyseDos("icmp", 60);
 
         // Sort mpm

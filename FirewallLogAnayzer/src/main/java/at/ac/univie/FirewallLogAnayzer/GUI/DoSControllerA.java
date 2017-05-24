@@ -7,7 +7,7 @@ import at.ac.univie.FirewallLogAnayzer.Exceptions.LogIdNotFoundException;
 import at.ac.univie.FirewallLogAnayzer.Input.IInputHandler;
 import at.ac.univie.FirewallLogAnayzer.Input.InputHandler;
 import at.ac.univie.FirewallLogAnayzer.Processing.AnalyzerDos;
-import at.ac.univie.FirewallLogAnayzer.Processing.IProcessingAnalyse;
+import at.ac.univie.FirewallLogAnayzer.Processing.IProcessingAnalyseGenerel;
 import com.sun.org.apache.xpath.internal.operations.Number;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -32,7 +32,7 @@ public class DoSControllerA {
 
     private HashMap<String, ArrayList<DoSData>> countrymap;
     private DoSDataList ddl;
-    private IProcessingAnalyse da;
+    private IProcessingAnalyseGenerel da;
 
     private LineChart<String,Number> lineChart = null;
     private CategoryAxis xAxis;

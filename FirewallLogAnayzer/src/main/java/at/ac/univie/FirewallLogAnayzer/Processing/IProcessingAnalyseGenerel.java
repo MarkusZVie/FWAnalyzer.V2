@@ -6,7 +6,7 @@ import at.ac.univie.FirewallLogAnayzer.Data.DoSDataList;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public interface IProcessingAnalyse {
+public interface IProcessingAnalyseGenerel {
 
 	// TCP - SYN -flood
 	// icmp - flood

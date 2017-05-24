@@ -32,10 +32,6 @@ import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 
 public abstract class CompositionAnalysing {	
 	
-	private static final double STANDARD_DEVIATION_PERSISTENCE_THRESHOLD = 300.0;
-	private static final double MEDIAN_PERSISTENCE_THRESHOLD = 0.0;
-	private static final double TRIMEDMEAN_PERSISTENCE_THRESHOLD = 0.0;
-	private static final double MEAN_PERSISTENCE_THRESHOLD = 0.0;
 
 	
 	public static ArrayList<LogRow> eliminateUnnecessaryRowsBySetting(ArrayList<LogRow> baseRows,CompositionAnalysingSettings setting){
@@ -57,6 +53,14 @@ public abstract class CompositionAnalysing {
 					willBeAdded = false;
 				}
 			}
+			if(setting.getKey()==null||setting.getSelectOnlyGroubedByKey()==null){
+				IGroupByFactory gbf = setting.getSelectOnlyGroubedByKey();
+				String key = setting.getKey();
+				//if Key is not the same, it will be not added
+				if(!gbf.getKey(lr).equals(key)){
+					willBeAdded = false;
+				}
+			}
 			if(willBeAdded){
 				filterdList.add(lr);
 			}
@@ -66,33 +70,46 @@ public abstract class CompositionAnalysing {
 		return filterdList;
 	}
 	
-	public static void getSetOfPersistencingTransferingIps(ArrayList<LogRow> logRows, Date logBegin, Date logEnd){
-		
-		
+	public static HashMap<String, Double> getSetOfPersistencingTransferingIps(ArrayList<LogRow> logRows, Date logBegin, Date logEnd){
+		HashMap<String, Double> threadList = new HashMap<>();
 		CompositionCompositionLogRow cclr = CompositionAnalysing.groupByLogLine(logRows, new GroupBySrcIP());
 		HashMap<String,CompositionLogRow> composition = cclr.getComposition();
+		
 		for(String key :composition.keySet()){
-			if(composition.get(key).getContent().size()>1){
-				for(LogRow lr : composition.get(key).getContent()){
-					System.out.println(lr.toString());
+			if(composition.get(key).getContent().size()>1){				// only possible to get stats by size >1
+				double[] stats = getStatisticsAboutTimeFriquent(composition.get(key).getContent(), logBegin, logEnd,true);
+				double ammountOfLogs = composition.get(key).getContent().size();
+				double ammountOfHours = (((logEnd.getTime()-logBegin.getTime())/1000)/60)/60;
+				double ammountPerHour = ammountOfLogs/ammountOfHours;
+				double threadScore = getThreadScore(stats, ammountPerHour);
+				if(threadList.containsKey(key)){			//defensive
+					if(threadList.get(key)<threadScore){
+						threadList.put(key, threadScore);
+					}
+				}else{
+					threadList.put(key, threadScore);
 				}
-				System.out.println("------------");
-				for(double d: getStatisticsAboutTimeFriquent(composition.get(key).getContent(), logBegin, logEnd,true)){
-					System.out.println(d);
-				}
-				System.out.println("---------------------------------");
-				
 			}
 		}
+		return threadList;
 	}
-	public static boolean makeDecisionOfSignificantLogPersistance(double[] stats){
-		
-		
-		return false;
+	
+	public static double getThreadScore(double[] stats, double ammountPerHour){
+		//middle ammountPerHour and aritmetical mean (mean is in sec)
+		double threadScore = (ammountPerHour+(stats[3]/3600))/2;
+		//div by standard devision (is also in sec)
+		threadScore = threadScore/Math.log(((stats[0]/3600))+Math.E);
+		if((threadScore+"").equals("NaN")){
+			threadScore =0;
+		}
+		return threadScore;
 	}
 	
 	public static double[] getStatisticsAboutTimeFriquent(ArrayList<LogRow> logRows,Date logBegin, Date logEnd, boolean ignoreDayNextDayJumps){
-		//make dateList
+		//double[0] = standardDeviation
+		//double[1] = median
+		//double[2] = trimedMean
+		//double[3] = mean (aritmetical)
 		ArrayList<Date> datlist = new ArrayList<>();
 		for(LogRow lr : logRows){
 			datlist.add(lr.getDateTime());
@@ -124,8 +141,7 @@ public abstract class CompositionAnalysing {
 		}
 		DescriptiveStatistics ds = new DescriptiveStatistics();
 		for(Long l:timeSpacesBetweenLogs){
-			System.out.println("l    " + l);
-			ds.addValue(Double.parseDouble(l/1000+""));
+			ds.addValue(Double.parseDouble(l/1000+"")); //no need for milisecunds
 		}
 		double standardDeviation = ds.getStandardDeviation();
 		double median = ds.getPercentile(50);

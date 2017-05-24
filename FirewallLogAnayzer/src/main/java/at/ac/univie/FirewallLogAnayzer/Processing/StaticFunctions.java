@@ -178,6 +178,8 @@ public class StaticFunctions {
 		return beginDate;
 	}
 
+	
+	
 	public static Date getLogEndDate(ArrayList<LogRow> LogRows) {
 		Date endDate = LogRows.get(0).getDateTime();
 		for(LogRow lr: LogRows){
