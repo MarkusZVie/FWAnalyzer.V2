@@ -13,6 +13,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -37,7 +38,7 @@ public class AnalyzeMenuController {
     public void initialize() {
         System.out.println("Init Analyze Menu");
         ObservableList<String> items = FXCollections.observableArrayList(
-          "DoS Analysis Graphical","DoS Analysis MPT",".."
+          "DoS Analysis Graphical","DoS Analysis MPT","NewWindowTest",".."
         );
 
         optionList.setItems(items);
@@ -64,13 +65,28 @@ public class AnalyzeMenuController {
             case "DoS Analysis MPT":
                 createACLmpt();
                 break;
+            case "NewWindowTest":
+                createReportTab();
+                break;
             default:
                 System.out.println(selectedItem + " default Switch");
         }
 
     }
 
-    public void createACLgraphical(){
+    private void createReportTab() {
+    	try {
+    		spCenter.getChildren().clear();
+    		spCenter.getChildren().add(FXMLLoader.load(getClass().getResource("/ReportDoS.fxml")));
+    		
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void createACLgraphical(){
         hb = new VBox();
 
         HBox vb0 = new HBox(20);
