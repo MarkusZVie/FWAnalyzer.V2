@@ -27,8 +27,8 @@ import com.maxmind.geoip2.record.Subdivision;
 import at.ac.univie.FirewallLogAnayzer.Data.IpLocation;
 import at.ac.univie.FirewallLogAnayzer.Exceptions.StringNotFoundException;
 
-public class StaticFunctions {
-	public static String[] readeFile(String filePath) throws FileNotFoundException {
+public class BasicFunctions implements IBasicFunctions{
+	public String[] readeFile(String filePath) throws FileNotFoundException {
 		//http://stackoverflow.com/questions/4716503/reading-a-plain-text-file-in-java
 		int numberOfRows=0;
 		File choosenFile = new File(filePath);
@@ -63,7 +63,7 @@ public class StaticFunctions {
 		
 	}
 	
-	public static String searchTheNStringWithPreAndPostfix(String line, int i, String preFix, String postFix) throws StringNotFoundException{
+	public String searchTheNStringWithPreAndPostfix(String line, int i, String preFix, String postFix) throws StringNotFoundException{
 		
 		//The N Search is not Developed, only the first is searchable,
 		//Every call of the first substring is called with int n of one-> what means the first appierence of that post&prefix
@@ -84,7 +84,7 @@ public class StaticFunctions {
 		
 	}
 	
-	public static String searchTheNIpInRow(String line,int n){
+	public String searchTheNIpInRow(String line,int n){
 		//returns the IP Address with index = n (n=1 -> first Address)
 		String ipPattern = "\\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\b";
 		Pattern p = Pattern.compile(ipPattern);
@@ -98,15 +98,15 @@ public class StaticFunctions {
 		return null;
 	}
 	
-	public static String getNullString(){
+	public String getNullString(){
 		return "undef";
 	}
 
-	public static SimpleDateFormat getSimpleDateFormat(){
+	public SimpleDateFormat getSimpleDateFormat(){
 		return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	}
 	
-	public static IpLocation findeLocation(String ip){
+	public IpLocation findeLocation(String ip){
 		String DATABASE_CITY_PATH = "./Files/GeoLite2-City.mmdb";
 		IpLocation ipLocation;
 		//http://o7planning.org/en/10455/retrieving-geographic-information-based-on-ip-address-using-geoip2-java-api
@@ -147,14 +147,14 @@ public class StaticFunctions {
 		}
 	}
 
-	public static ArrayList doPortScan(String host, int portrange){
+	public ArrayList doPortScan(String host, int portrange){
 		PortScan ps = new PortScan(host, portrange);
 		ArrayList open= ps.getopenPorts();
 		System.out.println(open.toString());
 		return open;
 	}
 
-	public static void cleanFile(String filePath) {
+	public void cleanFile(String filePath) {
 		PrintWriter writer;
 		try {
 			writer = new PrintWriter(new File(filePath));
@@ -168,7 +168,7 @@ public class StaticFunctions {
 		
 	}
 
-	public static Date getLogBeginDate(ArrayList<LogRow> LogRows) {
+	public Date getLogBeginDate(ArrayList<LogRow> LogRows) {
 		Date beginDate = LogRows.get(0).getDateTime();
 		for(LogRow lr: LogRows){
 			if(lr.getDateTime().getTime()<beginDate.getTime()){
@@ -178,7 +178,9 @@ public class StaticFunctions {
 		return beginDate;
 	}
 
-	public static Date getLogEndDate(ArrayList<LogRow> LogRows) {
+	
+	
+	public Date getLogEndDate(ArrayList<LogRow> LogRows) {
 		Date endDate = LogRows.get(0).getDateTime();
 		for(LogRow lr: LogRows){
 			if(lr.getDateTime().getTime()>endDate.getTime()){

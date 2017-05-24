@@ -15,6 +15,7 @@ import java.util.TreeSet;
 import at.ac.univie.FirewallLogAnayzer.Data.CompositionAnalysingSettings;
 import at.ac.univie.FirewallLogAnayzer.Data.CompositionCompositionLogRow;
 import at.ac.univie.FirewallLogAnayzer.Data.CompositionLogRow;
+import at.ac.univie.FirewallLogAnayzer.Data.CompositionSelection;
 import at.ac.univie.FirewallLogAnayzer.Data.LogRow;
 import at.ac.univie.FirewallLogAnayzer.Data.LogRows;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByDescriptionLogLine;
@@ -30,15 +31,15 @@ import org.apache.commons.math3.*;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 
-public abstract class CompositionAnalysing {	
-	
-	private static final double STANDARD_DEVIATION_PERSISTENCE_THRESHOLD = 300.0;
-	private static final double MEDIAN_PERSISTENCE_THRESHOLD = 0.0;
-	private static final double TRIMEDMEAN_PERSISTENCE_THRESHOLD = 0.0;
-	private static final double MEAN_PERSISTENCE_THRESHOLD = 0.0;
+public class CompositionAnalysing implements ICompositionAnalysing{	
 
-	
-	public static ArrayList<LogRow> eliminateUnnecessaryRowsBySetting(ArrayList<LogRow> baseRows,CompositionAnalysingSettings setting){
+	private IBasicFunctions basicFunctions;
+		
+	public CompositionAnalysing() {
+		basicFunctions = new BasicFunctions();
+	}
+
+	public ArrayList<LogRow> eliminateUnnecessaryRowsBySetting(ArrayList<LogRow> baseRows,CompositionAnalysingSettings setting){
 		//Filtering by Setting obj.
 		ArrayList<LogRow> filterdList = new ArrayList<LogRow>();
 		if(setting == null){
@@ -53,9 +54,24 @@ public abstract class CompositionAnalysing {
 			}
 			if(setting.isDontCareByNoSrcIP()){
 				//no IP or no Interface, because Interfaces are always on the Firewall side.
-				if(lr.getSrcIP()==null||StaticFunctions.searchTheNIpInRow(lr.getSrcIP(), 1)==null){
+				if(lr.getSrcIP()==null||basicFunctions.searchTheNIpInRow(lr.getSrcIP(), 1)==null){
 					willBeAdded = false;
 				}
+			}
+			if(setting.getSelectOnlyGroubedByKey()!=null){
+				boolean isPartOfSelection = false;
+				for(CompositionSelection selection: setting.getSelectOnlyGroubedByKey()){
+					String key = selection.getSelectetKey();
+					IGroupByFactory gbf = selection.getGbf();
+					if(gbf.getKey(lr).equals(key)){
+						isPartOfSelection=true;
+					}
+				}
+				if(!isPartOfSelection){
+					willBeAdded = false;
+				}
+				
+				
 			}
 			if(willBeAdded){
 				filterdList.add(lr);
@@ -66,33 +82,46 @@ public abstract class CompositionAnalysing {
 		return filterdList;
 	}
 	
-	public static void getSetOfPersistencingTransferingIps(ArrayList<LogRow> logRows, Date logBegin, Date logEnd){
-		
-		
-		CompositionCompositionLogRow cclr = CompositionAnalysing.groupByLogLine(logRows, new GroupBySrcIP());
+	public HashMap<String, Double> getSetOfPersistencingTransferingIps(ArrayList<LogRow> logRows, Date logBegin, Date logEnd){
+		HashMap<String, Double> threadList = new HashMap<>();
+		CompositionCompositionLogRow cclr = groupByLogLine(logRows, new GroupBySrcIP());
 		HashMap<String,CompositionLogRow> composition = cclr.getComposition();
+		
 		for(String key :composition.keySet()){
-			if(composition.get(key).getContent().size()>1){
-				for(LogRow lr : composition.get(key).getContent()){
-					System.out.println(lr.toString());
+			if(composition.get(key).getContent().size()>1){				// only possible to get stats by size >1
+				double[] stats = getStatisticsAboutTimeFriquent(composition.get(key).getContent(), logBegin, logEnd,true);
+				double ammountOfLogs = composition.get(key).getContent().size();
+				double ammountOfHours = (((logEnd.getTime()-logBegin.getTime())/1000)/60)/60;
+				double ammountPerHour = ammountOfLogs/ammountOfHours;
+				double threadScore = getThreadScore(stats, ammountPerHour);
+				if(threadList.containsKey(key)){			//defensive
+					if(threadList.get(key)<threadScore){
+						threadList.put(key, threadScore);
+					}
+				}else{
+					threadList.put(key, threadScore);
 				}
-				System.out.println("------------");
-				for(double d: getStatisticsAboutTimeFriquent(composition.get(key).getContent(), logBegin, logEnd,true)){
-					System.out.println(d);
-				}
-				System.out.println("---------------------------------");
-				
 			}
 		}
-	}
-	public static boolean makeDecisionOfSignificantLogPersistance(double[] stats){
-		
-		
-		return false;
+		return threadList;
 	}
 	
-	public static double[] getStatisticsAboutTimeFriquent(ArrayList<LogRow> logRows,Date logBegin, Date logEnd, boolean ignoreDayNextDayJumps){
-		//make dateList
+	public double getThreadScore(double[] stats, double ammountPerHour){
+		//middle ammountPerHour and aritmetical mean (mean is in sec)
+		double threadScore = (ammountPerHour+(stats[3]/3600))/2;
+		//div by standard devision (is also in sec)
+		threadScore = threadScore/Math.log(((stats[0]/3600))+Math.E);
+		if((threadScore+"").equals("NaN")){
+			threadScore =0;
+		}
+		return threadScore;
+	}
+	
+	public double[] getStatisticsAboutTimeFriquent(ArrayList<LogRow> logRows,Date logBegin, Date logEnd, boolean ignoreDayNextDayJumps){
+		//double[0] = standardDeviation
+		//double[1] = median
+		//double[2] = trimedMean
+		//double[3] = mean (aritmetical)
 		ArrayList<Date> datlist = new ArrayList<>();
 		for(LogRow lr : logRows){
 			datlist.add(lr.getDateTime());
@@ -124,8 +153,7 @@ public abstract class CompositionAnalysing {
 		}
 		DescriptiveStatistics ds = new DescriptiveStatistics();
 		for(Long l:timeSpacesBetweenLogs){
-			System.out.println("l    " + l);
-			ds.addValue(Double.parseDouble(l/1000+""));
+			ds.addValue(Double.parseDouble(l/1000+"")); //no need for milisecunds
 		}
 		double standardDeviation = ds.getStandardDeviation();
 		double median = ds.getPercentile(50);
@@ -137,12 +165,12 @@ public abstract class CompositionAnalysing {
 		return persistanceStats;
 	}
 
-	public static CompositionCompositionLogRow groupByLogLine(ArrayList<LogRow> logRows,IGroupByFactory iGroupByFactory){
+	public CompositionCompositionLogRow groupByLogLine(ArrayList<LogRow> logRows,IGroupByFactory iGroupByFactory){
 		HashMap<String,CompositionLogRow> composition = new HashMap<>();
 		for(LogRow lr : logRows){
 			String key = iGroupByFactory.getKey(lr);
 			if(key==null){
-				key = StaticFunctions.getNullString();
+				key = basicFunctions.getNullString();
 			}
 			if(composition.containsKey(key)){
 				//add Log Row to existing entry
@@ -158,7 +186,7 @@ public abstract class CompositionAnalysing {
 	
 	
 	
-	public static void printCCLogRow(CompositionCompositionLogRow ccLR){
+	public void printCCLogRow(CompositionCompositionLogRow ccLR){
 		HashMap<String,CompositionLogRow> composition = ccLR.getComposition();
 		int deppnessLevel = ccLR.getDeepnessLevel();
 		

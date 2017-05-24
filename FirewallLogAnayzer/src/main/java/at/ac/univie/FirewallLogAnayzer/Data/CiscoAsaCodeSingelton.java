@@ -9,7 +9,8 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 import at.ac.univie.FirewallLogAnayzer.Exceptions.StringNotFoundException;
-import at.ac.univie.FirewallLogAnayzer.Processing.StaticFunctions;
+import at.ac.univie.FirewallLogAnayzer.Processing.BasicFunctions;
+import at.ac.univie.FirewallLogAnayzer.Processing.IBasicFunctions;
 
 
 public class CiscoAsaCodeSingelton {
@@ -17,14 +18,16 @@ public class CiscoAsaCodeSingelton {
 	private HashMap<Integer,ArrayList<String>> savedAsaCodeDescriptions = new HashMap<Integer,ArrayList<String>>(); 
 	private static final String ciscoURL = "http://www.cisco.com/en/US/docs/security/asa/asa80/system/message/logmsgs.html";
 	private static CiscoAsaCodeSingelton instance =null;
+	private IBasicFunctions basicFunctions;
 	
 	private CiscoAsaCodeSingelton(){
+		basicFunctions = new BasicFunctions();
 		ciscoAsaContextPage = "";
 		try { //try to find it Online, if an error appiers loade file
 			ciscoAsaContextPage = loadeCiscoPageOnline();
 		} catch (IOException e) {
 			try {
-				ciscoAsaContextPage = StaticFunctions.readeFile("Files\\ciscoAsaCodeBackgroundInfos.htm")[0];
+				ciscoAsaContextPage = basicFunctions.readeFile("Files\\ciscoAsaCodeBackgroundInfos.htm")[0];
 			} catch (FileNotFoundException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -61,7 +64,7 @@ public class CiscoAsaCodeSingelton {
 			String rawDescriptionInformation="";
 			ArrayList<String> asaCodeDescription;
 			try {
-				rawDescriptionInformation = StaticFunctions.searchTheNStringWithPreAndPostfix(ciscoAsaContextPage, 1, "<h3 class=\"p_H_Head2\">"+
+				rawDescriptionInformation = basicFunctions.searchTheNStringWithPreAndPostfix(ciscoAsaContextPage, 1, "<h3 class=\"p_H_Head2\">"+
 											asaCode, "<h3 class=\"p_H_Head2\">");
 				asaCodeDescription = cutOutOnlyTextBetweenTags(rawDescriptionInformation);
 			} catch (StringNotFoundException e) {

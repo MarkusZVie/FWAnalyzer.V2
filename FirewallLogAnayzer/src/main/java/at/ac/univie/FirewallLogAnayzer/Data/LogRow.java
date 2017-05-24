@@ -3,7 +3,8 @@ package at.ac.univie.FirewallLogAnayzer.Data;
 import java.util.ArrayList;
 import java.util.Date;
 
-import at.ac.univie.FirewallLogAnayzer.Processing.StaticFunctions;
+import at.ac.univie.FirewallLogAnayzer.Processing.BasicFunctions;
+import at.ac.univie.FirewallLogAnayzer.Processing.IBasicFunctions;
 
 public class LogRow {
 	private String srcIP;
@@ -23,6 +24,7 @@ public class LogRow {
 	private String internalExternal;
 	private String warningNotice;
 	private IpLocation location;
+	private IBasicFunctions basicFunctions;
 
 	
 
@@ -49,6 +51,7 @@ public class LogRow {
 		this.internalExternal = internalExternal;
 		this.warningNotice = warningNotice;
 		this.location = ipLocation;
+		basicFunctions = new BasicFunctions();
 	}
 	
 	public String getToStringHeadline(){
@@ -78,7 +81,7 @@ public class LogRow {
 		if(protocol==null){
 			protocol=nullWord;
 		}
-		String dateTime = StaticFunctions.getSimpleDateFormat().format(this.dateTime);
+		String dateTime = basicFunctions.getSimpleDateFormat().format(this.dateTime);
 		if(dateTime==null){
 			dateTime=nullWord;
 		}

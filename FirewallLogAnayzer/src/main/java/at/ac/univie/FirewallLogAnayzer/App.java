@@ -4,14 +4,24 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
+
 import org.apache.commons.net.whois.WhoisClient;
 
 import at.ac.univie.FirewallLogAnayzer.Data.CompositionAnalysingSettings;
 import at.ac.univie.FirewallLogAnayzer.Data.CompositionCompositionLogRow;
 import at.ac.univie.FirewallLogAnayzer.Data.DoSData;
 import at.ac.univie.FirewallLogAnayzer.Data.DoSDataList;
+import at.ac.univie.FirewallLogAnayzer.Data.HashPairDoubleValue;
 import at.ac.univie.FirewallLogAnayzer.Data.LogRow;
 import at.ac.univie.FirewallLogAnayzer.Data.LogRows;
 import at.ac.univie.FirewallLogAnayzer.Data.LogTypeSingelton;
@@ -20,8 +30,10 @@ import at.ac.univie.FirewallLogAnayzer.Input.IInputHandler;
 import at.ac.univie.FirewallLogAnayzer.Input.InputHandler;
 import at.ac.univie.FirewallLogAnayzer.Processing.AnalyzerDos;
 import at.ac.univie.FirewallLogAnayzer.Processing.CompositionAnalysing;
-import at.ac.univie.FirewallLogAnayzer.Processing.IProcessingAnalyse;
-import at.ac.univie.FirewallLogAnayzer.Processing.StaticFunctions;
+import at.ac.univie.FirewallLogAnayzer.Processing.IProcessingAnalyseGenerel;
+import at.ac.univie.FirewallLogAnayzer.Processing.IProcessingAnalyseThreats;
+import at.ac.univie.FirewallLogAnayzer.Processing.ProcessingAnalyseThreats;
+import at.ac.univie.FirewallLogAnayzer.Processing.BasicFunctions;
 import at.ac.univie.FirewallLogAnayzer.Processing.TemporairProcessing;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByDescriptionLogLine;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByExplanation;
@@ -66,20 +78,16 @@ public class App
     }
 
 	private static void tempZilaPrositure() {
-		ArrayList<LogRow> allLogRows = LogRows.getInstance().getLogRows();
 		
-		CompositionAnalysingSettings settings = new CompositionAnalysingSettings();
-		settings.setDontCareByRecommendedActionNonRequired(true);
-		settings.setDontCareByNoSrcIP(true);
-		ArrayList<LogRow> filterdLogRowsBySetting = CompositionAnalysing.eliminateUnnecessaryRowsBySetting(allLogRows, settings);
+		IProcessingAnalyseThreats threadAnalysing = new ProcessingAnalyseThreats();
+		HashMap<String, Double> threadScore = threadAnalysing.analyseForPortScanningOrFootPrinting();
+		ArrayList<HashPairDoubleValue> sortedThreadScore = threadAnalysing.genereateSortAbleFromDoubleHashMap(threadScore);
+		for(HashPairDoubleValue hpdv : sortedThreadScore){
+			System.out.println(hpdv.toString());
+		}
+		threadAnalysing.analyseForDos();
 		
 		
-		CompositionCompositionLogRow cclr = CompositionAnalysing.groupByLogLine(filterdLogRowsBySetting, new GroupByDescriptionLogLine());
-		IGroupByFactory[] subGroups = {new GroupByExplanation(), new GroupByrecommendedAction(), new GroupByProtocol() ,new GroupByLocationCountry(), new GroupByLocationCity(), new GroupBySrcIP(), new GroupByMinutes()};
-		cclr.makeSubComposition(subGroups);
-		CompositionAnalysing.printCCLogRow(cclr);
-		
-		CompositionAnalysing.getSetOfPersistencingTransferingIps(allLogRows, StaticFunctions.getLogBeginDate(allLogRows), StaticFunctions.getLogEndDate(allLogRows));
 		
 		
 		/*
@@ -106,7 +114,7 @@ public class App
 
 
         // DOS
-        IProcessingAnalyse da = new AnalyzerDos();
+        IProcessingAnalyseGenerel da = new AnalyzerDos();
         DoSDataList ddl = da.analyseDos("icmp", 60);
 
         // Sort mpm
