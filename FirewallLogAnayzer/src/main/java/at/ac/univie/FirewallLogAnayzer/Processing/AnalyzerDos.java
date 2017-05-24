@@ -13,7 +13,7 @@ public class AnalyzerDos implements IProcessingAnalyse {
 
     @Override
     public DoSDataList analyseDos(String dosProtocolType, int timeSlot) {
-        System.out.println("analyseDos(): Analyse " + dosProtocolType);
+        System.out.println("analyseDos(): Analyse " + dosProtocolType + " Timeslot: " + timeSlot);
 
         // get Protocol dedicated LogRows
         ArrayList<LogRow> fpl = StaticDos.filterProtocol(dosProtocolType);
@@ -45,6 +45,7 @@ public class AnalyzerDos implements IProcessingAnalyse {
     public void analyseDDoS() {
 
     }
+
 
     public ArrayList<DoSData> analyzeMpt(DoSDataList processedData, Double criticalValue){
         ArrayList<DoSData> criticalIp = new ArrayList<>();
@@ -170,7 +171,7 @@ public class AnalyzerDos implements IProcessingAnalyse {
                 tmpCount = tmpCount + c.getMessages().size();
             }
             countryCount.put(entry.getKey().toString(), tmpCount);
-            //System.out.println("#country: " + entry.getKey().toString() + " | ips: " + entry.getValue().size() + " | having count messages: " + tmpCount);
+            System.out.println("#country: " + entry.getKey().toString() + " | ips: " + entry.getValue().size() + " | having count messages: " + tmpCount);
         }
         return countryCount;
     }

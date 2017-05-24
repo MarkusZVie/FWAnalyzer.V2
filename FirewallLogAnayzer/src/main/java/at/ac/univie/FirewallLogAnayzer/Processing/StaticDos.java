@@ -132,6 +132,10 @@ public class StaticDos {
         return differences;
     }
 
+    // für alle dd aus ddl wird mpt berechnet mit den minuten
+    // dd -> setMpt -> gibt ein array zurück
+    // für das objekt dd -> mptList
+    // dort sind alle mpt Berechungen in den min x Abständen
     public static void assignMpt(DoSDataList ddl, int minutes){
         for (DoSData dd: ddl.getDataEdited()){
             dd.setMpt(minutes);

@@ -7,10 +7,14 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -31,7 +35,7 @@ public class analyzeMenuController {
     public void initialize() {
         System.out.println("Init Analyze Menu");
         ObservableList<String> items = FXCollections.observableArrayList(
-          "ACL Analysis","..",".."
+          "DoS Analysis Graphical","DoS Analysis MPT",".."
         );
 
         optionList.setItems(items);
@@ -52,89 +56,145 @@ public class analyzeMenuController {
     public void changeSettings(String selectedItem){
         System.out.println("clicked: " + selectedItem);
         switch (selectedItem) {
-            case "ACL Analysis":
-                hb = new VBox();
-
-                HBox vb1 = new HBox(20);
-                Label slotLabel = new Label("Timeslot (min)");
-                // http://docs.oracle.com/javafx/2/ui_controls/slider.htm
-                Slider slotValue = new Slider(15,30,45);
-                slotValue.setMin(15);
-                slotValue.setMax(45);
-                slotValue.setValue(30);
-                slotValue.setShowTickLabels(true);
-                slotValue.setShowTickMarks(true);
-                slotValue.setMajorTickUnit(15);
-                slotValue.setMinorTickCount(5);
-                final Label opacityValue = new Label(Double.toString(slotValue.getValue()));
-                vb1.setPadding(new Insets(15,15,15,15));
-                vb1.getChildren().addAll(slotLabel, slotValue, opacityValue);
-
-
-                HBox vb2 = new HBox(20);
-                Label treshholdLabel = new Label("DoS Treshold");
-                TextField treshold = new TextField();
-                vb2.setPadding(new Insets(15,15,15,15));
-                vb2.getChildren().addAll(treshholdLabel, treshold);
-
-                HBox vb3 = new HBox(20);
-                Button analyzeA = new Button("Graphical analysis");
-                Button analyzeB = new Button("Analyze on attacks");
-                vb3.setPadding(new Insets(15,15,15,15));
-                vb3.getChildren().addAll(analyzeA,analyzeB);
-
-                hb.getChildren().addAll(vb1, vb2, vb3);
-                spCenter.getChildren().addAll(hb);
-
-                slotValue.valueProperty().addListener(new ChangeListener<Number>() {
-                    public void changed(ObservableValue<? extends Number> ov,
-                                        Number old_val, Number new_val) {
-                        //cappuccino.setOpacity(new_val.doubleValue());
-                        opacityValue.setText(String.format("%.2f", new_val));
-                    }
-                });
-
-                analyzeA.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override public void handle(ActionEvent e) {
-                        try {
-                            Main.changeScene("/dosGraphicsA.fxml");
-                        } catch (IOException e1) {
-                            e1.printStackTrace();
-                        }
-                    }
-                });
-
-                analyzeB.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override public void handle(ActionEvent e) {
-                        Main.changeSceneDoSB("/dosGraphicsB.fxml", 12345.0, 99.9);
-                    }
-                });
+            case "DoS Analysis Graphical":
+                createACLgraphical();
                 break;
-            case "DDoS":
-                System.out.println("DDoS B-)");
+            case "DoS Analysis MPT":
+                createACLmpt();
                 break;
             default:
                 System.out.println(selectedItem + " default Switch");
         }
 
     }
-    public void abchange() throws IOException {
-       /* FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/analyzeDoSAttack.fxml"));
-        Parent root = fxmlLoader.load();
 
-        DoSControllerB ch = fxmlLoader.<DoSControllerB>getController();
+    public void createACLgraphical(){
+        hb = new VBox();
 
-        ch.setTreshold(12345.534);
+        HBox vb0 = new HBox(20);
+        vb0.setPadding(new Insets(20,20,20,20));
+        final String[] cbitems = {"TCP", "icmp"};
+        ChoiceBox cb = new ChoiceBox(FXCollections.observableArrayList(
+                "TCP", "icmp")
+        );
+        //cb.getSelectionModel().selectFirst();
+        final Label selectionLabel = new Label("Protocol");
+        final String[] selection = new String[1];
 
-        Scene scene = new Scene(root);
-        Stage homeStage = (Stage) spCenter.getScene().getWindow();
+        cb.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                selectionLabel.setText(cbitems[newValue.intValue()]);
+                selection[0] = cbitems[newValue.intValue()].toString();
+            }
+        });
+        vb0.getChildren().addAll(selectionLabel, cb);
 
-        homeStage.setScene(scene);
-        homeStage.show();  */
+        HBox vb1 = new HBox(20);
+        Button analyzeA = new Button("Graphical analysis");
+        vb1.getChildren().addAll(analyzeA);
 
+        hb.getChildren().addAll(vb0, vb1);
+        spCenter.getChildren().addAll(hb);
 
+        analyzeA.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                try {
+                    Main.changeScene("/dosGraphicsA.fxml");
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
 
     }
+
+    public void createACLmpt(){
+        hb = new VBox();
+
+        HBox vb0 = new HBox(20);
+        vb0.setPadding(new Insets(20,20,20,20));
+        final String[] cbitems = {"TCP", "icmp"};
+        ChoiceBox cb = new ChoiceBox(FXCollections.observableArrayList(
+                "TCP", "icmp")
+        );
+        //cb.getSelectionModel().selectFirst();
+        final Label selectionLabel = new Label("Protocol");
+        final String[] selection = new String[1];
+
+        cb.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                selectionLabel.setText(cbitems[newValue.intValue()]);
+                selection[0] = cbitems[newValue.intValue()].toString();
+            }
+        });
+        vb0.getChildren().addAll(selectionLabel, cb);
+
+
+        HBox vb1 = new HBox(20);
+        final Label slotLabel = new Label("Timeslot (min)");
+        // http://docs.oracle.com/javafx/2/ui_controls/slider.htm
+        final Slider slotValue = new Slider(15,30,45);
+        slotValue.setMin(15);
+        slotValue.setMax(45);
+        slotValue.setValue(30);
+        slotValue.setShowTickLabels(true);
+        slotValue.setShowTickMarks(true);
+        slotValue.setMajorTickUnit(15);
+        slotValue.setMinorTickCount(5);
+        final Label opacityValue = new Label(Double.toString(slotValue.getValue()));
+        vb1.setPadding(new Insets(15,15,15,15));
+        vb1.getChildren().addAll(slotLabel, slotValue, opacityValue);
+
+
+        HBox vb2 = new HBox(20);
+        Label treshholdLabel = new Label("DoS Treshold");
+        final TextField treshold = new TextField();
+        vb2.setPadding(new Insets(15,15,15,15));
+        vb2.getChildren().addAll(treshholdLabel, treshold);
+
+        HBox vb3 = new HBox(20);
+        Button analyzeB = new Button("Analyze on attacks");
+        vb3.setPadding(new Insets(15,15,15,15));
+        vb3.getChildren().addAll(analyzeB);
+
+        hb.getChildren().addAll(vb0, vb1, vb2, vb3);
+        spCenter.getChildren().addAll(hb);
+
+        slotValue.valueProperty().addListener(new ChangeListener<Number>() {
+            public void changed(ObservableValue<? extends Number> ov,
+                                Number old_val, Number new_val) {
+                //cappuccino.setOpacity(new_val.doubleValue());
+                opacityValue.setText(String.format("%.2f", new_val));
+                slotValue.setValue(new_val.intValue());
+            }
+        });
+
+        treshold.setText("10");
+
+        analyzeB.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                double parsePrice = Double.parseDouble(treshold.getText());
+
+                FXMLLoader loader= new FXMLLoader(getClass().getResource("/dosGraphicsB.fxml"));
+                BorderPane root = null;
+                try {
+                    root = loader.load();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+                DoSControllerB ch = loader.getController();
+                ch.setTreshold(parsePrice);
+                ch.setTimeslot(((int) slotValue.getValue()));
+                ch.setProtocol(selection[0]);
+                ch.trigger();
+                //Scene sceneR = new Scene(root);
+                Main.simpleSwitch(root);
+            }
+        });
+    }
+
 
 
 

@@ -36,7 +36,6 @@ public class Main extends Application {
     public static void changeScene(String scene) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(Main.class.getResource(scene));
-
         AnchorPane ap = (AnchorPane) loader.load();
 
         BorderPane border = Main.getRoot();
@@ -52,25 +51,9 @@ public class Main extends Application {
         border.setCenter(ap);
     }
 
-    public static void changeSceneDoSB(String scene, double val1, double val2){
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(Main.class.getResource(scene));
-
-        try {
-            BorderPane root = fxmlLoader.load();
-            DoSControllerB ch = fxmlLoader.getController();
-            ch.setTreshold(val1);
-            ch.setTimeslot(val2);
-
-            Scene sceneR = new Scene(root);
-            Stage homeStage = (Stage) rootLayout.getScene().getWindow();
-
-            homeStage.setScene(sceneR);
-            homeStage.show();
-
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
+    public static void simpleSwitch(BorderPane ap){
+        BorderPane border = Main.getRoot();
+        border.setCenter(ap);
     }
 
     /**
@@ -98,7 +81,7 @@ public class Main extends Application {
     public void initFileTab() {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("/inputTab1.fxml"));
+            loader.setLocation(Main.class.getResource("/loadScene.fxml"));
             AnchorPane ap = (AnchorPane) loader.load();
 
             // Set filetab View into the center of root layout.
