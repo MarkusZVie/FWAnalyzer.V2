@@ -28,7 +28,7 @@ import java.io.IOException;
 import java.util.*;
 
 
-public class DoSControllerA {
+public class DoSControllerGraphical {
 
     private HashMap<String, ArrayList<DoSData>> countrymap;
     private DoSDataList ddl;
@@ -60,8 +60,6 @@ public class DoSControllerA {
     public void initialize() {
         System.out.println("init DoSController-A");
 
-        // ...
-        tmpCallMainCode();
 
         // Get Data from parsed File
         da = new AnalyzerDos();
@@ -324,19 +322,6 @@ public class DoSControllerA {
         backtochartBtn.setVisible(true);
         ArrayList<DoSData> countryData = countrymap.get(country);
         initBarChart(countryData, country);
-    }
-
-    public void tmpCallMainCode(){
-        IInputHandler inputHandler = new InputHandler();
-        // /Users/josefweber/Desktop/SyslogCatchAll-2017-03-14.txt
-        // C:\Users\Lezard\Desktop\SyslogCatchAll-2017-03-14.txt
-        try {
-            inputHandler.loadeFirewallLog("/Users/josefweber/Desktop/SyslogCatchAll-2017-03-14.txt", LogTypeSingelton.getInstance().getSupportedLogTypeList().get(0));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (LogIdNotFoundException e) {
-            e.printStackTrace();
-        }
     }
 
 }

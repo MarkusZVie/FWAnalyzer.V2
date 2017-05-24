@@ -1,5 +1,9 @@
 package at.ac.univie.FirewallLogAnayzer.GUI;
 
+import at.ac.univie.FirewallLogAnayzer.Data.LogTypeSingelton;
+import at.ac.univie.FirewallLogAnayzer.Exceptions.LogIdNotFoundException;
+import at.ac.univie.FirewallLogAnayzer.Input.IInputHandler;
+import at.ac.univie.FirewallLogAnayzer.Input.InputHandler;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -9,19 +13,17 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.stage.Stage;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
  * Created by josefweber on 22.05.17.
  */
-public class analyzeMenuController {
+public class AnalyzeMenuController {
 
 
     @FXML ListView<String> optionList;
@@ -100,7 +102,7 @@ public class analyzeMenuController {
         analyzeA.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 try {
-                    Main.changeScene("/dosGraphicsA.fxml");
+                    Main.changeScene("/dosGraphical.fxml");
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
@@ -135,9 +137,9 @@ public class analyzeMenuController {
         HBox vb1 = new HBox(20);
         final Label slotLabel = new Label("Timeslot (min)");
         // http://docs.oracle.com/javafx/2/ui_controls/slider.htm
-        final Slider slotValue = new Slider(15,30,45);
+        final Slider slotValue = new Slider(15,30,60);
         slotValue.setMin(15);
-        slotValue.setMax(45);
+        slotValue.setMax(60);
         slotValue.setValue(30);
         slotValue.setShowTickLabels(true);
         slotValue.setShowTickMarks(true);
@@ -177,14 +179,14 @@ public class analyzeMenuController {
             @Override public void handle(ActionEvent e) {
                 double parsePrice = Double.parseDouble(treshold.getText());
 
-                FXMLLoader loader= new FXMLLoader(getClass().getResource("/dosGraphicsB.fxml"));
+                FXMLLoader loader= new FXMLLoader(getClass().getResource("/dosMpt.fxml"));
                 BorderPane root = null;
                 try {
                     root = loader.load();
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
-                DoSControllerB ch = loader.getController();
+                DoSControllerMpt ch = loader.getController();
                 ch.setTreshold(parsePrice);
                 ch.setTimeslot(((int) slotValue.getValue()));
                 ch.setProtocol(selection[0]);
@@ -195,7 +197,21 @@ public class analyzeMenuController {
         });
     }
 
+    public void tmpCallMainCode(){
+        IInputHandler inputHandler = new InputHandler();
+        // /Users/josefweber/Desktop/SyslogCatchAll-2017-03-14.txt
+        // C:\Users\Lezard\Desktop\SyslogCatchAll-2017-03-14.txt
+        try {
+            inputHandler.loadeFirewallLog("/Users/josefweber/Desktop/SyslogCatchAll-2017-03-14.txt", LogTypeSingelton.getInstance().getSupportedLogTypeList().get(0));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (LogIdNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 
-
+    public void loadOnce(){
+        tmpCallMainCode();
+    }
 
 }

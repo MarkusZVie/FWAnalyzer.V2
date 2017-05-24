@@ -41,8 +41,7 @@ import java.util.Stack;
 /**
  * Created by josefweber on 22.05.17.
  */
-public class DoSControllerB {
-
+public class DoSControllerMpt {
 
     private DoSDataList ddl;
     private IProcessingAnalyseGenerel da;
@@ -50,7 +49,6 @@ public class DoSControllerB {
     private BarChart<String,Number> bcSingle;
     private CategoryAxis xAxisSingle;
     private NumberAxis yAxisSingle;
-
 
     @FXML Button backToMainBar;
     @FXML Button btnclick;
@@ -64,9 +62,7 @@ public class DoSControllerB {
     public String protocol;
 
 
-
-
-    public DoSControllerB(){
+    public DoSControllerMpt(){
         System.out.println("Init DoS-Controller B COnstruktor");
     }
     @FXML
@@ -75,8 +71,6 @@ public class DoSControllerB {
         System.out.println(treshold);
         headerLabel.setText(String.valueOf(treshold));
         backToMainBar.setVisible(false);
-
-        tmpCallMainCode();
 
         btnclick.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
@@ -195,10 +189,6 @@ public class DoSControllerB {
 
     }
 
-
-
-
-
     public void setTreshold(double tr){
         treshold = tr;
     }
@@ -238,25 +228,6 @@ public class DoSControllerB {
             System.out.println("Remove Series from Bar Chart Single Detail B");
             bcSingle.getData().remove((bcSingle.getData().size()-1));
             bcSingle.setTitle("");
-        }
-    }
-
-
-
-
-
-
-
-    public void tmpCallMainCode(){
-        IInputHandler inputHandler = new InputHandler();
-        // /Users/josefweber/Desktop/SyslogCatchAll-2017-03-14.txt
-        // C:\Users\Lezard\Desktop\SyslogCatchAll-2017-03-14.txt
-        try {
-            inputHandler.loadeFirewallLog("/Users/josefweber/Desktop/SyslogCatchAll-2017-03-14.txt", LogTypeSingelton.getInstance().getSupportedLogTypeList().get(0));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (LogIdNotFoundException e) {
-            e.printStackTrace();
         }
     }
 }

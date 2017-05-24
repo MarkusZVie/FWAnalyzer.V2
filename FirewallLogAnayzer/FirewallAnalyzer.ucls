@@ -172,7 +172,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="18" language="java" name="at.ac.univie.FirewallLogAnayzer.GUI.DoSControllerA" project="FWAnalyzer" 
+  <class id="18" language="java" name="at.ac.univie.FirewallLogAnayzer.GUI.DoSControllerGraphical" project="FWAnalyzer"
     file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/GUI/DoSControllerA.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="603" width="276" x="4326" y="37"/>    
@@ -182,7 +182,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="19" language="java" name="at.ac.univie.FirewallLogAnayzer.GUI.DoSControllerB" project="FWAnalyzer" 
+  <class id="19" language="java" name="at.ac.univie.FirewallLogAnayzer.GUI.DoSControllerMpt" project="FWAnalyzer"
     file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/GUI/DoSControllerB.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="207" width="162" x="3695" y="37"/>    
@@ -192,7 +192,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="20" language="java" name="at.ac.univie.FirewallLogAnayzer.GUI.analyzeMenuController" project="FWAnalyzer" 
+  <class id="20" language="java" name="at.ac.univie.FirewallLogAnayzer.GUI.AnalyzeMenuController" project="FWAnalyzer"
     file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/GUI/analyzeMenuController.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="207" width="162" x="456" y="37"/>    

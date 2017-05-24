@@ -25,7 +25,7 @@ public class Main extends Application {
 
         setRootLayout();
         //initFileTab();
-        //changeScene("/dosGraphicsA.fxml");
+        //changeScene("/dosGraphical.fxml");
         changeSceneBorderPane("/analyzeMenu.fxml");
     }
 
