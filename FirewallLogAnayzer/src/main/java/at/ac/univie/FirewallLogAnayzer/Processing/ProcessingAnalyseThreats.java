@@ -25,9 +25,14 @@ import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.IGroupByFactory
 public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 
 	private ArrayList<LogRow> allLogRows;
+	private ICompositionAnalysing compositionAnalysing;
+	private IBasicFunctions basicFunctions;
+	
 	
 	public ProcessingAnalyseThreats() {
 		allLogRows = LogRows.getInstance().getLogRows();
+		compositionAnalysing = new CompositionAnalysing();		
+		basicFunctions = new BasicFunctions();
 	}
 
 	@Override
@@ -41,10 +46,10 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		settings.setSelectOnlyGroubedByKey(compostionSelection);
 		
 		//filter Logs by Settings
-		ArrayList<LogRow> filterdLogRowsBySetting = CompositionAnalysing.eliminateUnnecessaryRowsBySetting(allLogRows, settings);
+		ArrayList<LogRow> filterdLogRowsBySetting = compositionAnalysing.eliminateUnnecessaryRowsBySetting(allLogRows, settings);
 		
 		//create ThreadScore of Time Persistence by IP
-		HashMap<String, Double> thredScore = CompositionAnalysing.getSetOfPersistencingTransferingIps(filterdLogRowsBySetting, StaticFunctions.getLogBeginDate(filterdLogRowsBySetting), StaticFunctions.getLogEndDate(filterdLogRowsBySetting));
+		HashMap<String, Double> thredScore = compositionAnalysing.getSetOfPersistencingTransferingIps(filterdLogRowsBySetting, basicFunctions.getLogBeginDate(filterdLogRowsBySetting), basicFunctions.getLogEndDate(filterdLogRowsBySetting));
 
 		return thredScore;
 		
@@ -72,17 +77,17 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		settings.setDontCareByNoSrcIP(true);
 		
 		//filter Logs by Settings
-		ArrayList<LogRow> filterdLogRowsBySetting = CompositionAnalysing.eliminateUnnecessaryRowsBySetting(allLogRows, settings);
+		ArrayList<LogRow> filterdLogRowsBySetting = compositionAnalysing.eliminateUnnecessaryRowsBySetting(allLogRows, settings);
 				
 		//create Basic Compostion by one GroupBy
-		CompositionCompositionLogRow cclr = CompositionAnalysing.groupByLogLine(filterdLogRowsBySetting, new GroupByDescriptionLogLine());
+		CompositionCompositionLogRow cclr = compositionAnalysing.groupByLogLine(filterdLogRowsBySetting, new GroupByDescriptionLogLine());
 		
 		//Build Tree with custom GroupBys
 		IGroupByFactory[] subGroups = {new GroupByExplanation(), new GroupByrecommendedAction(), new GroupByProtocol() ,new GroupByLocationCountry(), new GroupByLocationCity(), new GroupBySrcIP(), new GroupByMinutes()};
 		cclr.makeSubComposition(subGroups);
 		
 		//print
-		CompositionAnalysing.printCCLogRow(cclr);
+		compositionAnalysing.printCCLogRow(cclr);
 		
 	}
 
@@ -114,17 +119,17 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 	@Override
 	public void printCompostionTree(CompositionAnalysingSettings settings) {
 		//filter Logs by Settings
-		ArrayList<LogRow> filterdLogRowsBySetting = CompositionAnalysing.eliminateUnnecessaryRowsBySetting(allLogRows, settings);
+		ArrayList<LogRow> filterdLogRowsBySetting = compositionAnalysing.eliminateUnnecessaryRowsBySetting(allLogRows, settings);
 				
 		//create Basic Compostion by one GroupBy
-		CompositionCompositionLogRow cclr = CompositionAnalysing.groupByLogLine(filterdLogRowsBySetting, new GroupByDescriptionLogLine());
+		CompositionCompositionLogRow cclr = compositionAnalysing.groupByLogLine(filterdLogRowsBySetting, new GroupByDescriptionLogLine());
 		
 		//Build Tree with custom GroupBys
 		IGroupByFactory[] subGroups = {new GroupByExplanation(), new GroupByrecommendedAction(), new GroupByProtocol() ,new GroupByLocationCountry(), new GroupByLocationCity(), new GroupBySrcIP(), new GroupByMinutes()};
 		cclr.makeSubComposition(subGroups);
 		
 		//print
-		CompositionAnalysing.printCCLogRow(cclr);
+		compositionAnalysing.printCCLogRow(cclr);
 		
 	}
 

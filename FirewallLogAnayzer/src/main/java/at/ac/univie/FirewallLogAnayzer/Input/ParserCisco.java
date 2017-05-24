@@ -14,13 +14,17 @@ import at.ac.univie.FirewallLogAnayzer.Data.LogRow;
 import at.ac.univie.FirewallLogAnayzer.Data.LogRows;
 import at.ac.univie.FirewallLogAnayzer.Data.SavedLocationFromIP;
 import at.ac.univie.FirewallLogAnayzer.Exceptions.StringNotFoundException;
-import at.ac.univie.FirewallLogAnayzer.Processing.StaticFunctions;
+import at.ac.univie.FirewallLogAnayzer.Processing.BasicFunctions;
+import at.ac.univie.FirewallLogAnayzer.Processing.IBasicFunctions;
 
 
 public class ParserCisco extends Parser{
 
+	private IBasicFunctions basicFunctions;
+	
 	public ParserCisco(int numberOfRows) {
 		numberToRead = numberOfRows;
+		basicFunctions = new BasicFunctions();
 	}
 
 	public void parse(String logFileContent) {
@@ -51,13 +55,13 @@ public class ParserCisco extends Parser{
 		String rowType ="";
 		String prorityCodeAndAsaCode="";
 		try {
-			rowType = StaticFunctions.searchTheNStringWithPreAndPostfix(line,1,"\tLocal4.","\t");
-			prorityCodeAndAsaCode = StaticFunctions.searchTheNStringWithPreAndPostfix(line,1,"\t%ASA-",": ");
+			rowType = basicFunctions.searchTheNStringWithPreAndPostfix(line,1,"\tLocal4.","\t");
+			prorityCodeAndAsaCode = basicFunctions.searchTheNStringWithPreAndPostfix(line,1,"\t%ASA-",": ");
 		} catch (StringNotFoundException e) {
 			e.printStackTrace();
 		}
 		int prorityCode = Integer.parseInt(prorityCodeAndAsaCode.substring(0, 1));
-		String fwIPAdress = StaticFunctions.searchTheNIpInRow(line,1);
+		String fwIPAdress = basicFunctions.searchTheNIpInRow(line,1);
 		
 		String asaCodeString = prorityCodeAndAsaCode.substring(2);
 		int asaCode = Integer.parseInt(asaCodeString);
@@ -97,7 +101,7 @@ public class ParserCisco extends Parser{
 			//searchFor sourceIP
 			if(description.trim().contains("source_IP")|| description.trim().contains("source_address")||description.trim().contains("IP_address")){
 				ipAndPort[0]="incoming"; 					//If the source IP is outside than is incoming
-				ipAndPort[1]=StaticFunctions.searchTheNIpInRow(artifact, 1);
+				ipAndPort[1]=basicFunctions.searchTheNIpInRow(artifact, 1);
 				ipAndPort[2]=checkIfPortIsAPart(artifact);
 					
 					
@@ -129,10 +133,10 @@ public class ParserCisco extends Parser{
 						if(!artifact.equals("<unknown>.")){
 							ipAndPort[0] = "incoming";
 							String srcArtifact = artifact.substring(artifact.indexOf("src ")+"src ".length(), artifact.indexOf(' ', artifact.indexOf("src ")+"src ".length()));
-							ipAndPort[1] = StaticFunctions.searchTheNIpInRow(srcArtifact,1);
+							ipAndPort[1] = basicFunctions.searchTheNIpInRow(srcArtifact,1);
 							ipAndPort[2] = checkIfPortIsAPart(srcArtifact);
 							String destArtifact = artifact.substring(artifact.indexOf("dst ")+"dst ".length());
-							ipAndPort[3] = StaticFunctions.searchTheNIpInRow(destArtifact,1);
+							ipAndPort[3] = basicFunctions.searchTheNIpInRow(destArtifact,1);
 							ipAndPort[4] = checkIfPortIsAPart(destArtifact);
 							ipAndPort[5] = artifact.substring(0, artifact.indexOf(' '));
 							
@@ -151,9 +155,9 @@ public class ParserCisco extends Parser{
 				int beginIndex = trimedLine.indexOf("IP = ")+"IP = ".length();
 				int endIndex = trimedLine.indexOf(' ', beginIndex);
 				if(endIndex <0){
-					ipAndPort[1] = StaticFunctions.searchTheNIpInRow(trimedLine.substring(beginIndex), 1);
+					ipAndPort[1] = basicFunctions.searchTheNIpInRow(trimedLine.substring(beginIndex), 1);
 				}else{
-					ipAndPort[1] = StaticFunctions.searchTheNIpInRow(trimedLine.substring(beginIndex,endIndex), 1);
+					ipAndPort[1] = basicFunctions.searchTheNIpInRow(trimedLine.substring(beginIndex,endIndex), 1);
 				}
 			}else {
 				ipAndPort[0] = "intern";
@@ -165,7 +169,7 @@ public class ParserCisco extends Parser{
 	}
 
 	private String checkIfPortIsAPart(String artifact) {
-		String ip = StaticFunctions.searchTheNIpInRow(artifact, 1);
+		String ip = basicFunctions.searchTheNIpInRow(artifact, 1);
 		if(ip!=null){
 			int endOfIP = artifact.indexOf(ip)+ip.length();
 			if(endOfIP != artifact.length()){
@@ -206,7 +210,7 @@ public class ParserCisco extends Parser{
 			if(description.contains(keyword)){
 				//System.out.println(description);
 				//System.out.println(artifact);
-				String ip = StaticFunctions.searchTheNIpInRow(artifact, 1);
+				String ip = basicFunctions.searchTheNIpInRow(artifact, 1);
 				if(ip!=null){
 					int endOfIP = artifact.indexOf(ip)+ip.length();
 					if(endOfIP != artifact.length()){

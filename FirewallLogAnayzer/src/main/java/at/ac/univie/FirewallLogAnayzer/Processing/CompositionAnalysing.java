@@ -31,11 +31,15 @@ import org.apache.commons.math3.*;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 
-public abstract class CompositionAnalysing {	
-	
+public class CompositionAnalysing implements ICompositionAnalysing{	
 
-	
-	public static ArrayList<LogRow> eliminateUnnecessaryRowsBySetting(ArrayList<LogRow> baseRows,CompositionAnalysingSettings setting){
+	private IBasicFunctions basicFunctions;
+		
+	public CompositionAnalysing() {
+		basicFunctions = new BasicFunctions();
+	}
+
+	public ArrayList<LogRow> eliminateUnnecessaryRowsBySetting(ArrayList<LogRow> baseRows,CompositionAnalysingSettings setting){
 		//Filtering by Setting obj.
 		ArrayList<LogRow> filterdList = new ArrayList<LogRow>();
 		if(setting == null){
@@ -50,7 +54,7 @@ public abstract class CompositionAnalysing {
 			}
 			if(setting.isDontCareByNoSrcIP()){
 				//no IP or no Interface, because Interfaces are always on the Firewall side.
-				if(lr.getSrcIP()==null||StaticFunctions.searchTheNIpInRow(lr.getSrcIP(), 1)==null){
+				if(lr.getSrcIP()==null||basicFunctions.searchTheNIpInRow(lr.getSrcIP(), 1)==null){
 					willBeAdded = false;
 				}
 			}
@@ -78,9 +82,9 @@ public abstract class CompositionAnalysing {
 		return filterdList;
 	}
 	
-	public static HashMap<String, Double> getSetOfPersistencingTransferingIps(ArrayList<LogRow> logRows, Date logBegin, Date logEnd){
+	public HashMap<String, Double> getSetOfPersistencingTransferingIps(ArrayList<LogRow> logRows, Date logBegin, Date logEnd){
 		HashMap<String, Double> threadList = new HashMap<>();
-		CompositionCompositionLogRow cclr = CompositionAnalysing.groupByLogLine(logRows, new GroupBySrcIP());
+		CompositionCompositionLogRow cclr = groupByLogLine(logRows, new GroupBySrcIP());
 		HashMap<String,CompositionLogRow> composition = cclr.getComposition();
 		
 		for(String key :composition.keySet()){
@@ -102,7 +106,7 @@ public abstract class CompositionAnalysing {
 		return threadList;
 	}
 	
-	public static double getThreadScore(double[] stats, double ammountPerHour){
+	public double getThreadScore(double[] stats, double ammountPerHour){
 		//middle ammountPerHour and aritmetical mean (mean is in sec)
 		double threadScore = (ammountPerHour+(stats[3]/3600))/2;
 		//div by standard devision (is also in sec)
@@ -113,7 +117,7 @@ public abstract class CompositionAnalysing {
 		return threadScore;
 	}
 	
-	public static double[] getStatisticsAboutTimeFriquent(ArrayList<LogRow> logRows,Date logBegin, Date logEnd, boolean ignoreDayNextDayJumps){
+	public double[] getStatisticsAboutTimeFriquent(ArrayList<LogRow> logRows,Date logBegin, Date logEnd, boolean ignoreDayNextDayJumps){
 		//double[0] = standardDeviation
 		//double[1] = median
 		//double[2] = trimedMean
@@ -161,12 +165,12 @@ public abstract class CompositionAnalysing {
 		return persistanceStats;
 	}
 
-	public static CompositionCompositionLogRow groupByLogLine(ArrayList<LogRow> logRows,IGroupByFactory iGroupByFactory){
+	public CompositionCompositionLogRow groupByLogLine(ArrayList<LogRow> logRows,IGroupByFactory iGroupByFactory){
 		HashMap<String,CompositionLogRow> composition = new HashMap<>();
 		for(LogRow lr : logRows){
 			String key = iGroupByFactory.getKey(lr);
 			if(key==null){
-				key = StaticFunctions.getNullString();
+				key = basicFunctions.getNullString();
 			}
 			if(composition.containsKey(key)){
 				//add Log Row to existing entry
@@ -182,7 +186,7 @@ public abstract class CompositionAnalysing {
 	
 	
 	
-	public static void printCCLogRow(CompositionCompositionLogRow ccLR){
+	public void printCCLogRow(CompositionCompositionLogRow ccLR){
 		HashMap<String,CompositionLogRow> composition = ccLR.getComposition();
 		int deppnessLevel = ccLR.getDeepnessLevel();
 		

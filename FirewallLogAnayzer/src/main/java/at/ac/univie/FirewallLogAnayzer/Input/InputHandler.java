@@ -4,23 +4,29 @@ import java.io.FileNotFoundException;
 
 import at.ac.univie.FirewallLogAnayzer.Data.LogType;
 import at.ac.univie.FirewallLogAnayzer.Exceptions.LogIdNotFoundException;
-import at.ac.univie.FirewallLogAnayzer.Processing.StaticFunctions;
+import at.ac.univie.FirewallLogAnayzer.Processing.BasicFunctions;
+import at.ac.univie.FirewallLogAnayzer.Processing.IBasicFunctions;
 
 
 public class InputHandler implements IInputHandler{
 
-	
+	private IBasicFunctions basicFunctions;
 	
 	
 	
 
+
+
+	public InputHandler() {
+		basicFunctions = new BasicFunctions();
+	}
 
 
 	public void loadeFirewallLog(String logpath, LogType logType) throws FileNotFoundException, LogIdNotFoundException{
 		
-		StaticFunctions.cleanFile("Files\\errorLog.txt");
+		basicFunctions.cleanFile("Files\\errorLog.txt");
 		
-		String[] logFileContentAndNumberOfRows = StaticFunctions.readeFile(logpath);
+		String[] logFileContentAndNumberOfRows = basicFunctions.readeFile(logpath);
 		String logFileContent = logFileContentAndNumberOfRows[0];
 		int numberOfRows = Integer.parseInt(logFileContentAndNumberOfRows[1]);
 		

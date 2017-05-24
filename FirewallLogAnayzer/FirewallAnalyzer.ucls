@@ -284,8 +284,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="29" language="java" name="at.ac.univie.FirewallLogAnayzer.Processing.StaticFunctions" project="FWAnalyzer" 
-    file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/Processing/StaticFunctions.java" binary="false" 
+  <class id="29" language="java" name="at.ac.univie.FirewallLogAnayzer.Processing.BasicFunctions" project="FWAnalyzer" 
+    file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/Processing/BasicFunctions.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="225" width="346" x="2047" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 

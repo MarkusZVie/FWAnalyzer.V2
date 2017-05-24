@@ -33,7 +33,7 @@ import at.ac.univie.FirewallLogAnayzer.Processing.CompositionAnalysing;
 import at.ac.univie.FirewallLogAnayzer.Processing.IProcessingAnalyseGenerel;
 import at.ac.univie.FirewallLogAnayzer.Processing.IProcessingAnalyseThreats;
 import at.ac.univie.FirewallLogAnayzer.Processing.ProcessingAnalyseThreats;
-import at.ac.univie.FirewallLogAnayzer.Processing.StaticFunctions;
+import at.ac.univie.FirewallLogAnayzer.Processing.BasicFunctions;
 import at.ac.univie.FirewallLogAnayzer.Processing.TemporairProcessing;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByDescriptionLogLine;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByExplanation;

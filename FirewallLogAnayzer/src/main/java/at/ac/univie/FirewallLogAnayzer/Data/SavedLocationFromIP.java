@@ -2,13 +2,18 @@ package at.ac.univie.FirewallLogAnayzer.Data;
 
 import java.util.HashMap;
 
-import at.ac.univie.FirewallLogAnayzer.Processing.StaticFunctions;
+import at.ac.univie.FirewallLogAnayzer.Processing.BasicFunctions;
+import at.ac.univie.FirewallLogAnayzer.Processing.IBasicFunctions;
 
 public class SavedLocationFromIP {
 	private HashMap<String,IpLocation> savedLocationFromIp;
 	private static SavedLocationFromIP instance =null;
+	private IBasicFunctions basicFunctions;
+	
+	
 	private SavedLocationFromIP(){
-		savedLocationFromIp = new HashMap<String,IpLocation>(); 
+		savedLocationFromIp = new HashMap<String,IpLocation>(); 		
+		basicFunctions = new BasicFunctions();
 	}
 	public static SavedLocationFromIP getInstance(){
 		if(instance == null){
@@ -21,7 +26,7 @@ public class SavedLocationFromIP {
 		if(savedLocationFromIp.containsKey(ip)){
 			return savedLocationFromIp.get(ip);
 		}else{
-			IpLocation ipl = StaticFunctions.findeLocation(ip);
+			IpLocation ipl = basicFunctions.findeLocation(ip);
 			savedLocationFromIp.put(ip, ipl);
 			return ipl;
 		}

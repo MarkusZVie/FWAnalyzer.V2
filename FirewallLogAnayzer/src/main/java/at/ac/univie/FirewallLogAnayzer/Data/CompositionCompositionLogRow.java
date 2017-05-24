@@ -3,16 +3,19 @@ package at.ac.univie.FirewallLogAnayzer.Data;
 import java.util.HashMap;
 
 import at.ac.univie.FirewallLogAnayzer.Processing.CompositionAnalysing;
+import at.ac.univie.FirewallLogAnayzer.Processing.ICompositionAnalysing;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupBySrcIP;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.IGroupByFactory;
 
 public class CompositionCompositionLogRow {
 	private HashMap<String,CompositionCompositionLogRow> ccLogRow;
 	private HashMap<String,CompositionLogRow> composition;
+	private ICompositionAnalysing compositionAnalysing;
 	private int deepnessLevel;
 		
 	public CompositionCompositionLogRow(){
 		deepnessLevel=0;
+		compositionAnalysing = new CompositionAnalysing();
 	}
 	
 	public CompositionCompositionLogRow(HashMap<String, CompositionLogRow> composition) {
@@ -27,7 +30,7 @@ public class CompositionCompositionLogRow {
 			CompositionLogRow clr = composition.get(key);
 			//put for every key a CompositionCompositionLogRow with the logRows from that CompositionCompositionLogRow (Content)
 			if(deepnessLevel<subGroups.length){
-				ccLogRow.put(key, CompositionAnalysing.groupByLogLine(clr.getContent(), subGroups[deepnessLevel]));
+				ccLogRow.put(key, compositionAnalysing.groupByLogLine(clr.getContent(), subGroups[deepnessLevel]));
 				ccLogRow.get(key).setDeepnessLevel(deepnessLevel+1);
 				ccLogRow.get(key).makeSubComposition(subGroups);
 			}
