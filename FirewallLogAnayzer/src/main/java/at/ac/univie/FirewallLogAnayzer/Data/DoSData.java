@@ -17,10 +17,13 @@ public class DoSData {
         this.std = std;
     }
 
-
     public void setMpt(int min){
-        MessagePerTime mpt = new MessagePerTime();
+        mpt = new MessagePerTime();
         mptList = mpt.calcMsgPerSlot(min, messages);
+    }
+
+    public MessagePerTime getMpt() {
+        return mpt;
     }
 
     public ArrayList<Integer> getMptList(){

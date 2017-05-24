@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane fx:id="mainAP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.univie.FirewallLogAnayzer.GUI.DoSControllerMpt">
+   <top>
+      <HBox spacing="20.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="backToMainBar" mnemonicParsing="false" onAction="#backToMainBar" text="back" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Label fx:id="headerLabel" text="Label">
+               <font>
+                  <Font size="24.0" />
+               </font></Label>
+            <Region HBox.hgrow="ALWAYS" />
+            <Button fx:id="btnclick" mnemonicParsing="false" text="Button" />
+            <Button fx:id="btm" mnemonicParsing="false" onAction="#btmMethod" prefHeight="27.0" prefWidth="141.0" text="Analysis Menu" />
+         </children>
+         <BorderPane.margin>
+            <Insets left="20.0" right="20.0" top="20.0" />
+         </BorderPane.margin>
+      </HBox>
+   </top>
+   <right>
+      <StackPane fx:id="spRight" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </BorderPane.margin>
+         <children>
+            <Region prefHeight="200.0" prefWidth="200.0" />
+         </children>
+      </StackPane>
+   </right>
+   <center>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <StackPane fx:id="spBarChart" prefHeight="660.0" prefWidth="1040.0" />
+            <StackPane fx:id="spBarSingleDetail" prefHeight="660.0" prefWidth="1040.0" />
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>

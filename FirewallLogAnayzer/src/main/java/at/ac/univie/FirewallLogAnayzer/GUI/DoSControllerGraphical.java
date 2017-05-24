@@ -28,7 +28,7 @@ import java.io.IOException;
 import java.util.*;
 
 
-public class DoSControllerA {
+public class DoSControllerGraphical {
 
     private HashMap<String, ArrayList<DoSData>> countrymap;
     private DoSDataList ddl;
@@ -60,8 +60,6 @@ public class DoSControllerA {
     public void initialize() {
         System.out.println("init DoSController-A");
 
-        // ...
-        tmpCallMainCode();
 
         // Get Data from parsed File
         da = new AnalyzerDos();
@@ -96,6 +94,8 @@ public class DoSControllerA {
 
         backtochartBtn.setVisible(false);
         btn2.setVisible(false);
+
+
 
         if (!bc.getData().isEmpty()){
             System.out.println("Remove Series from Bar Chart");
@@ -146,8 +146,8 @@ public class DoSControllerA {
             data.getNode().addEventHandler(MouseEvent.MOUSE_MOVED, new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent e) {
-                    caption.setTranslateX(e.getSceneX()-700);
-                    caption.setTranslateY(e.getSceneY()-500);
+                    caption.setTranslateX(e.getSceneX()-500);
+                    caption.setTranslateY(e.getSceneY()-300);
                     caption.setText(data.getName() + " " + data.getPieValue());
                 }
             });
@@ -173,7 +173,10 @@ public class DoSControllerA {
             bc.getData().remove(xxAxisBar);
             bc.getData().remove(yyAxisBar);
             bc.getData().remove(bc.getTitle());
+            xxAxisBar = new CategoryAxis();
+            //yyAxisBar = new NumberAxis();
         }
+
         bc = new BarChart(xxAxisBar, yyAxisBar);
         bc.setTitle("IPs of " + country);
 
@@ -201,8 +204,8 @@ public class DoSControllerA {
                 item.getNode().addEventHandler(MouseEvent.MOUSE_MOVED, new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
-                        caption.setTranslateX(event.getSceneX()-700);
-                        caption.setTranslateY(event.getSceneY()-500);
+                        caption.setTranslateX(event.getSceneX()-500);
+                        caption.setTranslateY(event.getSceneY()-300);
                         caption.setText(item.getXValue() + ": " + item.getYValue() + " messages");
                     }
                 });
@@ -319,19 +322,6 @@ public class DoSControllerA {
         backtochartBtn.setVisible(true);
         ArrayList<DoSData> countryData = countrymap.get(country);
         initBarChart(countryData, country);
-    }
-
-    public void tmpCallMainCode(){
-        IInputHandler inputHandler = new InputHandler();
-        // /Users/josefweber/Desktop/SyslogCatchAll-2017-03-14.txt
-        // C:\Users\Lezard\Desktop\SyslogCatchAll-2017-03-14.txt
-        try {
-            inputHandler.loadeFirewallLog("C:\\Users\\Lezard\\Desktop\\activeFWLogs", LogTypeSingelton.getInstance().getSupportedLogTypeList().get(0));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (LogIdNotFoundException e) {
-            e.printStackTrace();
-        }
     }
 
 }

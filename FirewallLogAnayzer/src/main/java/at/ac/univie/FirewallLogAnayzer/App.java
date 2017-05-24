@@ -108,10 +108,6 @@ public class App
 	}
 
 	private static void tempWeberPrositure() {
-		//test method
-        //TemporairProcessing.doSomething();
-        //TemporairProcessing.testPortScan();
-
 
         // DOS
         IProcessingAnalyseGenerel da = new AnalyzerDos();
@@ -124,42 +120,11 @@ public class App
         //HashMap<String, ArrayList<DoSData>> countrymap = da.messagesOfCountry(ddl);
         //HashMap<String, Integer> countryCount = da.sumMessagesPerCountry(countrymap, "asc");
 
-        // Get single DosData
-        /*
-        DoSData ddsingle = da.getSingleIP(ddl, "187.182.134.133");
-        if (ddsingle == null){
-            System.out.println("null");
-        } else {
-            System.out.println("Example value: " + ddsingle.getMessages().get(0).getProtocol());
-        }
-        */
-
-        DoSData td1 = ddl.getDataEdited().get(5);
-        System.out.println(td1.getMptList().toString() + " ip=" + td1.getMessages().get(0).getSrcIP());
-
 
         ArrayList<DoSData> crits = da.analyzeMpt(ddl,10.0);
         System.out.println(crits.size());
 
-        // Test Message Per Time
 
-        for (int i = 0; i < crits.size(); i++) {
-
-            System.out.println(crits.get(i).getMessages().get(0).getSrcIP());
-        }
-
-
-
-
-
-        /*
-        DoSData ddTest = ddl.getDataEdited().get(8);
-        ddTest.calcMsgPerSlot(20);
-        System.out.println(ddTest.getMessages().size());
-        System.out.println("----");
-        */
-
-		
 	}
 
 
