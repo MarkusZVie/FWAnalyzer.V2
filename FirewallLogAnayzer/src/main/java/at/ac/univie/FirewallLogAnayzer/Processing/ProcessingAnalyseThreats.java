@@ -8,11 +8,13 @@ import java.util.HashMap;
 import at.ac.univie.FirewallLogAnayzer.Data.CompositionAnalysingSettings;
 import at.ac.univie.FirewallLogAnayzer.Data.CompositionCompositionLogRow;
 import at.ac.univie.FirewallLogAnayzer.Data.CompositionSelection;
+import at.ac.univie.FirewallLogAnayzer.Data.DoSReport;
 import at.ac.univie.FirewallLogAnayzer.Data.HashPairDoubleValue;
 import at.ac.univie.FirewallLogAnayzer.Data.LogRow;
 import at.ac.univie.FirewallLogAnayzer.Data.LogRows;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByDescriptionLogLine;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByExplanation;
+import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByHours;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByLocationCity;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByLocationCountry;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByLogLineCode;
@@ -92,26 +94,46 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 	}
 
 	@Override
-	public void analyseForDos() {
-		//create Settings
-		CompositionAnalysingSettings settings = new CompositionAnalysingSettings();
+	public DoSReport analyseForDos() {
+		//define Grouping desiction
+		IGroupByFactory[] subGroups = {	new GroupByExplanation(), 
+										new GroupByrecommendedAction(), 
+										new GroupByProtocol() ,
+										new GroupByLocationCountry(), 
+										new GroupByLocationCity(), 
+										new GroupBySrcIP(), 
+										new GroupByHours()};
 		
-		CompositionSelection[] compostionSelection = {
+		//Generate Composition by DosIndicater with no IP
+		CompositionAnalysingSettings doSNoIPSettings = new CompositionAnalysingSettings();
+		CompositionSelection[] doSNoIPCompostionSelection = {
 				new CompositionSelection(new GroupByLogLineCode(), "106101"), //noIP, ACL LogdenyFlows has reach the limit
-				new CompositionSelection(new GroupByLogLineCode(), "109017"), //if persists from IP DoS Possible (proxy-Limit)
-				new CompositionSelection(new GroupByLogLineCode(), "209003"), //if persists from IP DoS Possible (Fragment Database Limit)
 				new CompositionSelection(new GroupByLogLineCode(), "210011"), //noIP, Connection limit exceeded
-				new CompositionSelection(new GroupByLogLineCode(), "400033"), //UDP Chargen DoS attack
 				new CompositionSelection(new GroupByLogLineCode(), "402128"), //noIP, persists -> Dos
 				new CompositionSelection(new GroupByLogLineCode(), "404102"), //noIP, Exceeded embryonic limit
 				new CompositionSelection(new GroupByLogLineCode(), "407002"), //noIP, Embryonic limit
 				new CompositionSelection(new GroupByLogLineCode(), "733100") //noIP, Object drop rate rate_ID exceeded
-		}; //define which Lines will appier
+		};
+		doSNoIPSettings.setSelectOnlyGroubedByKey(doSNoIPCompostionSelection);
+		ArrayList<LogRow> doSNoIPFilterdLogRowsBySetting = compositionAnalysing.eliminateUnnecessaryRowsBySetting(allLogRows, doSNoIPSettings);
+		CompositionCompositionLogRow doSNoIPcclr = compositionAnalysing.groupByLogLine(doSNoIPFilterdLogRowsBySetting, new GroupByDescriptionLogLine());
+		doSNoIPcclr.makeSubComposition(subGroups);
 		
-		settings.setSelectOnlyGroubedByKey(compostionSelection);
+		//Generate Composition by DosIndicater with IP
+		CompositionAnalysingSettings doSIPSettings = new CompositionAnalysingSettings();
+		CompositionSelection[] doSIPCompostionSelection = {
+				new CompositionSelection(new GroupByLogLineCode(), "109017"), //if persists from IP DoS Possible (proxy-Limit)
+				new CompositionSelection(new GroupByLogLineCode(), "209003"), //if persists from IP DoS Possible (Fragment Database Limit)
+				new CompositionSelection(new GroupByLogLineCode(), "400033"), //UDP Chargen DoS attack
+		}; 
+		doSIPSettings.setSelectOnlyGroubedByKey(doSIPCompostionSelection);
 		
-		System.out.println("..........");
-		printCompostionTree(settings);
+		ArrayList<LogRow> doSIPFilterdLogRowsBySetting = compositionAnalysing.eliminateUnnecessaryRowsBySetting(allLogRows, doSIPSettings);
+		CompositionCompositionLogRow doSIPcclr = compositionAnalysing.groupByLogLine(doSIPFilterdLogRowsBySetting, new GroupByDescriptionLogLine());
+		doSIPcclr.makeSubComposition(subGroups);
+		
+		DoSReport report = new DoSReport(doSNoIPcclr, doSIPcclr);
+		return report;
 		
 	}
 
