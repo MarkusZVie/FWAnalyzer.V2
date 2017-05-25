@@ -21,6 +21,10 @@ public class GroupByExplanation implements IGroupByFactory{
 		}
 	}
 
+	@Override
+	public String toString() {
+		return "Explanation";
+	}
 	
 
 }

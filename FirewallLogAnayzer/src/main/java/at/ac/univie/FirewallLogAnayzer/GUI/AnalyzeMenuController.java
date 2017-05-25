@@ -75,14 +75,14 @@ public class AnalyzeMenuController {
 
     private void createReportTab() {
     	try {
+    		PageRefeferenceControllerSingelton.getInstance().setReference(spCenter);
     		spCenter.getChildren().clear();
-    		spCenter.getChildren().add(FXMLLoader.load(getClass().getResource("/ReportDoS.fxml")));
+    		spCenter.getChildren().add(FXMLLoader.load(getClass().getResource("/LogTreeView.fxml")));
     		
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		
+		}		
 	}
 
 	public void createACLgraphical(){

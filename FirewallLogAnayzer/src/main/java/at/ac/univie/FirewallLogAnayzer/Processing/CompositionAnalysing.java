@@ -18,13 +18,21 @@ import at.ac.univie.FirewallLogAnayzer.Data.CompositionLogRow;
 import at.ac.univie.FirewallLogAnayzer.Data.CompositionSelection;
 import at.ac.univie.FirewallLogAnayzer.Data.LogRow;
 import at.ac.univie.FirewallLogAnayzer.Data.LogRows;
+import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByDays;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByDescriptionLogLine;
+import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByDestIP;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByExplanation;
+import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByFwIP;
+import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByHours;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByLocationCity;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByLocationCountry;
+import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByLogLine;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByMinutes;
+import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByMonth;
+import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByPriority;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByProtocol;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupBySrcIP;
+import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupBySrcPort;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByrecommendedAction;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.IGroupByFactory;
 import org.apache.commons.math3.*;
@@ -205,4 +213,52 @@ public class CompositionAnalysing implements ICompositionAnalysing{
 			}
 		}
 	}
+
+	@Override
+	public ArrayList<String> getAllGroupBys() {
+		ArrayList<String> allGroupBys = new ArrayList<>();
+		allGroupBys.add(new GroupByDays().toString());
+		allGroupBys.add(new GroupByDescriptionLogLine().toString());
+		allGroupBys.add(new GroupByDestIP().toString());
+		allGroupBys.add(new GroupByExplanation().toString());
+		allGroupBys.add(new GroupByFwIP().toString());
+		allGroupBys.add(new GroupByHours().toString());
+		allGroupBys.add(new GroupByLocationCity().toString());
+		allGroupBys.add(new GroupByLocationCountry().toString());
+		allGroupBys.add(new GroupByLogLine().toString());
+		allGroupBys.add(new GroupByMinutes().toString());
+		allGroupBys.add(new GroupByMonth().toString());
+		allGroupBys.add(new GroupByPriority().toString());
+		allGroupBys.add(new GroupByProtocol().toString());
+		allGroupBys.add(new GroupByrecommendedAction().toString());
+		allGroupBys.add(new GroupBySrcIP().toString());
+		allGroupBys.add(new GroupBySrcPort().toString());
+		return allGroupBys;
+	}
+
+	@Override
+	public CompositionCompositionLogRow getHoleCompositionByGroubByList(ArrayList<LogRow> logRows, ArrayList<IGroupByFactory> groupByList) {
+		CompositionCompositionLogRow cclr = groupByLogLine(logRows, groupByList.get(0));
+		if(groupByList.size()>1){
+			IGroupByFactory[] addtionalGroupBys = new IGroupByFactory[groupByList.size()-1];
+			
+			//skip the First, it is already included
+			int counter =-1;
+			for(IGroupByFactory gbf: groupByList){
+				if(counter>=0){
+					addtionalGroupBys[counter] = gbf;
+				}
+				counter++;
+			}
+			System.out.println("length " + addtionalGroupBys.length);
+			for(IGroupByFactory igf: addtionalGroupBys){
+				System.out.println(igf.toString());
+			}
+			
+			cclr.makeSubComposition(addtionalGroupBys);
+		}
+		return cclr;
+	}
+
+
 }

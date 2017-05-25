@@ -21,6 +21,9 @@ public class GroupByrecommendedAction implements IGroupByFactory{
 		}	
 	}
 
-	
+	@Override
+	public String toString() {
+		return "Recommended Action";
+	}
 
 }

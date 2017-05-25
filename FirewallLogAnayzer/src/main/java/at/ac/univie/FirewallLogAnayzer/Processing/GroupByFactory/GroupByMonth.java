@@ -24,6 +24,9 @@ public class GroupByMonth implements IGroupByFactory{
 		}
 	}
 
-	
+	@Override
+	public String toString() {
+		return "Time Month";
+	}
 
 }

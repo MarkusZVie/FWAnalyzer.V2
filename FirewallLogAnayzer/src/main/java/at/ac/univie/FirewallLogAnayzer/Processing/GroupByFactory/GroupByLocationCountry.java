@@ -21,6 +21,9 @@ public class GroupByLocationCountry implements IGroupByFactory{
 		}
 	}
 
-	
+	@Override
+	public String toString() {
+		return "Location Country";
+	}
 
 }

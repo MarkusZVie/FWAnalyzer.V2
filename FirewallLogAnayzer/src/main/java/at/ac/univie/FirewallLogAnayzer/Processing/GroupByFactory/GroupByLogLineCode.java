@@ -21,6 +21,9 @@ public class GroupByLogLineCode implements IGroupByFactory{
 		}
 	}
 
-	
+	@Override
+	public String toString() {
+		return "Log Line Code";
+	}
 
 }

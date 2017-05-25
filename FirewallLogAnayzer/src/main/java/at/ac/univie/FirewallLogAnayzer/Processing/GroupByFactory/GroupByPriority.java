@@ -21,6 +21,9 @@ public class GroupByPriority implements IGroupByFactory{
 		}
 	}
 
-	
+	@Override
+	public String toString() {
+		return "Priority";
+	}
 
 }

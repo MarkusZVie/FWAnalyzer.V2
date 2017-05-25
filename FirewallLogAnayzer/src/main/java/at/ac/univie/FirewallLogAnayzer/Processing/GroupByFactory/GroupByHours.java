@@ -16,7 +16,7 @@ public class GroupByHours implements IGroupByFactory{
 	
 	@Override
 	public String getKey(LogRow lr) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:xx");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH");
 		if (lr.getDateTime()==null){
 			return basicFunctions.getNullString();
 		}else{
@@ -24,6 +24,9 @@ public class GroupByHours implements IGroupByFactory{
 		}	
 	}
 
-	
+	@Override
+	public String toString() {
+		return "Time Hours";
+	}
 
 }

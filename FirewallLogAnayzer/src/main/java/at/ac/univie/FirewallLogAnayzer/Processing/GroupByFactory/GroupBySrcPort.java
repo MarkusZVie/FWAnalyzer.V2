@@ -21,6 +21,9 @@ public class GroupBySrcPort implements IGroupByFactory{
 		}	
 	}
 
-	
+	@Override
+	public String toString() {
+		return "Source Port";
+	}
 
 }

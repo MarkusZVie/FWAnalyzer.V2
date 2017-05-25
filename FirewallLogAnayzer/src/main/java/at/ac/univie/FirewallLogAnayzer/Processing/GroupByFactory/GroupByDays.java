@@ -7,6 +7,8 @@ import at.ac.univie.FirewallLogAnayzer.Processing.BasicFunctions;
 import at.ac.univie.FirewallLogAnayzer.Processing.IBasicFunctions;
 
 public class GroupByDays implements IGroupByFactory{
+	
+
 	private IBasicFunctions basicFunctions;
 	
 	public GroupByDays() {
@@ -23,6 +25,10 @@ public class GroupByDays implements IGroupByFactory{
 		}
 	}
 
+	@Override
+	public String toString() {
+		return "Days";
+	}
 	
 
 }

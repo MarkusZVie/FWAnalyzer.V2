@@ -21,6 +21,9 @@ public class GroupBySrcIP implements IGroupByFactory{
 		}	
 	}
 
-	
+	@Override
+	public String toString() {
+		return "Source IP";
+	}
 
 }

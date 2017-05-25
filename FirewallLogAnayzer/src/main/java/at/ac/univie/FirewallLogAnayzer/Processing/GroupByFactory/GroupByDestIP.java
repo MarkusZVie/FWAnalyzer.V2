@@ -21,6 +21,9 @@ public class GroupByDestIP implements IGroupByFactory{
 		}
 	}
 
-	
+	@Override
+	public String toString() {
+		return "Destination IP";
+	}
 
 }

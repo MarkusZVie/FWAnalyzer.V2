@@ -21,6 +21,9 @@ public class GroupByProtocol implements IGroupByFactory{
 		}
 	}
 
-	
+	@Override
+	public String toString() {
+		return "Protocol";
+	}
 
 }

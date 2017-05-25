@@ -24,6 +24,10 @@ public class GroupByMinutes implements IGroupByFactory{
 		}
 	}
 
+	@Override
+	public String toString() {
+		return "Time Minutes";
+	}
 	
 
 }

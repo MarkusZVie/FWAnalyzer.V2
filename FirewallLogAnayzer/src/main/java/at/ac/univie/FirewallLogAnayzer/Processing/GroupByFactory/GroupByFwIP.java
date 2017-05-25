@@ -21,6 +21,10 @@ public class GroupByFwIP implements IGroupByFactory{
 		}		
 	}
 
+	@Override
+	public String toString() {
+		return "Firewall IP";
+	}
 	
 
 }

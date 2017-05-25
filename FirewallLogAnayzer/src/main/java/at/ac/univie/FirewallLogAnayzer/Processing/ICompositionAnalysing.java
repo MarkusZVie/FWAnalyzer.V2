@@ -7,6 +7,7 @@ import java.util.HashMap;
 import at.ac.univie.FirewallLogAnayzer.Data.CompositionAnalysingSettings;
 import at.ac.univie.FirewallLogAnayzer.Data.CompositionCompositionLogRow;
 import at.ac.univie.FirewallLogAnayzer.Data.LogRow;
+import at.ac.univie.FirewallLogAnayzer.Data.LogRows;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.IGroupByFactory;
 
 public interface ICompositionAnalysing {
@@ -22,5 +23,10 @@ public interface ICompositionAnalysing {
 	public CompositionCompositionLogRow groupByLogLine(ArrayList<LogRow> logRows,IGroupByFactory iGroupByFactory);
 	
 	public void printCCLogRow(CompositionCompositionLogRow ccLR);
+	
+	public ArrayList<String> getAllGroupBys();
+	
+	public CompositionCompositionLogRow getHoleCompositionByGroubByList(ArrayList<LogRow> logRows, ArrayList<IGroupByFactory> groupByList);
+	
 		
 }

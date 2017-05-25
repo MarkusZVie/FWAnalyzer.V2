@@ -20,6 +20,10 @@ public class GroupByDescriptionLogLine implements IGroupByFactory{
 		}
 	}
 
+	@Override
+	public String toString() {
+		return "Description";
+	}
 	
 
 }
