@@ -5,6 +5,8 @@ import java.io.IOException;
 import org.apache.commons.net.whois.WhoisClient;
 
 import at.ac.univie.FirewallLogAnayzer.Data.LogRow;
+import at.ac.univie.FirewallLogAnayzer.Input.IIPBackgroundParser;
+import at.ac.univie.FirewallLogAnayzer.Input.IPBackgroundParser;
 import at.ac.univie.FirewallLogAnayzer.Processing.BasicFunctions;
 import at.ac.univie.FirewallLogAnayzer.Processing.IBasicFunctions;
 
@@ -32,6 +34,7 @@ public class GroupBySrcIP implements IGroupByFactory{
 	
 	@Override
 	public String getCaseDescription(LogRow lr) {
+		IIPBackgroundParser ibp = new IPBackgroundParser();
 		StringBuilder sb = new StringBuilder();
 		
 		if(lr.getLocation()!=null){
@@ -52,6 +55,16 @@ public class GroupBySrcIP implements IGroupByFactory{
 			sb.append("No Location found");
 		}
 		
+		sb.append(System.lineSeparator());
+		sb.append(System.lineSeparator());
+		sb.append("Detail Information about IP");
+		sb.append(System.lineSeparator());
+		sb.append(ibp.getBackgroundInfos(lr.getSrcIP()));
+		
+		
+		/*
+		 *alternative Use
+		 * 
 		StringBuilder whoIsResult = new StringBuilder();
 		WhoisClient whois = new WhoisClient();
 		boolean noError=true;
@@ -70,6 +83,8 @@ public class GroupBySrcIP implements IGroupByFactory{
 		if(noError){
 			sb.append(whoIsResult.toString());
 		}
+		*/
+		
 		return sb.toString();
 	}
 
