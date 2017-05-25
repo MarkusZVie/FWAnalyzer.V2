@@ -36,7 +36,6 @@ public class AnalyzeMenuController {
 
     @FXML
     public void initialize() {
-        System.out.println("Init Analyze Menu");
         ObservableList<String> items = FXCollections.observableArrayList(
           "DoS Analysis Graphical","DoS Analysis MPT","NewWindowTest",".."
         );
@@ -102,7 +101,7 @@ public class AnalyzeMenuController {
         cb.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                selectionLabel.setText(cbitems[newValue.intValue()]);
+                //selectionLabel.setText(cbitems[newValue.intValue()]);
                 selection[0] = cbitems[newValue.intValue()].toString();
             }
         });
@@ -117,11 +116,22 @@ public class AnalyzeMenuController {
 
         analyzeA.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
+                // Main.changeScene("/dosGraphical.fxml");
+
+                FXMLLoader loader= new FXMLLoader(getClass().getResource("/dosGraphical.fxml"));
+                AnchorPane root = null;
                 try {
-                    Main.changeScene("/dosGraphical.fxml");
+                    root = loader.load();
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
+                DoSControllerGraphical ch = loader.getController();
+                ch.setProtocol(selection[0]);
+                ch.trigger();
+                //Scene sceneR = new Scene(root);
+                Main.simpleSwitchAnchor(root);
+
+
             }
         });
 
@@ -143,7 +153,7 @@ public class AnalyzeMenuController {
         cb.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                selectionLabel.setText(cbitems[newValue.intValue()]);
+                //selectionLabel.setText(cbitems[newValue.intValue()]);
                 selection[0] = cbitems[newValue.intValue()].toString();
             }
         });

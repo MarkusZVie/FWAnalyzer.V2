@@ -56,6 +56,11 @@ public class Main extends Application {
         border.setCenter(ap);
     }
 
+    public static void simpleSwitchAnchor(AnchorPane ap) {
+        BorderPane border = Main.getRoot();
+        border.setCenter(ap);
+    }
+
     /**
      * Root Layout Set
      */
@@ -102,4 +107,6 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
+
 }

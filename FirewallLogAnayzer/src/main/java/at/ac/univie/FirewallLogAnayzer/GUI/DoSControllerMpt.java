@@ -63,12 +63,9 @@ public class DoSControllerMpt {
 
 
     public DoSControllerMpt(){
-        System.out.println("Init DoS-Controller B COnstruktor");
     }
     @FXML
     public void initialize() {
-        System.out.println("Init DoS-Controller B");
-        System.out.println(treshold);
         headerLabel.setText(String.valueOf(treshold));
         backToMainBar.setVisible(false);
 
@@ -139,19 +136,15 @@ public class DoSControllerMpt {
         backToMainBar.setVisible(true);
 
         DoSData ddSingle = da.getSingleIP(ddl, ip);
-        System.out.println("BBB " + ddSingle.getMptList().size());
 
         if (ddSingle.getMptList() == null){
             System.out.println("no acl per time for this ip");
         } else {
             initSingleDetailBar(ddSingle);
         }
-
     }
 
     public void initSingleDetailBar(DoSData ddd){
-
-        System.out.println("Fuk yis " + ddd.getMptList().get(0));
         if (bcSingle == null) {
             xAxisSingle = new CategoryAxis();
             yAxisSingle = new NumberAxis();
@@ -170,22 +163,17 @@ public class DoSControllerMpt {
 
         bcSingle.setLegendVisible(false);
 
-
         int time = timeslot;
 
         for (int i = 0; i < ddd.getMptList().size(); i++) {
             XYChart.Series series1 = new XYChart.Series();
-
             //series1.setName(ddd.getMessages().get(0).getSrcIP());
-
             series1.getData().add(new XYChart.Data("Slot" + i, ddd.getMptList().get(i)));
             time = time + timeslot;
 
             bcSingle.getData().add(series1);
         }
-
         spBarSingleDetail.getChildren().addAll(bcSingle);
-
 
     }
 
@@ -211,7 +199,6 @@ public class DoSControllerMpt {
     }
 
     public void btmMethod() throws IOException {
-        System.out.println("Going to Analyze Menu from B");
         try {
             Main.changeSceneBorderPane("/analyzeMenu.fxml");
         } catch (IOException e) {

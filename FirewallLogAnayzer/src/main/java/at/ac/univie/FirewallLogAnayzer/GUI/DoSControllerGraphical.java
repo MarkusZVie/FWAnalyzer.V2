@@ -55,21 +55,23 @@ public class DoSControllerGraphical {
     @FXML private StackPane apBar;
     @FXML private StackPane apLineSingle;
 
+    @FXML private String protocol;
 
-    @FXML
-    public void initialize() {
-        System.out.println("init DoSController-A");
+    public void setProtocol(String protocol) {
+        this.protocol = protocol;
+    }
 
-
-        // Get Data from parsed File
+    public void trigger(){
         da = new AnalyzerDos();
-        ddl = da.analyseDos("icmp", 60);
+        ddl = da.analyseDos(protocol, 60);
         countrymap = da.messagesOfCountry(ddl);
         HashMap<String, Integer> countryCount = da.sumMessagesPerCountry(countrymap, "asc");
         HashMap<String, Integer> cc = countryCount;
-
-        //Create Piechart at first
         initpiechart(cc);
+    }
+
+    @FXML
+    public void initialize() {
         apBar.setVisible(false);
         apLineSingle.setVisible(false);
 
@@ -78,7 +80,6 @@ public class DoSControllerGraphical {
     }
 
     public void backtoMenu() throws IOException {
-        System.out.println("Going to Analyze Menu");
         try {
             Main.changeSceneBorderPane("/analyzeMenu.fxml");
         } catch (IOException e) {
@@ -94,8 +95,6 @@ public class DoSControllerGraphical {
 
         backtochartBtn.setVisible(false);
         btn2.setVisible(false);
-
-
 
         if (!bc.getData().isEmpty()){
             System.out.println("Remove Series from Bar Chart");
@@ -289,7 +288,6 @@ public class DoSControllerGraphical {
 
         //ddl
         //initLineChart(countryData);
-
     }
 
     public void goSingleIpLineChart(String ip){
@@ -309,7 +307,6 @@ public class DoSControllerGraphical {
         } else {
             initLineChartSingle(ddSingle);
         }
-
     }
 
     public void goMultipleIpLineChart(String country){
