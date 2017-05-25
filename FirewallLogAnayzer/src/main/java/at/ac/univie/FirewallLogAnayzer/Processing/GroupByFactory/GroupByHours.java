@@ -29,4 +29,10 @@ public class GroupByHours implements IGroupByFactory{
 		return "Time Hours";
 	}
 
+	@Override
+	public String getCaseDescription(LogRow lr) {
+		// TODO Auto-generated method stub
+		return "";
+	}
+	
 }

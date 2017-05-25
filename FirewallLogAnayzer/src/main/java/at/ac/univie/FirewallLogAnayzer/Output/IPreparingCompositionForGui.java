@@ -9,4 +9,6 @@ public interface IPreparingCompositionForGui {
 	public ArrayList<String> getCasePossibleGroupBys(ArrayList<String> alreadyUsed);
 
 	public TreeItem<String> getRootTreeItem(ArrayList<String> generateUsedBrouBys);
+	
+	public String getDiscription(TreeItem<String> item);
 }

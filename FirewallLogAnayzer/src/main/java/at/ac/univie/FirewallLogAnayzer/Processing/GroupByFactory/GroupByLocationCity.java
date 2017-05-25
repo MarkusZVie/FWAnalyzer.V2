@@ -26,4 +26,8 @@ public class GroupByLocationCity implements IGroupByFactory{
 		return "Location City";
 	}
 
+	@Override
+	public String getCaseDescription(LogRow lr) {
+		return "";
+	}
 }

@@ -25,5 +25,11 @@ public class GroupByProtocol implements IGroupByFactory{
 	public String toString() {
 		return "Protocol";
 	}
+	
+	@Override
+	public String getCaseDescription(LogRow lr) {
+		// TODO Auto-generated method stub
+		return "";
+	}
 
 }

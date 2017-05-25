@@ -25,5 +25,11 @@ public class GroupBySrcPort implements IGroupByFactory{
 	public String toString() {
 		return "Source Port";
 	}
+	
+	@Override
+	public String getCaseDescription(LogRow lr) {
+		// TODO Auto-generated method stub
+		return "";
+	}
 
 }

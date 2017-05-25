@@ -25,5 +25,11 @@ public class GroupByPriority implements IGroupByFactory{
 	public String toString() {
 		return "Priority";
 	}
+	
+	@Override
+	public String getCaseDescription(LogRow lr) {
+		// TODO Auto-generated method stub
+		return "";
+	}
 
 }

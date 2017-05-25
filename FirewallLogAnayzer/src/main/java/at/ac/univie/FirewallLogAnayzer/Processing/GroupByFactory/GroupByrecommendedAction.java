@@ -25,5 +25,11 @@ public class GroupByrecommendedAction implements IGroupByFactory{
 	public String toString() {
 		return "Recommended Action";
 	}
+	
+	@Override
+	public String getCaseDescription(LogRow lr) {
+		// TODO Auto-generated method stub
+		return "";
+	}
 
 }

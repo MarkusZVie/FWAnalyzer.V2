@@ -29,4 +29,10 @@ public class GroupByMonth implements IGroupByFactory{
 		return "Time Month";
 	}
 
+	@Override
+	public String getCaseDescription(LogRow lr) {
+		// TODO Auto-generated method stub
+		return "";
+	}
+	
 }

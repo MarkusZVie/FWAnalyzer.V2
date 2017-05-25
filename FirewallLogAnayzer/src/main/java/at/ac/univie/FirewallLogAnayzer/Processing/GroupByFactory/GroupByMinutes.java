@@ -29,5 +29,10 @@ public class GroupByMinutes implements IGroupByFactory{
 		return "Time Minutes";
 	}
 	
+	@Override
+	public String getCaseDescription(LogRow lr) {
+		// TODO Auto-generated method stub
+		return "";
+	}
 
 }

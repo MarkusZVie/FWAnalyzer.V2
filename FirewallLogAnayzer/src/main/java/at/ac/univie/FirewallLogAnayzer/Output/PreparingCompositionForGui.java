@@ -1,5 +1,6 @@
 package at.ac.univie.FirewallLogAnayzer.Output;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,12 +39,13 @@ public class PreparingCompositionForGui implements IPreparingCompositionForGui{
 
 	private ICompositionAnalysing compositionAnalysing;
 	private ArrayList<LogRow> allLogRows;
-	
+	private HashMap<TreeItem<String>, Object[]> contextInformation;
 	
 	
 	public PreparingCompositionForGui() {
 		compositionAnalysing = new CompositionAnalysing();
 		allLogRows = LogRows.getInstance().getLogRows();
+		contextInformation = new HashMap<>();
 	}
 
 
@@ -87,7 +89,7 @@ public class PreparingCompositionForGui implements IPreparingCompositionForGui{
 		
 		//add This list do RootNode
 		for(String key :treeMap.keySet()){
-				TreeItem<String> subitem = new TreeItem<String>(key);
+				TreeItem<String> subitem = new TreeItem<String>(key + " (" + composition.get(key).getContent().size() + ")");
 				if(cclr.getCcLogRow()!=null){
 					if(cclr.getCcLogRow().get(key)!=null){
 						if(cclr.getCcLogRow().get(key).getComposition()!=null){
@@ -96,11 +98,16 @@ public class PreparingCompositionForGui implements IPreparingCompositionForGui{
 					}
 				}
 				rootTreeItem.getChildren().add(subitem);
+				Object[] contextIfos = {composition.get(key).getContent().get(0),cclr.getGroubedBy()};
+				contextInformation.put(subitem, contextIfos);
 				
 		}
 		
 		return rootTreeItem;
 	}
+
+
+
 
 
 
@@ -112,7 +119,70 @@ public class PreparingCompositionForGui implements IPreparingCompositionForGui{
 		return gbf;
 	}
 
-
+	@Override
+	public String getDiscription(TreeItem<String> item) {
+		ArrayList<TreeItem<String>> itemTree = new ArrayList<>();
+		StringBuilder sb = new StringBuilder();
+		
+		//Create Basic Discription
+		if(contextInformation.containsKey(item)){
+			LogRow representiveLogRow = (LogRow) contextInformation.get(item)[0];
+			sb.append("Description:");
+			sb.append(System.lineSeparator());
+			sb.append(representiveLogRow.getDescriptionLogLine());
+			sb.append(System.lineSeparator());
+			sb.append(System.lineSeparator());
+			sb.append("Represental Log Line:");
+			sb.append(System.lineSeparator());
+			sb.append(representiveLogRow.getLogLine());
+			sb.append(System.lineSeparator());
+			sb.append(System.lineSeparator());
+			sb.append("Explanation:");
+			sb.append(System.lineSeparator());
+			sb.append(representiveLogRow.getExplanation());
+			sb.append(System.lineSeparator());
+			sb.append(System.lineSeparator());
+			sb.append("RecommendedAction:");
+			sb.append(System.lineSeparator());
+			sb.append(representiveLogRow.getRecommendedAction());
+			sb.append(System.lineSeparator());
+			sb.append(System.lineSeparator());
+			
+		}else{
+			System.err.println("Not Registred Key");
+		}
+		
+		
+		//add items until Root
+		TreeItem<String> activeItem = item;
+		itemTree.add(activeItem);
+		while(activeItem.getParent()!=null){
+			activeItem= activeItem.getParent();
+			itemTree.add(activeItem);
+		}
+		
+	
+	
+		for(int i =(itemTree.size()-2); i>=0;i--){//  (-2)  dont care the root root node
+			if(contextInformation.containsKey(itemTree.get(i))){
+				Object[] caseContextInformation = contextInformation.get(itemTree.get(i));
+				LogRow lr = (LogRow) caseContextInformation[0];
+				IGroupByFactory gbf = (IGroupByFactory) caseContextInformation[1];
+				
+				//text added
+				if(!gbf.getCaseDescription(lr).equals("")){
+					sb.append(gbf.toString() + " Details:");
+					sb.append(gbf.getCaseDescription(lr));
+					sb.append(System.lineSeparator());
+					sb.append(System.lineSeparator());
+				}
+			}else{
+				System.err.println("Not Registred Key");
+			}
+		}	
+		
+		return sb.toString();
+	}
 
 	public IGroupByFactory getGrouByClassByName (String name){
 		if(name.equals(new GroupByDays().toString())){
@@ -173,5 +243,9 @@ public class PreparingCompositionForGui implements IPreparingCompositionForGui{
 		
 		return null;
 	}
+
+
+
+	
 
 }

@@ -11,6 +11,7 @@ import at.ac.univie.FirewallLogAnayzer.Input.IInputHandler;
 import at.ac.univie.FirewallLogAnayzer.Input.InputHandler;
 import at.ac.univie.FirewallLogAnayzer.Output.IPreparingCompositionForGui;
 import at.ac.univie.FirewallLogAnayzer.Output.PreparingCompositionForGui;
+import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByLogLineCode;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -37,6 +38,7 @@ public class LogTreeViewController implements Initializable{
 	private TreeItem<String> rootTreeItem;
 	private ArrayList<ComboBox<String>> choices;
 	private boolean isExsistingEmptyCobobox;
+	private TextArea description;
 	
 	
 	@Override
@@ -78,27 +80,35 @@ public class LogTreeViewController implements Initializable{
 		addComboboxesToTop();
 				
 		//create DetailVew
-		localLayout.setRight(new TextArea("das ists"));
-		localLayout.getRight().maxWidth(0.2);
+		description = new TextArea();
+		description.setWrapText(true);
+		localLayout.setRight(description);
 	
 		
-		TreeItem<String> rootItem = new TreeItem<String> ("Inbox");
-        rootItem.setExpanded(true);
-        for (int i = 1; i < 6; i++) {
-            TreeItem<String> item = new TreeItem<String> ("Message" + i);            
-            rootItem.getChildren().add(item);
-        }      
+		//create TreeView
+        treeView = new TreeView<String> ();  
+        choices.get(0).getSelectionModel().select(new GroupByLogLineCode().toString());
         
-        treeView = new TreeView<String> (rootItem);  
         
-        treeView.setMinWidth(500);
+        treeView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TreeItem<String>>() {
+            @Override
+            public void changed(
+                ObservableValue<? extends TreeItem<String>> observable, TreeItem<String> old_val, TreeItem<String> new_val) {
+            	refreshDescription(new_val);
+            }
+        });
+        
+        
+        treeView.setMinWidth(350);
 		localLayout.setCenter(treeView);
 		System.out.println("indizilase");
         
-		
-		
-		
 	}
+	
+	private void refreshDescription(TreeItem<String> item){
+		description.setText(prepairedComposion.getDiscription(item));
+	}
+	
 	private void addComboboxesToTop(){
 		topLayout.getChildren().clear();
 		for(ComboBox<String> cb: choices){
@@ -139,6 +149,7 @@ public class LogTreeViewController implements Initializable{
 		}
 		addComboboxesToTop();
 		updateTree();
+		treeView.getRoot().setExpanded(true);
 		
 	}
 	

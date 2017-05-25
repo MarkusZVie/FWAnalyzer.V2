@@ -13,8 +13,17 @@ public class CompositionCompositionLogRow {
 	private HashMap<String,CompositionLogRow> composition;
 	private ICompositionAnalysing compositionAnalysing = new CompositionAnalysing();
 	private int deepnessLevel=0;
+	private IGroupByFactory groubedBy;
 	
 	
+	public IGroupByFactory getGroubedBy() {
+		return groubedBy;
+	}
+
+	public void setGroubedBy(IGroupByFactory groubedBy) {
+		this.groubedBy = groubedBy;
+	}
+
 	public CompositionCompositionLogRow(HashMap<String, CompositionLogRow> composition) {
 		super();
 		this.composition = composition;

@@ -26,4 +26,10 @@ public class GroupByLogLineCode implements IGroupByFactory{
 		return "Log Line Code";
 	}
 
+	@Override
+	public String getCaseDescription(LogRow lr) {
+		// TODO Auto-generated method stub
+		return "";
+	}
+	
 }

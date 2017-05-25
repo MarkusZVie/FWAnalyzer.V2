@@ -25,5 +25,11 @@ public class GroupByDestIP implements IGroupByFactory{
 	public String toString() {
 		return "Destination IP";
 	}
+	
+	@Override
+	public String getCaseDescription(LogRow lr) {
+		// TODO Auto-generated method stub
+		return "";
+	}
 
 }

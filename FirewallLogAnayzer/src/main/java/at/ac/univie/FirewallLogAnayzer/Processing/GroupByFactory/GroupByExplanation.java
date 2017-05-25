@@ -26,5 +26,10 @@ public class GroupByExplanation implements IGroupByFactory{
 		return "Explanation";
 	}
 	
+	@Override
+	public String getCaseDescription(LogRow lr) {
+		// TODO Auto-generated method stub
+		return "";
+	}
 
 }

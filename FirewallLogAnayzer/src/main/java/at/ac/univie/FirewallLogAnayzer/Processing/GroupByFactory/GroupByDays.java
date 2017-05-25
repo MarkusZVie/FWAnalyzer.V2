@@ -27,7 +27,13 @@ public class GroupByDays implements IGroupByFactory{
 
 	@Override
 	public String toString() {
-		return "Days";
+		return "Time Days";
+	}
+
+	@Override
+	public String getCaseDescription(LogRow lr) {
+		// TODO Auto-generated method stub
+		return "";
 	}
 	
 

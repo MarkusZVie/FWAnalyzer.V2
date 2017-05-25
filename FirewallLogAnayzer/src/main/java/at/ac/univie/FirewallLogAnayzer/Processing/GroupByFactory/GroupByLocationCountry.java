@@ -26,4 +26,10 @@ public class GroupByLocationCountry implements IGroupByFactory{
 		return "Location Country";
 	}
 
+	@Override
+	public String getCaseDescription(LogRow lr) {
+		// TODO Auto-generated method stub
+		return "";
+	}
+	
 }

@@ -27,6 +27,7 @@ import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByHours;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByLocationCity;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByLocationCountry;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByLogLine;
+import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByLogLineCode;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByMinutes;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByMonth;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByPriority;
@@ -189,7 +190,10 @@ public class CompositionAnalysing implements ICompositionAnalysing{
 				composition.put(key, new CompositionLogRow(lr));
 			}			
 		}
-		return new CompositionCompositionLogRow(composition);
+		CompositionCompositionLogRow newcclr = new CompositionCompositionLogRow(composition);
+		newcclr.setGroubedBy(iGroupByFactory);
+		
+		return newcclr;
 	}
 	
 	
@@ -217,28 +221,36 @@ public class CompositionAnalysing implements ICompositionAnalysing{
 	@Override
 	public ArrayList<String> getAllGroupBys() {
 		ArrayList<String> allGroupBys = new ArrayList<>();
-		allGroupBys.add(new GroupByDays().toString());
-		allGroupBys.add(new GroupByDescriptionLogLine().toString());
-		allGroupBys.add(new GroupByDestIP().toString());
-		allGroupBys.add(new GroupByExplanation().toString());
-		allGroupBys.add(new GroupByFwIP().toString());
-		allGroupBys.add(new GroupByHours().toString());
-		allGroupBys.add(new GroupByLocationCity().toString());
-		allGroupBys.add(new GroupByLocationCountry().toString());
-		allGroupBys.add(new GroupByLogLine().toString());
-		allGroupBys.add(new GroupByMinutes().toString());
-		allGroupBys.add(new GroupByMonth().toString());
-		allGroupBys.add(new GroupByPriority().toString());
-		allGroupBys.add(new GroupByProtocol().toString());
-		allGroupBys.add(new GroupByrecommendedAction().toString());
+		allGroupBys.add(new GroupByLogLineCode().toString());
+		
 		allGroupBys.add(new GroupBySrcIP().toString());
 		allGroupBys.add(new GroupBySrcPort().toString());
+		allGroupBys.add(new GroupByProtocol().toString());
+		
+		allGroupBys.add(new GroupByMonth().toString());
+		allGroupBys.add(new GroupByDays().toString());
+		allGroupBys.add(new GroupByHours().toString());
+		allGroupBys.add(new GroupByMinutes().toString());
+		
+		allGroupBys.add(new GroupByLocationCountry().toString());
+		allGroupBys.add(new GroupByLocationCity().toString());
+		
+		allGroupBys.add(new GroupByPriority().toString());
+		allGroupBys.add(new GroupByDestIP().toString());
+		allGroupBys.add(new GroupByFwIP().toString());
+		
+		allGroupBys.add(new GroupByLogLine().toString());
+		allGroupBys.add(new GroupByDescriptionLogLine().toString());
+		allGroupBys.add(new GroupByExplanation().toString());
+		allGroupBys.add(new GroupByrecommendedAction().toString());
+		
 		return allGroupBys;
 	}
 
 	@Override
 	public CompositionCompositionLogRow getHoleCompositionByGroubByList(ArrayList<LogRow> logRows, ArrayList<IGroupByFactory> groupByList) {
 		CompositionCompositionLogRow cclr = groupByLogLine(logRows, groupByList.get(0));
+		
 		if(groupByList.size()>1){
 			IGroupByFactory[] addtionalGroupBys = new IGroupByFactory[groupByList.size()-1];
 			
@@ -250,11 +262,7 @@ public class CompositionAnalysing implements ICompositionAnalysing{
 				}
 				counter++;
 			}
-			System.out.println("length " + addtionalGroupBys.length);
-			for(IGroupByFactory igf: addtionalGroupBys){
-				System.out.println(igf.toString());
-			}
-			
+						
 			cclr.makeSubComposition(addtionalGroupBys);
 		}
 		return cclr;
