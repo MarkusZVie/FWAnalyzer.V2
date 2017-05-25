@@ -35,9 +35,7 @@ public class LogTreeViewController implements Initializable{
 	
 	//content Elements
 	@FXML TreeView<String> treeView;
-	private TreeItem<String> rootTreeItem;
 	private ArrayList<ComboBox<String>> choices;
-	private boolean isExsistingEmptyCobobox;
 	private TextArea description;
 	
 	
@@ -67,7 +65,6 @@ public class LogTreeViewController implements Initializable{
 		
 		//inizilase Content Attributes
 		choices = new ArrayList<>();
-		isExsistingEmptyCobobox = true;
 		
 		//ChrateLayout
 		localLayout = new BorderPane();
@@ -99,14 +96,14 @@ public class LogTreeViewController implements Initializable{
         });
         
         
-        treeView.setMinWidth(350);
+        treeView.setMinWidth(250);
 		localLayout.setCenter(treeView);
 		System.out.println("indizilase");
         
 	}
 	
 	private void refreshDescription(TreeItem<String> item){
-		description.setText(prepairedComposion.getDiscription(item));
+		description.setText(prepairedComposion.getDiscription(item,description,treeView));
 	}
 	
 	private void addComboboxesToTop(){

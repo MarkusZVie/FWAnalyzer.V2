@@ -32,6 +32,7 @@ import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupBySrcIP;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupBySrcPort;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByrecommendedAction;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.IGroupByFactory;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 
@@ -120,7 +121,7 @@ public class PreparingCompositionForGui implements IPreparingCompositionForGui{
 	}
 
 	@Override
-	public String getDiscription(TreeItem<String> item) {
+	public String getDiscription(TreeItem<String> item, TextArea description, TreeView<String> treeView) {
 		ArrayList<TreeItem<String>> itemTree = new ArrayList<>();
 		StringBuilder sb = new StringBuilder();
 		
@@ -149,38 +150,52 @@ public class PreparingCompositionForGui implements IPreparingCompositionForGui{
 			sb.append(System.lineSeparator());
 			
 		}else{
-			System.err.println("Not Registred Key");
+			//Do Nothing, someone select the root node
 		}
 		
 		
 		//add items until Root
 		TreeItem<String> activeItem = item;
-		itemTree.add(activeItem);
-		while(activeItem.getParent()!=null){
-			activeItem= activeItem.getParent();
+		if(activeItem!=null){
 			itemTree.add(activeItem);
+			
+			while(activeItem.getParent()!=null){
+				activeItem= activeItem.getParent();
+				itemTree.add(activeItem);
+			}
 		}
-		
 	
 	
 		for(int i =(itemTree.size()-2); i>=0;i--){//  (-2)  dont care the root root node
+			
 			if(contextInformation.containsKey(itemTree.get(i))){
+				
 				Object[] caseContextInformation = contextInformation.get(itemTree.get(i));
 				LogRow lr = (LogRow) caseContextInformation[0];
 				IGroupByFactory gbf = (IGroupByFactory) caseContextInformation[1];
 				
+								
 				//text added
 				if(!gbf.getCaseDescription(lr).equals("")){
 					sb.append(gbf.toString() + " Details:");
 					sb.append(gbf.getCaseDescription(lr));
 					sb.append(System.lineSeparator());
 					sb.append(System.lineSeparator());
+										
+					if( gbf.toString().equals(new GroupBySrcIP().toString())||
+						gbf.toString().equals(new GroupByDestIP().toString())){
+						AsynchronIPDescriptionLoader aIpLoader = new AsynchronIPDescriptionLoader(lr.getSrcIP(), item, description, treeView, sb.toString());
+						aIpLoader.start();
+						
+						
+					}
 				}
 			}else{
-				System.err.println("Not Registred Key");
+				//do Nothing, someone select the root button
 			}
 		}	
 		
+		sb.append("Additional Information will be available in view seconds");
 		return sb.toString();
 	}
 
@@ -243,6 +258,9 @@ public class PreparingCompositionForGui implements IPreparingCompositionForGui{
 		
 		return null;
 	}
+
+
+
 
 
 

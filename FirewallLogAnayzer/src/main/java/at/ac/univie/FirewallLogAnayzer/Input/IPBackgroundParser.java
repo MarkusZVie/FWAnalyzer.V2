@@ -27,19 +27,7 @@ public class IPBackgroundParser implements IIPBackgroundParser{
 		return null;
 	}
 	
-	private String deleteTagBoxes(String sourceCode){
-		
-		String cleanedCode ="";
-		int count = 0;
-		while(sourceCode.indexOf('>', count)!=sourceCode.lastIndexOf('>')){
-			int o = sourceCode.indexOf('>', count);
-			if(sourceCode.charAt(o+1)!='<'){
-				cleanedCode=cleanedCode+" "+(sourceCode.substring(o+1, sourceCode.indexOf('<', o+1)));
-			}
-			count = o+1;
-		}
-		return sourceCode;
-	}
+	
 	
 	private String loadPage(String expandedURL) throws MalformedURLException, IOException {
 		Scanner scanner = new Scanner(new URL(expandedURL).openStream());

@@ -34,7 +34,7 @@ public class GroupBySrcIP implements IGroupByFactory{
 	
 	@Override
 	public String getCaseDescription(LogRow lr) {
-		IIPBackgroundParser ibp = new IPBackgroundParser();
+		
 		StringBuilder sb = new StringBuilder();
 		
 		if(lr.getLocation()!=null){
@@ -55,12 +55,7 @@ public class GroupBySrcIP implements IGroupByFactory{
 			sb.append("No Location found");
 		}
 		
-		sb.append(System.lineSeparator());
-		sb.append(System.lineSeparator());
-		sb.append("Detail Information about IP");
-		sb.append(System.lineSeparator());
-		sb.append(ibp.getBackgroundInfos(lr.getSrcIP()));
-		
+			
 		
 		/*
 		 *alternative Use
