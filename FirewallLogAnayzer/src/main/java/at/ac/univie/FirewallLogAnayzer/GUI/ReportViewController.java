@@ -1,13 +1,17 @@
 package at.ac.univie.FirewallLogAnayzer.GUI;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import at.ac.univie.FirewallLogAnayzer.Data.Report;
 import at.ac.univie.FirewallLogAnayzer.Output.IPreparingCompositionForGui;
 import at.ac.univie.FirewallLogAnayzer.Output.PreparingCompositionForGui;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -21,6 +25,8 @@ public class ReportViewController implements Initializable{
 	
 	private VBox masterLayout;
 	private VBox gernerlTopLyout;
+	private StackPane treeView;
+	private ScrollPane scrollPane;
 	
 	private Label typeOfAttack;
 	private Label description;
@@ -37,10 +43,20 @@ public class ReportViewController implements Initializable{
 		report = prepairedComposion.getReport(reportID);
 		
 		//instance Lyouts
+		scrollPane = new ScrollPane();
+		scrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
+		scrollPane.setVbarPolicy(ScrollBarPolicy.ALWAYS);
+		
+		
 		masterLayout = new VBox();
-		frameReference.getChildren().add(masterLayout);
+		frameReference.getChildren().add(scrollPane);
+		scrollPane.setContent(masterLayout);
+		
 		gernerlTopLyout = new VBox();
 		masterLayout.getChildren().add(gernerlTopLyout);
+		treeView = new StackPane();
+		masterLayout.getChildren().add(treeView);
+		treeView.setPrefHeight(100);
 		
 		//instance ControllerObjects
 		typeOfAttack = new Label();
@@ -60,6 +76,17 @@ public class ReportViewController implements Initializable{
 		}
 		asaCodes.setText(rowAsaCodes);
 		
+		treeView.getChildren().add(description);
+		
+		/*
+		try {
+			treeView.getChildren().clear();
+			treeView.getChildren().add(FXMLLoader.load(getClass().getResource("/LogTreeView.fxml")));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		*/
 	}
 
 }

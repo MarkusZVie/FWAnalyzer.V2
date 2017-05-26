@@ -5,6 +5,6 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="ReportDoS" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="14.0" prefWidth="14.0" style="" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.univie.FirewallLogAnayzer.GUI.LogTreeViewController">
+<AnchorPane fx:id="ReportDoS" style="" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.univie.FirewallLogAnayzer.GUI.LogTreeViewController">
   <!-- TODO Add Nodes -->
 </AnchorPane>
