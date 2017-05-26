@@ -44,6 +44,15 @@ public class CompositionCompositionLogRow {
 		}
 	}
 	
+	public ArrayList<LogRow> getAllLogRows(){
+		ArrayList<LogRow> logRows= new ArrayList<>();
+		for(String key:composition.keySet()){
+			for(LogRow lr : composition.get(key).getContent()){
+				logRows.add(lr);
+			}
+		}
+		return logRows;
+	}
 	
 	public int getDeepnessLevel() {
 		return deepnessLevel;

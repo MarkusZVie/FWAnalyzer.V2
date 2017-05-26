@@ -27,6 +27,8 @@ public interface ICompositionAnalysing {
 	public ArrayList<String> getAllGroupBys();
 	
 	public CompositionCompositionLogRow getHoleCompositionByGroubByList(ArrayList<LogRow> logRows, ArrayList<IGroupByFactory> groupByList);
+
+	double getAmmountPerHour(ArrayList<LogRow> logRows, Date logBegin, Date logEnd);
 	
 		
 }

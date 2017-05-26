@@ -99,9 +99,7 @@ public class CompositionAnalysing implements ICompositionAnalysing{
 		for(String key :composition.keySet()){
 			if(composition.get(key).getContent().size()>1){				// only possible to get stats by size >1
 				double[] stats = getStatisticsAboutTimeFriquent(composition.get(key).getContent(), logBegin, logEnd,true);
-				double ammountOfLogs = composition.get(key).getContent().size();
-				double ammountOfHours = (((logEnd.getTime()-logBegin.getTime())/1000)/60)/60;
-				double ammountPerHour = ammountOfLogs/ammountOfHours;
+				double ammountPerHour = getAmmountPerHour(composition.get(key).getContent(), logBegin, logEnd);
 				double threadScore = getThreadScore(stats, ammountPerHour);
 				if(threadList.containsKey(key)){			//defensive
 					if(threadList.get(key)<threadScore){
@@ -124,6 +122,14 @@ public class CompositionAnalysing implements ICompositionAnalysing{
 			threadScore =0;
 		}
 		return threadScore;
+	}
+	
+	@Override
+	public double getAmmountPerHour(ArrayList<LogRow> logRows,Date logBegin, Date logEnd){
+		double ammountOfLogs = logRows.size();
+		double ammountOfHours = (((logEnd.getTime()-logBegin.getTime())/1000)/60)/60;
+		double ammountPerHour = ammountOfLogs/ammountOfHours;
+		return ammountPerHour;
 	}
 	
 	public double[] getStatisticsAboutTimeFriquent(ArrayList<LogRow> logRows,Date logBegin, Date logEnd, boolean ignoreDayNextDayJumps){
@@ -249,23 +255,27 @@ public class CompositionAnalysing implements ICompositionAnalysing{
 
 	@Override
 	public CompositionCompositionLogRow getHoleCompositionByGroubByList(ArrayList<LogRow> logRows, ArrayList<IGroupByFactory> groupByList) {
-		CompositionCompositionLogRow cclr = groupByLogLine(logRows, groupByList.get(0));
-		
-		if(groupByList.size()>1){
-			IGroupByFactory[] addtionalGroupBys = new IGroupByFactory[groupByList.size()-1];
+		if(groupByList!=null){
+			CompositionCompositionLogRow cclr = groupByLogLine(logRows, groupByList.get(0));
 			
-			//skip the First, it is already included
-			int counter =-1;
-			for(IGroupByFactory gbf: groupByList){
-				if(counter>=0){
-					addtionalGroupBys[counter] = gbf;
+			if(groupByList.size()>1){
+				IGroupByFactory[] addtionalGroupBys = new IGroupByFactory[groupByList.size()-1];
+				
+				//skip the First, it is already included
+				int counter =-1;
+				for(IGroupByFactory gbf: groupByList){
+					if(counter>=0){
+						addtionalGroupBys[counter] = gbf;
+					}
+					counter++;
 				}
-				counter++;
+							
+				cclr.makeSubComposition(addtionalGroupBys);
 			}
-						
-			cclr.makeSubComposition(addtionalGroupBys);
-		}
 		return cclr;
+		}else{
+			return null;
+		}
 	}
 
 

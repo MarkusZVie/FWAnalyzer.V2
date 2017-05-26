@@ -12,5 +12,7 @@ public interface IPreparingCompositionForGui {
 	public TreeItem<String> getRootTreeItem(ArrayList<String> generateUsedBrouBys);
 	
 
-	public String getDiscription(TreeItem<String> item, TextArea description, TreeView<String> treeView);
+	public Object[] getDiscription(TreeItem<String> item, TextArea description, TreeView<String> treeView);
+	
+	
 }

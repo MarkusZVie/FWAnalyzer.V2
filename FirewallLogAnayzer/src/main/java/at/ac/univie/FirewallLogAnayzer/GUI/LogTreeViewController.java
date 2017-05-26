@@ -1,9 +1,16 @@
 package at.ac.univie.FirewallLogAnayzer.GUI;
 
 import java.io.FileNotFoundException;
+import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+
+import com.sun.javafx.geom.BaseBounds;
+import com.sun.javafx.geom.transform.BaseTransform;
+import com.sun.javafx.jmx.MXNodeAlgorithm;
+import com.sun.javafx.jmx.MXNodeAlgorithmContext;
+import com.sun.javafx.sg.prism.NGNode;
 
 import at.ac.univie.FirewallLogAnayzer.Data.LogTypeSingelton;
 import at.ac.univie.FirewallLogAnayzer.Exceptions.LogIdNotFoundException;
@@ -12,19 +19,33 @@ import at.ac.univie.FirewallLogAnayzer.Input.InputHandler;
 import at.ac.univie.FirewallLogAnayzer.Output.IPreparingCompositionForGui;
 import at.ac.univie.FirewallLogAnayzer.Output.PreparingCompositionForGui;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByLogLineCode;
+import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.IGroupByFactory;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
+import javafx.collections.ObservableSet;
+import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Bounds;
+import javafx.scene.Node;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 public class LogTreeViewController implements Initializable{
 	
@@ -32,11 +53,16 @@ public class LogTreeViewController implements Initializable{
 	private IPreparingCompositionForGui prepairedComposion;
 	private HBox topLayout;
 	private BorderPane localLayout;
+	private VBox rightLayout;
+	private ScrollPane scrollPane;
+	private Pane rightBasicPane;
 	
 	//content Elements
 	@FXML TreeView<String> treeView;
 	private ArrayList<ComboBox<String>> choices;
 	private TextArea description;
+	private SimpleIntegerProperty count=new SimpleIntegerProperty(20);
+	private int rowheight=10;
 	
 	
 	@Override
@@ -69,6 +95,9 @@ public class LogTreeViewController implements Initializable{
 		//ChrateLayout
 		localLayout = new BorderPane();
 		frameReference.getChildren().add(localLayout);
+		
+		
+		
 		topLayout = new HBox();
 		localLayout.setTop(topLayout);
 		
@@ -77,9 +106,21 @@ public class LogTreeViewController implements Initializable{
 		addComboboxesToTop();
 				
 		//create DetailVew
+		scrollPane = new ScrollPane();
+		localLayout.setRight(scrollPane);
+		rightLayout = new VBox();
+		scrollPane.setContent(rightLayout);		
+		scrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
+		scrollPane.setVbarPolicy(ScrollBarPolicy.ALWAYS);
 		description = new TextArea();
+		rightLayout.getChildren().add(description);
 		description.setWrapText(true);
-		localLayout.setRight(description);
+		description.setMinHeight(493.0-2);
+		description.textProperty().addListener((obs,old,niu)->{
+		    Text text = (Text) description.lookup(".text");
+		    description.setPrefHeight(text.boundsInParentProperty().get().getMaxY()+10);
+		    description.setMinHeight(scrollPane.getHeight()-2);
+		});
 	
 		
 		//create TreeView
@@ -103,7 +144,34 @@ public class LogTreeViewController implements Initializable{
 	}
 	
 	private void refreshDescription(TreeItem<String> item){
-		description.setText(prepairedComposion.getDiscription(item,description,treeView));
+		Object[] descriptionResult = prepairedComposion.getDiscription(item,description,treeView);
+		String descriptionText = (String) descriptionResult[0];
+		description.setText(descriptionText);
+		LineChart<Number, Number> chart = (LineChart<Number, Number>) descriptionResult[1];
+		PieChart pieChart = (PieChart) descriptionResult[2];
+		if(chart!=null){
+			if(rightLayout.getChildren().size()<2){
+				rightLayout.getChildren().add(chart);
+			}else{
+				rightLayout.getChildren().set(1, chart);
+			}
+		}
+		if(pieChart!=null){
+			if(rightLayout.getChildren().size()<2){
+				rightLayout.getChildren().add(new PieChart());
+			}
+			if(rightLayout.getChildren().size()<3){
+				rightLayout.getChildren().add(pieChart);
+			}else{
+				rightLayout.getChildren().set(2, pieChart);
+			}
+		}else{
+			if(rightLayout.getChildren().size()>=3){
+				rightLayout.getChildren().remove(2);
+			}
+		}
+		
+		
 	}
 	
 	private void addComboboxesToTop(){

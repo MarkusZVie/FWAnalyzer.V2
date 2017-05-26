@@ -2,6 +2,7 @@ package at.ac.univie.FirewallLogAnayzer.Output;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -14,6 +15,8 @@ import at.ac.univie.FirewallLogAnayzer.Processing.BasicFunctions;
 import at.ac.univie.FirewallLogAnayzer.Processing.CompositionAnalysing;
 import at.ac.univie.FirewallLogAnayzer.Processing.IBasicFunctions;
 import at.ac.univie.FirewallLogAnayzer.Processing.ICompositionAnalysing;
+import at.ac.univie.FirewallLogAnayzer.Processing.IProcessingAnalyseThreats;
+import at.ac.univie.FirewallLogAnayzer.Processing.ProcessingAnalyseThreats;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByDays;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByDescriptionLogLine;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByDestIP;
@@ -32,21 +35,36 @@ import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupBySrcIP;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupBySrcPort;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.GroupByrecommendedAction;
 import at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory.IGroupByFactory;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
+import javafx.geometry.Side;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 
 public class PreparingCompositionForGui implements IPreparingCompositionForGui{
 
 	private ICompositionAnalysing compositionAnalysing;
 	private ArrayList<LogRow> allLogRows;
 	private HashMap<TreeItem<String>, Object[]> contextInformation;
+	private IProcessingAnalyseThreats threatAnalyse;
+	private IBasicFunctions basicFunctions;
 	
 	
 	public PreparingCompositionForGui() {
 		compositionAnalysing = new CompositionAnalysing();
 		allLogRows = LogRows.getInstance().getLogRows();
 		contextInformation = new HashMap<>();
+		threatAnalyse = new ProcessingAnalyseThreats();
+		basicFunctions = new BasicFunctions();
 	}
 
 
@@ -119,12 +137,91 @@ public class PreparingCompositionForGui implements IPreparingCompositionForGui{
 		}
 		return gbf;
 	}
+	
+	private PieChart getPieChart(IGroupByFactory gbf, ArrayList<LogRow> logRows){
+		//http://docs.oracle.com/javafx/2/charts/pie-chart.htm
+		double minPieSize = 0.005;
+		
+		HashMap<String, Integer> hashData = new HashMap<>();
+		
+		for(LogRow lr : logRows){
+			String key = gbf.getKey(lr);
+			if(hashData.containsKey(key)){
+				hashData.put(key, hashData.get(key)+1);
+			}else{
+				hashData.put(key, 1);
+			}
+		}
+		
+		PieChart chart = new PieChart();
+		boolean tooLittlePieces = false;
+		for(String key:hashData.keySet()){
+			double value = hashData.get(key);
+			if(value/logRows.size()>minPieSize){
+				PieChart.Data slice = new PieChart.Data(key + " (" + ((double)((int)(value/logRows.size()*1000)))/10 +  "%)", hashData.get(key));
+				chart.getData().add(slice);
+			}else{
+				tooLittlePieces = true;
+			}
+			
+		}
+		
+		if(tooLittlePieces){
+			chart.setTitle("Distribution of Events \n (Pieces with less than " + minPieSize*100 + "% are not included)");
+		}else{
+			chart.setTitle("Distribution of Events");
+		}
+		
+		chart.setLegendSide(Side.BOTTOM);
+				
+		return chart;
+	}
+	
+	private LineChart<Number, Number> getLineChatOfActivity(Date begin, Date end,String key,ArrayList<LogRow> logRows){
+		//http://www.java2s.com/Tutorials/Java/JavaFX/0820__JavaFX_LineChart.htm
+		final NumberAxis xAxis = new NumberAxis();
+	    final NumberAxis yAxis = new NumberAxis();
+	    xAxis.setLabel("from " + basicFunctions.getSimpleDateFormat().format(begin) + " to " + basicFunctions.getSimpleDateFormat().format(end) + "(hour Segments)");
+	    yAxis.setLabel("Ammout of LogEvents");
+	    final LineChart<Number, Number> lineChart = new LineChart<Number, Number>(xAxis, yAxis);
+	    lineChart.setTitle("Activity Chart");
+	    XYChart.Series<Number, Number> series = new XYChart.Series<Number, Number>();
+	    series.setName(key + " requests");
+	    
+	    int numberOfOneHourBlocks = ((int) ((end.getTime()-begin.getTime())/1000)/3600)+1;
+	    int ammoutOfActionInThisBlock =0;
+	    Date compareAbleDate1 = begin;
+	    Date compareAbleDate2 = new Date();
+	    compareAbleDate2.setTime(begin.getTime()+(3600000));
+	    
+
+	    for(int i=0; i<numberOfOneHourBlocks; i++){
+	    	for(LogRow lr : logRows){
+	    		if( lr.getDateTime().getTime()>=compareAbleDate1.getTime()&& //it must be bigger than beginBlock
+	    			lr.getDateTime().getTime()<compareAbleDate2.getTime()){ //it must be smaller than endBlock
+	    			ammoutOfActionInThisBlock++;
+	    		}
+	    	}
+	    	series.getData().add(new XYChart.Data<Number, Number>(i, ammoutOfActionInThisBlock));
+	    	//restore vars
+	    	ammoutOfActionInThisBlock=0;
+	    	compareAbleDate1.setTime(compareAbleDate2.getTime());
+	    	compareAbleDate2.setTime(compareAbleDate2.getTime()+3600000);
+	    }
+	    
+	    lineChart.getData().add(series);
+	    
+	    
+	    return lineChart;
+	}
+	
 
 	@Override
-	public String getDiscription(TreeItem<String> item, TextArea description, TreeView<String> treeView) {
+	public Object[] getDiscription(TreeItem<String> item, TextArea description, TreeView<String> treeView) {
 		ArrayList<TreeItem<String>> itemTree = new ArrayList<>();
 		StringBuilder sb = new StringBuilder();
-		
+		LineChart<Number, Number> lineChart = null;
+		PieChart pieChart = null;
 		//Create Basic Discription
 		if(contextInformation.containsKey(item)){
 			LogRow representiveLogRow = (LogRow) contextInformation.get(item)[0];
@@ -164,7 +261,7 @@ public class PreparingCompositionForGui implements IPreparingCompositionForGui{
 				itemTree.add(activeItem);
 			}
 		}
-	
+		
 	
 		for(int i =(itemTree.size()-2); i>=0;i--){//  (-2)  dont care the root root node
 			
@@ -184,9 +281,10 @@ public class PreparingCompositionForGui implements IPreparingCompositionForGui{
 										
 					if( gbf.toString().equals(new GroupBySrcIP().toString())||
 						gbf.toString().equals(new GroupByDestIP().toString())){
+						sb.append(getFrequentAnalyse(item));
+						
 						AsynchronIPDescriptionLoader aIpLoader = new AsynchronIPDescriptionLoader(lr.getSrcIP(), item, description, treeView, sb.toString());
 						aIpLoader.start();
-						
 						
 					}
 				}
@@ -196,8 +294,152 @@ public class PreparingCompositionForGui implements IPreparingCompositionForGui{
 		}	
 		
 		sb.append("Additional Information will be available in view seconds");
+		
+		if(item!=null){
+			if(item.getParent()!=null){
+				IGroupByFactory gbf = getGroubBy(item);
+				ArrayList<LogRow> logRows = getLogRows(item);
+				lineChart = getLineChatOfActivity(basicFunctions.getLogBeginDate(allLogRows), basicFunctions.getLogEndDate(allLogRows), gbf.getKey(getLogRow(item)), logRows);
+				if(item.getChildren()!=null){
+					if(item.getChildren().size()>=1){
+						if(item.getChildren().get(0)!=null){
+							pieChart = getPieChart(getGroubBy(item.getChildren().get(0)), logRows); 
+						}
+					}
+				}				
+			}
+		}
+		Object[] returnContent = {sb.toString(),lineChart, pieChart};
+		return returnContent;
+	}
+
+	private ArrayList<LogRow> getLogRows(TreeItem<String> item) {
+		CompositionCompositionLogRow cclr = compositionAnalysing.getHoleCompositionByGroubByList(allLogRows, getGroupByList(item));
+		//IGroupByFactory gbf = getGroubBy(item);
+		ArrayList<IGroupByFactory> groupByList = getGroupByList(item);
+		LogRow reprensentiveLogRow = getLogRow(item);
+		String finallyKey = groupByList.get(groupByList.size()-1).getKey(reprensentiveLogRow);
+		
+		CompositionCompositionLogRow redusedCclr = cclr;
+		for(IGroupByFactory gbf : groupByList){
+
+			String key = gbf.getKey(reprensentiveLogRow);
+			HashMap<String,CompositionCompositionLogRow> cclrList = redusedCclr.getCcLogRow();
+			if(cclrList!=null){
+				CompositionCompositionLogRow tempcclr = cclrList.get(key);
+				if(tempcclr!=null){
+					redusedCclr = cclrList.get(gbf.getKey(reprensentiveLogRow));
+					
+				}
+			}else{
+				return cclr.getComposition().get(key).getContent();
+			}
+		}
+		return redusedCclr.getComposition().get(finallyKey).getContent();
+	}
+
+
+
+	private String getFrequentAnalyse(TreeItem<String> item) {
+		CompositionCompositionLogRow cclr = compositionAnalysing.getHoleCompositionByGroubByList(allLogRows, getGroupByList(item));
+		ArrayList<LogRow> logRows = getLogRows(item); // flr getCompositionLogRow(cclr,getGroupByList(item),getLogRow(item));
+		double[] stats = compositionAnalysing.getStatisticsAboutTimeFriquent(logRows, basicFunctions.getLogBeginDate(allLogRows), basicFunctions.getLogEndDate(allLogRows), true);
+		double ammountPerHour = compositionAnalysing.getAmmountPerHour(logRows, basicFunctions.getLogBeginDate(allLogRows), basicFunctions.getLogEndDate(allLogRows));
+		double threadScore = compositionAnalysing.getThreadScore(stats, ammountPerHour);
+	
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("Persistent Time Analyse");
+		sb.append(System.lineSeparator());
+		sb.append("Standard Deviation:  \t" + stats[0]);
+		sb.append(System.lineSeparator());
+		sb.append("Median:              \t\t" + stats[1]);
+		sb.append(System.lineSeparator());
+		sb.append("Trimed Mean (45%) :  \t" + stats[2]);
+		sb.append(System.lineSeparator());
+		sb.append("Arithmetic Mean :    \t" + stats[3]);
+		sb.append(System.lineSeparator());
+		sb.append("Logs per Hour :      \t\t" + ammountPerHour);
+		sb.append(System.lineSeparator());
+		sb.append("Thread Score :       \t\t" + threadScore);
+		sb.append(System.lineSeparator());
+		sb.append(System.lineSeparator());
 		return sb.toString();
 	}
+
+
+
+	
+
+
+
+	private ArrayList<LogRow> getCompositionLogRow(CompositionCompositionLogRow cclr, ArrayList<IGroupByFactory> groupByList, LogRow reprensentiveLogRow) {
+		CompositionCompositionLogRow redusedCclr = cclr;
+		for(IGroupByFactory gbf : groupByList){
+			HashMap<String,CompositionCompositionLogRow> cclrList = redusedCclr.getCcLogRow();
+			String key = gbf.getKey(reprensentiveLogRow);
+			CompositionCompositionLogRow tempcclr = cclrList.get(key);
+			if(tempcclr!=null){
+				redusedCclr = cclrList.get(gbf.getKey(reprensentiveLogRow));
+				
+			}
+		}
+		IGroupByFactory lastGroupBy = groupByList.get(groupByList.size()-1);
+		ArrayList<LogRow> allList = redusedCclr.getAllLogRows();
+		ArrayList<LogRow> selectedList = new ArrayList<>();
+		for(LogRow lr: allList){
+			if(lastGroupBy.getKey(lr).equals(lastGroupBy.getKey(reprensentiveLogRow))){
+				selectedList.add(lr);
+			}
+		}
+		return selectedList;
+	}
+
+	private LogRow getLogRow(TreeItem<String> item) {
+		if(contextInformation.containsKey(item)){
+			Object[] caseContextInformation = contextInformation.get(item);
+			LogRow lr = (LogRow) caseContextInformation[0];
+			return lr;
+		}
+		else{
+			return null;
+		}
+	}
+
+	private ArrayList<IGroupByFactory> getGroupByList(TreeItem<String> item) {
+		ArrayList<IGroupByFactory> groubByList = new ArrayList<>();
+		ArrayList<TreeItem<String>> itemTree = new ArrayList<>();
+		
+		TreeItem<String> activeItem = item;
+		if(activeItem!=null){
+			itemTree.add(activeItem);
+			while(activeItem.getParent()!=null){
+				activeItem= activeItem.getParent();
+				itemTree.add(activeItem);
+			}
+		}
+		for(int i =(itemTree.size()-2); i>=0;i--){//  (-2)  dont care the root root node
+			IGroupByFactory igb = getGroubBy(itemTree.get(i));
+			if(igb!=null){
+				groubByList.add(igb);
+			}
+		}
+		
+		return groubByList;
+	}
+
+	public IGroupByFactory getGroubBy(TreeItem<String> item){
+		if(contextInformation.containsKey(item)){
+			Object[] caseContextInformation = contextInformation.get(item);
+			IGroupByFactory gbf = (IGroupByFactory) caseContextInformation[1];
+			return gbf;
+		}
+		else{
+			return null;
+		}
+		
+	}
+
 
 	public IGroupByFactory getGrouByClassByName (String name){
 		if(name.equals(new GroupByDays().toString())){
