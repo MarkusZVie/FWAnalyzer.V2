@@ -1,6 +1,7 @@
 package at.ac.univie.FirewallLogAnayzer.Data;
 
 public class Report {
+	private int id;
 	private CompositionCompositionLogRow indicater;
 	private String typeOfAttac;
 	private String description;
@@ -8,15 +9,23 @@ public class Report {
 	
 	
 	
-	public Report(CompositionCompositionLogRow indicater, String typeOfAttac, String description,
-			String[] involvedLogLineCodes) {
+	public Report(CompositionCompositionLogRow indicater, String typeOfAttac, String description, String[] involvedLogLineCodes, int id) {
 		super();
 		this.indicater = indicater;
 		this.typeOfAttac = typeOfAttac;
 		this.description = description;
 		this.involvedLogLineCodes = involvedLogLineCodes;
+		this.id=id;
 	}
 	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public CompositionCompositionLogRow getIndicater() {
 		return indicater;
 	}

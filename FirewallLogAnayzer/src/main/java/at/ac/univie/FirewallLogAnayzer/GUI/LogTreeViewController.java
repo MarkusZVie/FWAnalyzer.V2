@@ -55,7 +55,6 @@ public class LogTreeViewController implements Initializable{
 	private BorderPane localLayout;
 	private VBox rightLayout;
 	private ScrollPane scrollPane;
-	private Pane rightBasicPane;
 	
 	//content Elements
 	@FXML TreeView<String> treeView;

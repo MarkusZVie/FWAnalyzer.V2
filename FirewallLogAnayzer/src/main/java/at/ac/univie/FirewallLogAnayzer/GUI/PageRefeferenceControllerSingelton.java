@@ -7,6 +7,8 @@ public class PageRefeferenceControllerSingelton {
 	
 	private static PageRefeferenceControllerSingelton instance =null;
 	private StackPane treeViewPage;
+	private int reportID;
+	
 	
 	
 	private PageRefeferenceControllerSingelton(){
@@ -25,5 +27,10 @@ public class PageRefeferenceControllerSingelton {
 		return treeViewPage;
 	}
 	
-	
+	public int getReportID() {
+		return reportID;
+	}
+	public void setReportID(int reportID) {
+		this.reportID = reportID;
+	}
 }

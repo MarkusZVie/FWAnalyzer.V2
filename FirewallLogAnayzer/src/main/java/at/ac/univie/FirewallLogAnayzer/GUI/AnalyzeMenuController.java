@@ -37,7 +37,21 @@ public class AnalyzeMenuController {
     @FXML
     public void initialize() {
         ObservableList<String> items = FXCollections.observableArrayList(
-          "DoS Analysis Graphical","DoS Analysis MPT","NewWindowTest",".."
+          "DoS Analysis Graphical",
+          "DoS Analysis MPT",
+          "Log Tree Display",
+          "Certain Attack",
+          "DoS",
+          "IP-Spoofing",
+          "Connection High Checking",
+          "Routing Manipulation",
+          "Syn-Attack",
+          "ICMP Based Attaks",
+          "TCP Based Attaks",
+          "UDP Based Attaks",
+          "Brute Force",
+          "Weak Indicater of an Attack",
+          "Other Attacks"
         );
 
         optionList.setItems(items);
@@ -64,8 +78,44 @@ public class AnalyzeMenuController {
             case "DoS Analysis MPT":
                 createACLmpt();
                 break;
-            case "NewWindowTest":
-                createReportTab();
+            case "Log Tree Display":
+                createTreeView();
+                break;
+            case "Certain Attack":
+                createReportView(0);
+                break;
+            case "DoS":
+                createReportView(1);
+                break;
+            case "IP-Spoofing":
+                createReportView(2);
+                break;
+            case "Connection High Checking":
+                createReportView(3);
+                break;
+            case "Routing Manipulation":
+                createReportView(4);
+                break;
+            case "Syn-Attack":
+                createReportView(5);
+                break;
+            case "ICMP Based Attaks":
+                createReportView(6);
+                break;
+            case "TCP Based Attaks":
+                createReportView(7);
+                break;
+            case "UDP Based Attaks":
+                createReportView(8);
+                break;
+            case "Brute Force":
+                createReportView(9);
+                break;
+            case "Weak Indicater of an Attack":
+                createReportView(10);
+                break;
+            case "Other Attacks":
+                createReportView(11);
                 break;
             default:
                 System.out.println(selectedItem + " default Switch");
@@ -73,7 +123,21 @@ public class AnalyzeMenuController {
 
     }
 
-    private void createReportTab() {
+    private void createReportView(int i) {
+    	try {
+    		PageRefeferenceControllerSingelton.getInstance().setReportID(i);
+    		PageRefeferenceControllerSingelton.getInstance().setReference(spCenter);
+    		spCenter.getChildren().clear();
+    		spCenter.getChildren().add(FXMLLoader.load(getClass().getResource("/ReportView.fxml")));
+    		
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+		
+	}
+
+	private void createTreeView() {
     	try {
     		PageRefeferenceControllerSingelton.getInstance().setReference(spCenter);
     		spCenter.getChildren().clear();

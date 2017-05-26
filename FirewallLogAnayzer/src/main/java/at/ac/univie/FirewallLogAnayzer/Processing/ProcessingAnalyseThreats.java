@@ -153,7 +153,7 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		doSIPcclr.makeSubComposition(subGroups);
 		
 		String[] involvedLogLineCodes = {"106101","210011","402128","404102","407002","733100","109017","209003","400033"};
-		DoSReport report = new DoSReport(generellcclr, "Dos", "denial of service attack", involvedLogLineCodes, doSNoIPcclr, doSIPcclr);
+		DoSReport report = new DoSReport(generellcclr, "DoS", "denial of service attack", involvedLogLineCodes,1, doSNoIPcclr, doSIPcclr);
 		return report;
 		
 	}
@@ -210,7 +210,7 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		generellcclr.makeSubComposition(subGroups);
 		
 		String[] involvedLogLineCodes = {"106017","210011","403109","713256","106021","322001","322002","322003","400007","400008","400009","405002"};
-		Report report = new Report(generellcclr, "IP-Spoofing", "The IP Address is Fake", involvedLogLineCodes);
+		Report report = new Report(generellcclr, "IP-Spoofing", "The IP Address is Fake", involvedLogLineCodes,2);
 		return report;
 	}
 
@@ -239,7 +239,7 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		generellcclr.makeSubComposition(subGroups);
 		
 		String[] involvedLogLineCodes = {"106021","108003","733101","733102"};
-		Report report = new Report(generellcclr, "CertainAttack", "what the firewall identify as a certain attack", involvedLogLineCodes);
+		Report report = new Report(generellcclr, "CertainAttack", "what the firewall identify as a certain attack", involvedLogLineCodes,0);
 		return report;
 	}
 
@@ -279,7 +279,7 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		generellcclr.makeSubComposition(subGroups);
 		
 		String[] involvedLogLineCodes = {"106022","313005","337004","402114","402115","402116","402117","402118","402119","402120","406002","431001","722001"};
-		Report report = new Report(generellcclr, "Connection High Checking", "An attacker also might be attempting to append packets from one connection to another as a way to break into the security appliance", involvedLogLineCodes);
+		Report report = new Report(generellcclr, "Connection High Checking", "An attacker also might be attempting to append packets from one connection to another as a way to break into the security appliance", involvedLogLineCodes,3);
 		return report;
 	}
 
@@ -317,7 +317,7 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		generellcclr.makeSubComposition(subGroups);
 		
 		String[] involvedLogLineCodes = {"107001","107002","320001","402114","402115","402116","402117","402118","402119","402120","405001","410002"};
-		Report report = new Report(generellcclr, "Routing Manipulation", "It can be producsed by an not well configruated Router, or indicater of an 'Man in the middel attack'", involvedLogLineCodes);
+		Report report = new Report(generellcclr, "Routing Manipulation", "It can be producsed by an not well configruated Router, or indicater of an 'Man in the middel attack'", involvedLogLineCodes,4);
 		return report;
 	}
 
@@ -348,7 +348,7 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		generellcclr.makeSubComposition(subGroups);
 		
 		String[] involvedLogLineCodes = {"201003","201012","733100","733104","733105"};
-		Report report = new Report(generellcclr, "Syn-Attack", "Subtype of DoS", involvedLogLineCodes);
+		Report report = new Report(generellcclr, "Syn-Attack", "Subtype of DoS", involvedLogLineCodes,5);
 		return report;
 	}
 
@@ -377,7 +377,7 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		generellcclr.makeSubComposition(subGroups);
 		
 		String[] involvedLogLineCodes = {"324001","324003","324004"};
-		Report report = new Report(generellcclr, "Weak Indicater of an Attack", "If those Indicater appiers frequently, it can be the side effect of an attack", involvedLogLineCodes);
+		Report report = new Report(generellcclr, "Weak Indicater of an Attack", "If those Indicater appiers frequently, it can be the side effect of an attack", involvedLogLineCodes,10);
 		return report;
 	}
 
@@ -406,7 +406,7 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		generellcclr.makeSubComposition(subGroups);
 		
 		String[] involvedLogLineCodes = {"400023","400024","400025"};
-		Report report = new Report(generellcclr, "ICMP Based Attaks", "Container of Diffrent ICMP Based Attaks", involvedLogLineCodes);
+		Report report = new Report(generellcclr, "ICMP Based Attaks", "Container of Diffrent ICMP Based Attaks", involvedLogLineCodes,6);
 		return report;
 	}
 
@@ -437,7 +437,7 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		generellcclr.makeSubComposition(subGroups);
 		
 		String[] involvedLogLineCodes = {"400026","400027","400028","710005","710006"};
-		Report report = new Report(generellcclr, "TCP Based Attaks", "Container of Diffrent TCP Based Attaks", involvedLogLineCodes);
+		Report report = new Report(generellcclr, "TCP Based Attaks", "Container of Diffrent TCP Based Attaks", involvedLogLineCodes,7);
 		return report;	}
 
 	@Override
@@ -465,7 +465,7 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		generellcclr.makeSubComposition(subGroups);
 		
 		String[] involvedLogLineCodes = {"400031","400032","400033"};
-		Report report = new Report(generellcclr, "UDP Based Attaks", "Container of Diffrent UDP Based Attaks", involvedLogLineCodes);
+		Report report = new Report(generellcclr, "UDP Based Attaks", "Container of Diffrent UDP Based Attaks", involvedLogLineCodes,8);
 		return report;	}
 
 	@Override
@@ -494,7 +494,7 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		generellcclr.makeSubComposition(subGroups);
 		
 		String[] involvedLogLineCodes = {"400041","400050","412002","605004"};
-		Report report = new Report(generellcclr, "Other Attacks", "Container of Diffrent Attaks", involvedLogLineCodes);
+		Report report = new Report(generellcclr, "Other Attacks", "Container of Diffrent Attaks", involvedLogLineCodes,11);
 		return report;	
 		
 	}
@@ -523,7 +523,7 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		generellcclr.makeSubComposition(subGroups);
 		
 		String[] involvedLogLineCodes = {"605004","710003"};
-		Report report = new Report(generellcclr, "Brute Force", "No specific Hacke, more Try and Error", involvedLogLineCodes);
+		Report report = new Report(generellcclr, "Brute Force", "No specific Hacke, more Try and Error", involvedLogLineCodes,9);
 		return report;	
 	}
 

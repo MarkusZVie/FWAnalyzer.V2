@@ -11,6 +11,7 @@ import at.ac.univie.FirewallLogAnayzer.Data.CompositionCompositionLogRow;
 import at.ac.univie.FirewallLogAnayzer.Data.CompositionLogRow;
 import at.ac.univie.FirewallLogAnayzer.Data.LogRow;
 import at.ac.univie.FirewallLogAnayzer.Data.LogRows;
+import at.ac.univie.FirewallLogAnayzer.Data.Report;
 import at.ac.univie.FirewallLogAnayzer.Processing.BasicFunctions;
 import at.ac.univie.FirewallLogAnayzer.Processing.CompositionAnalysing;
 import at.ac.univie.FirewallLogAnayzer.Processing.IBasicFunctions;
@@ -498,6 +499,42 @@ public class PreparingCompositionForGui implements IPreparingCompositionForGui{
 		}
 		
 		
+		return null;
+	}
+
+
+
+	@Override
+	public Report getReport(int reportID) {
+		switch (reportID) {
+		case 0:
+			return threatAnalyse.analyseCertainAttack();
+		case 1:
+			return threatAnalyse.analyseForDos();
+		case 2:
+			return threatAnalyse.analyseIPspoofedAttack();
+		case 3:
+			return threatAnalyse.analyseConnectionHighChecking();
+		case 4:
+			return threatAnalyse.analyseRoutingManipulation();
+		case 5:
+			return threatAnalyse.analyseSynAttack();
+		case 6:
+			return threatAnalyse.analyseICMPBasedAttaks();
+		case 7:
+			return threatAnalyse.analyseTCPBasedAttacks();
+		case 8:
+			return threatAnalyse.analyseUDPBasedAttacks();
+		case 9:
+			return threatAnalyse.analyseBruteForce();
+		case 10:
+			return threatAnalyse.analyseWeakIndicaterOfAnAttack();
+		case 11:
+			return threatAnalyse.analyseOtherAttacks();
+		default:
+			System.out.println("There is an Uniplementet Report (unknown ReportID)");
+			break;
+		}
 		return null;
 	}
 
