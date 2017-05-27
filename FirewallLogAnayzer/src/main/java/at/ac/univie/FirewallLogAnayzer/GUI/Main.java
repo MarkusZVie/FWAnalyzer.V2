@@ -3,6 +3,7 @@ package at.ac.univie.FirewallLogAnayzer.GUI;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -14,20 +15,26 @@ public class Main extends Application {
     private Stage primaryStage;
 
     private static BorderPane rootLayout;
-
+    private FileChooseController fcc;
+    
     @Override
     public void start(Stage primaryStage) throws IOException {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Firewall Log Analyzer");
+        fcc = new FileChooseController();
 
         // set resizeable false!
         //primaryStage.setResizable(false);
 
+        
         setRootLayout();
         //initFileTab();
         //changeScene("/dosGraphical.fxml");
         changeSceneBorderPane("/analyzeMenu.fxml");
+        //rootLayout.setCenter(fcc.getFileChooseNode(rootLayout.getWidth(), rootLayout.getHeight(),primaryStage,rootLayout));
+        
     }
+    
 
     public static BorderPane getRoot() {
         return rootLayout;
