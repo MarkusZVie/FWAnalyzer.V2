@@ -6,18 +6,27 @@ public class Report {
 	private String typeOfAttac;
 	private String description;
 	private String[] involvedLogLineCodes;
+	private String explanation;
 	
 	
-	
-	public Report(CompositionCompositionLogRow indicater, String typeOfAttac, String description, String[] involvedLogLineCodes, int id) {
+	public Report(CompositionCompositionLogRow indicater, String typeOfAttac, String description, String[] involvedLogLineCodes, int id, String explanation) {
 		super();
 		this.indicater = indicater;
 		this.typeOfAttac = typeOfAttac;
 		this.description = description;
 		this.involvedLogLineCodes = involvedLogLineCodes;
 		this.id=id;
+		this.explanation = explanation;
 	}
 	
+	public String getExplanation() {
+		return explanation;
+	}
+
+	public void setExplanation(String explanation) {
+		this.explanation = explanation;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -56,14 +65,10 @@ public class Report {
 		sb.append(typeOfAttac);
 		sb.append(System.lineSeparator());
 		sb.append(System.lineSeparator());
-		sb.append(description);
+		sb.append(description);		
 		sb.append(System.lineSeparator());
 		sb.append(System.lineSeparator());
-		for(String s: involvedLogLineCodes){
-			sb.append(s);
-		}
-		
-		
+		sb.append(explanation);
 		return sb.toString();
 	}
 	

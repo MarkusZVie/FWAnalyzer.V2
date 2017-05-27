@@ -1,5 +1,6 @@
 package at.ac.univie.FirewallLogAnayzer.Processing;
 
+import java.io.FileNotFoundException;
 import java.nio.channels.spi.AbstractSelectionKey;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,15 +53,26 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		//generate completeComposition
 		CompositionAnalysingSettings generellSettings = new CompositionAnalysingSettings();
 		CompositionSelection[] generellCompostionSelection = {
-				new CompositionSelection(new GroupByLogLineCode(), "106023")
+				new CompositionSelection(new GroupByLogLineCode(), "106023"),
+				new CompositionSelection(new GroupByLogLineCode(), "733101")
 		};
 		generellSettings.setSelectOnlyGroubedByKey(generellCompostionSelection);
 		ArrayList<LogRow> generellFilterdLogRowsBySetting = compositionAnalysing.eliminateUnnecessaryRowsBySetting(allLogRows, generellSettings);
 		CompositionCompositionLogRow generellcclr = compositionAnalysing.groupByLogLine(generellFilterdLogRowsBySetting, new GroupByDescriptionLogLine());
 		generellcclr.makeSubComposition(subGroups);
 		
-		String[] involvedLogLineCodes = {"106021"};
-		Report report = new Report(generellcclr, "Scanning and Foot-Printing", " Searching for open Ports and other Weaknesses", involvedLogLineCodes,12);
+		String[] involvedLogLineCodes = {"106021","733101"};
+		String analyseName="Scanning and Foot-Printing";
+		
+		String explanation="";
+		try {
+			explanation = basicFunctions.readeFile("GUITextFiles\\PortScanningOrFootPrinting.Explanation.txt")[0];
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String description="Searching for open Ports and other Weaknesses";
+		Report report = new Report(generellcclr, analyseName, description, involvedLogLineCodes,12,explanation);
 		return report;		
 	
 		
@@ -126,7 +138,8 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 				new CompositionSelection(new GroupByLogLineCode(), "733100"), //noIP, Object drop rate rate_ID exceeded
 				new CompositionSelection(new GroupByLogLineCode(), "109017"), //if persists from IP DoS Possible (proxy-Limit)
 				new CompositionSelection(new GroupByLogLineCode(), "209003"), //if persists from IP DoS Possible (Fragment Database Limit)
-				new CompositionSelection(new GroupByLogLineCode(), "400033") //UDP Chargen DoS attack
+				new CompositionSelection(new GroupByLogLineCode(), "400033"), //UDP Chargen DoS attack
+				new CompositionSelection(new GroupByLogLineCode(), "210011") 
 		};
 		generellSettings.setSelectOnlyGroubedByKey(generellCompostionSelection);
 		ArrayList<LogRow> generellFilterdLogRowsBySetting = compositionAnalysing.eliminateUnnecessaryRowsBySetting(allLogRows, generellSettings);
@@ -142,7 +155,8 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 				new CompositionSelection(new GroupByLogLineCode(), "402128"), //noIP, persists -> Dos
 				new CompositionSelection(new GroupByLogLineCode(), "404102"), //noIP, Exceeded embryonic limit
 				new CompositionSelection(new GroupByLogLineCode(), "407002"), //noIP, Embryonic limit
-				new CompositionSelection(new GroupByLogLineCode(), "733100") //noIP, Object drop rate rate_ID exceeded
+				new CompositionSelection(new GroupByLogLineCode(), "733100"), //noIP, Object drop rate rate_ID exceeded
+				new CompositionSelection(new GroupByLogLineCode(), "210011") 
 		};
 		doSNoIPSettings.setSelectOnlyGroubedByKey(doSNoIPCompostionSelection);
 		ArrayList<LogRow> doSNoIPFilterdLogRowsBySetting = compositionAnalysing.eliminateUnnecessaryRowsBySetting(allLogRows, doSNoIPSettings);
@@ -162,8 +176,20 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		CompositionCompositionLogRow doSIPcclr = compositionAnalysing.groupByLogLine(doSIPFilterdLogRowsBySetting, new GroupByDescriptionLogLine());
 		doSIPcclr.makeSubComposition(subGroups);
 		
-		String[] involvedLogLineCodes = {"106101","210011","402128","404102","407002","733100","109017","209003","400033"};
-		DoSReport report = new DoSReport(generellcclr, "DoS", "denial of service attack", involvedLogLineCodes,1, doSNoIPcclr, doSIPcclr);
+		String[] involvedLogLineCodes = {"106101","210011","402128","404102","407002","733100","109017","209003","400033","210011"};
+		
+		String analyseName="(Distributed) Denial of Service (DoS) attack";
+		String description="The denial-of-service attack (DoS attack) is a cyber-attack where the perpetrator seeks to make a machine "
+				+ "or network resource unavailable to its intended users by temporarily or indefinitely disrupting services of "
+				+ "a host connected to the Internet";
+		String explanation="";
+		try {
+			explanation = basicFunctions.readeFile("GUITextFiles\\DoS.Explanation.txt")[0];
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		DoSReport report = new DoSReport(generellcclr, analyseName, description, involvedLogLineCodes,1, doSNoIPcclr, doSIPcclr,explanation);
 		return report;
 		
 	}
@@ -220,39 +246,18 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		generellcclr.makeSubComposition(subGroups);
 		
 		String[] involvedLogLineCodes = {"106017","210011","403109","713256","106021","322001","322002","322003","400007","400008","400009","405002"};
-		Report report = new Report(generellcclr, "IP-Spoofing", "The IP Address is Fake", involvedLogLineCodes,2);
+		String explanation="";
+		try {
+			explanation = basicFunctions.readeFile("GUITextFiles\\IPspoofedAttack.Explanation.txt")[0];
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Report report = new Report(generellcclr, "IP-Spoofing", "Somebody tries to give himself up as someone else", involvedLogLineCodes,2,explanation);
 		return report;
 	}
 
-	@Override
-	public Report analyseCertainAttack() {
-		//define Grouping desiction
-		IGroupByFactory[] subGroups = {	new GroupByExplanation(), 
-										new GroupByrecommendedAction(), 
-										new GroupByProtocol() ,
-										new GroupByLocationCountry(), 
-										new GroupByLocationCity(), 
-										new GroupBySrcIP(), 
-										new GroupByHours()};
-		
-		//generate completeComposition
-		CompositionAnalysingSettings generellSettings = new CompositionAnalysingSettings();
-		CompositionSelection[] generellCompostionSelection = {
-				new CompositionSelection(new GroupByLogLineCode(), "106021"), //An attack is in progress. Someone is attempting to spoof an IP address on an inbound connection
-				new CompositionSelection(new GroupByLogLineCode(), "108003"), //if the security appliance detects malicious pattern in an e-mail address and drops the connection.
-				new CompositionSelection(new GroupByLogLineCode(), "733101"), //canning detected. This syslog message is sent when the system detects that a specific host (or several hosts in the same 1024-node subnet) either is scanning the network (attacking), or is being scanned (targeted). 
-				new CompositionSelection(new GroupByLogLineCode(), "733102") //To investigate whether the shunned host is an actual attacker, 			
-		};
-		generellSettings.setSelectOnlyGroubedByKey(generellCompostionSelection);
-		ArrayList<LogRow> generellFilterdLogRowsBySetting = compositionAnalysing.eliminateUnnecessaryRowsBySetting(allLogRows, generellSettings);
-		CompositionCompositionLogRow generellcclr = compositionAnalysing.groupByLogLine(generellFilterdLogRowsBySetting, new GroupByDescriptionLogLine());
-		generellcclr.makeSubComposition(subGroups);
-		
-		String[] involvedLogLineCodes = {"106021","108003","733101","733102"};
-		Report report = new Report(generellcclr, "CertainAttack", "what the firewall identify as a certain attack", involvedLogLineCodes,0);
-		return report;
-	}
-
+	
 	@Override
 	public Report analyseConnectionHighChecking() {
 		//define Grouping desiction
@@ -288,8 +293,15 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		CompositionCompositionLogRow generellcclr = compositionAnalysing.groupByLogLine(generellFilterdLogRowsBySetting, new GroupByDescriptionLogLine());
 		generellcclr.makeSubComposition(subGroups);
 		
-		String[] involvedLogLineCodes = {"106022","313005","337004","402114","402115","402116","402117","402118","402119","402120","406002","431001","722001"};
-		Report report = new Report(generellcclr, "Connection High Checking", "An attacker also might be attempting to append packets from one connection to another as a way to break into the security appliance", involvedLogLineCodes,3);
+		String[] involvedLogLineCodes = {"106022","313005","337004","402114","402115","402116","402117","402118","402119","402120","406002","431001","431002","722001"};
+		String explanation="";
+		try {
+			explanation = basicFunctions.readeFile("GUITextFiles\\ConnectionHighChecking.Explanation.txt")[0];
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Report report = new Report(generellcclr, "Connection High Checking", "An attacker also might be attempting to append packets from one connection to another as a way to break into the security appliance", involvedLogLineCodes,3,explanation);
 		return report;
 	}
 
@@ -327,7 +339,14 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		generellcclr.makeSubComposition(subGroups);
 		
 		String[] involvedLogLineCodes = {"107001","107002","320001","402114","402115","402116","402117","402118","402119","402120","405001","410002"};
-		Report report = new Report(generellcclr, "Routing Manipulation", "It can be producsed by an not well configruated Router, or indicater of an 'Man in the middel attack'", involvedLogLineCodes,4);
+		String explanation="";
+		try {
+			explanation = basicFunctions.readeFile("GUITextFiles\\RoutingManipulation.Explanation.txt")[0];
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Report report = new Report(generellcclr, "Routing Manipulation", "It can be producsed by an not well configruated Router, or indicater of an 'Man in the middel attack'", involvedLogLineCodes,4,explanation);
 		return report;
 	}
 
@@ -358,7 +377,14 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		generellcclr.makeSubComposition(subGroups);
 		
 		String[] involvedLogLineCodes = {"201003","201012","733100","733104","733105"};
-		Report report = new Report(generellcclr, "Syn-Attack", "Subtype of DoS", involvedLogLineCodes,5);
+		String explanation="";
+		try {
+			explanation = basicFunctions.readeFile("GUITextFiles\\SynAttack.Explanation.txt")[0];
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Report report = new Report(generellcclr, "Syn-Attack", "Subtype of DoS", involvedLogLineCodes,5,explanation);
 		return report;
 	}
 
@@ -386,8 +412,15 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		CompositionCompositionLogRow generellcclr = compositionAnalysing.groupByLogLine(generellFilterdLogRowsBySetting, new GroupByDescriptionLogLine());
 		generellcclr.makeSubComposition(subGroups);
 		
-		String[] involvedLogLineCodes = {"324001","324003","324004"};
-		Report report = new Report(generellcclr, "Weak Indicater of an Attack", "If those Indicater appiers frequently, it can be the side effect of an attack", involvedLogLineCodes,10);
+		String[] involvedLogLineCodes = {"324001","324003","324004", "324006"};
+		String explanation = "";
+		try {
+			explanation = basicFunctions.readeFile("GUITextFiles\\WeakIndicaterOfAnAttack.Explanation.txt")[0];
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Report report = new Report(generellcclr, "Weak Indicater of an Attack", "If those Indicater appiers frequently, it can be the side effect of an attack", involvedLogLineCodes,10,explanation);
 		return report;
 	}
 
@@ -416,7 +449,14 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		generellcclr.makeSubComposition(subGroups);
 		
 		String[] involvedLogLineCodes = {"400023","400024","400025"};
-		Report report = new Report(generellcclr, "ICMP Based Attaks", "Container of Diffrent ICMP Based Attaks", involvedLogLineCodes,6);
+		String explanation = "";
+		try {
+			explanation = basicFunctions.readeFile("GUITextFiles\\ICMPBasedAttaks.Explanation.txt")[0];
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Report report = new Report(generellcclr, "ICMP Based Attaks", "Container of Diffrent ICMP Based Attaks", involvedLogLineCodes,6,explanation);
 		return report;
 	}
 
@@ -447,7 +487,14 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		generellcclr.makeSubComposition(subGroups);
 		
 		String[] involvedLogLineCodes = {"400026","400027","400028","710005","710006"};
-		Report report = new Report(generellcclr, "TCP Based Attaks", "Container of Diffrent TCP Based Attaks", involvedLogLineCodes,7);
+		String explanation = "";
+		try {
+			explanation = basicFunctions.readeFile("GUITextFiles\\TCPBasedAttacks.Explanation.txt")[0];
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Report report = new Report(generellcclr, "TCP Based Attaks", "Container of Diffrent TCP Based Attaks", involvedLogLineCodes,7,explanation);
 		return report;	}
 
 	@Override
@@ -475,7 +522,14 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		generellcclr.makeSubComposition(subGroups);
 		
 		String[] involvedLogLineCodes = {"400031","400032","400033"};
-		Report report = new Report(generellcclr, "UDP Based Attaks", "Container of Diffrent UDP Based Attaks", involvedLogLineCodes,8);
+		String explanation = "";
+		try {
+			explanation = basicFunctions.readeFile("GUITextFiles\\UDPBasedAttacks.Explanation.txt")[0];
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Report report = new Report(generellcclr, "UDP Based Attaks", "Container of Diffrent UDP Based Attaks", involvedLogLineCodes,8,explanation);
 		return report;	}
 
 	@Override
@@ -495,7 +549,8 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 				new CompositionSelection(new GroupByLogLineCode(), "400041"), // Proxied RPC Request 
 				new CompositionSelection(new GroupByLogLineCode(), "400050"), // statd Buffer Overflow 
 				new CompositionSelection(new GroupByLogLineCode(), "412002"), //This message is generated when the bridge table is full and an attempt is made to add one more entry
-				new CompositionSelection(new GroupByLogLineCode(), "605004"), // This message appears after an incorrect login attempt or a failed login to the security appliance. 
+				new CompositionSelection(new GroupByLogLineCode(), "605004"), // This message appears after an incorrect login attempt or a failed login to the security appliance.
+				new CompositionSelection(new GroupByLogLineCode(), "733102")  //To investigate whether the shunned host is an actual attacker, 	
 					
 		};
 		generellSettings.setSelectOnlyGroubedByKey(generellCompostionSelection);
@@ -503,8 +558,15 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		CompositionCompositionLogRow generellcclr = compositionAnalysing.groupByLogLine(generellFilterdLogRowsBySetting, new GroupByDescriptionLogLine());
 		generellcclr.makeSubComposition(subGroups);
 		
-		String[] involvedLogLineCodes = {"400041","400050","412002","605004"};
-		Report report = new Report(generellcclr, "Other Attacks", "Container of Diffrent Attaks", involvedLogLineCodes,11);
+		String[] involvedLogLineCodes = {"400041","400050","412002","605004,733102"};
+		String explanation = "";
+		try {
+			explanation = basicFunctions.readeFile("GUITextFiles\\OtherAttacks.Explanation.txt")[0];
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Report report = new Report(generellcclr, "Other Attacks", "Container of Diffrent Attaks", involvedLogLineCodes,11,explanation);
 		return report;	
 		
 	}
@@ -533,7 +595,14 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		generellcclr.makeSubComposition(subGroups);
 		
 		String[] involvedLogLineCodes = {"605004","710003"};
-		Report report = new Report(generellcclr, "Brute Force", "No specific Hacke, more Try and Error", involvedLogLineCodes,9);
+		String explanation = "";
+		try {
+			explanation = basicFunctions.readeFile("GUITextFiles\\BruteForce.Explanation.txt")[0];
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Report report = new Report(generellcclr, "Brute Force", "No specific Hacke, more Try and Error", involvedLogLineCodes,9,explanation);
 		return report;	
 	}
 

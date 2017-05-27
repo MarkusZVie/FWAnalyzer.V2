@@ -73,8 +73,13 @@ public class AnalyzeMenuController {
     	
     	 ArrayList<Integer> numberOfThreads = new ArrayList<>();
          for(int i=0; i<13;i++){
-         	//add Reports from 0 - 11
-         	numberOfThreads.add(prepairedComposion.getReport(i).getIndicater().getAllLogRows().size());
+         		//add Reports from 0 - 11
+        	 if(prepairedComposion.getReport(i)!=null){
+        		 numberOfThreads.add(prepairedComposion.getReport(i).getIndicater().getAllLogRows().size());
+        	 }else{
+        		 numberOfThreads.add(-1);
+        	 }
+        	 
          }
     	
         ObservableList<String> items = FXCollections.observableArrayList(
@@ -82,7 +87,6 @@ public class AnalyzeMenuController {
           "DoS Analysis MPT",
           "Log Tree Display (" + allLogRows.size() + ")",
           "Scanning & Foot-Printing (" + numberOfThreads.get(12) + ")",
-          "Certain Attack (" + numberOfThreads.get(0) + ")",
           "DoS (" + numberOfThreads.get(1) + ")",
           "IP-Spoofing (" + numberOfThreads.get(2) + ")",
           "Connection High Checking (" + numberOfThreads.get(3) + ")",
@@ -123,9 +127,6 @@ public class AnalyzeMenuController {
         }
         if(selectedItem.startsWith("Log Tree Display")){
         	createTreeView();
-        }
-        if(selectedItem.startsWith("Certain Attack")){
-        	createReportView(0);
         }
         if(selectedItem.startsWith("DoS")){
         	createReportView(1);

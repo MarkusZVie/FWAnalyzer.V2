@@ -1,0 +1,15 @@
+Indicator of a DoS attack:
+If the Indicator appliers frequently, from unauthorised sources and are unusual, it is a possible DoS attack.
+
+106101 - This message indicates that the number of matching flows, that the user has configured in the deny access-list, that are cached on the security appliance exceeds the user-configured limit.
+109017 - A user has exceeded the user authentication proxy limit, and has opened too many connections to the proxy. If the Number of connections is normally you should increase the proxy-limit
+209003 - Too many IP fragments are currently awaiting reassembly. By default, is the limit by 200. If this ore more is a normally traffic, you should increase the limit of fragments. 
+210011 - - Establishing a new connection through the security appliance will result in exceeding at least one of the configured maximum connection limits.
+402128 - An SSL connection is attempting to use more memory than allowed. The request has been denied. When you provide services that need much of memory, you should increase the limit.
+407002 - The number of connections from a specified foreign address over a specified global address to the specified local address exceeds the maximum embryonic limit for that static. It can be a DoS attack in progress.
+733100 – A Limit has reached. Please look in the Log Row for more details.
+
+Recognised Dos attack:
+400033 – It is an UDP Chargen DoS attack
+404102 - More than 500 embryonic security associations (SAs) exist, which could mean a DoS attack.
+

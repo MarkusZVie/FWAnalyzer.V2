@@ -1,0 +1,2 @@
+106023 - A real IP packet was denied by the ACL. If messages persist from the same source address, messages might indicate a foot-printing or port-scanning attempt. Contact the remote host administrators to clear the unregular Network activity. It is possible that Global DNS service effect this message
+733101 - Scanning detected. This syslog message is sent when the system detects that a specific host (or several hosts in the same 1024-node subnet) either is scanning the network (attacking), or is being scanned (targeted).

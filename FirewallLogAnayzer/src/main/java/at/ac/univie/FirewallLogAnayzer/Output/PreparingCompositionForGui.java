@@ -506,8 +506,6 @@ public class PreparingCompositionForGui implements IPreparingCompositionForGui{
 	@Override
 	public Report getReport(int reportID) {
 		switch (reportID) {
-		case 0:
-			return threatAnalyse.analyseCertainAttack();
 		case 1:
 			return threatAnalyse.analyseForDos();
 		case 2:

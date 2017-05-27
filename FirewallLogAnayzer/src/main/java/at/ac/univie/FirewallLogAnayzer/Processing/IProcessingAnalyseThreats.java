@@ -15,7 +15,6 @@ public interface IProcessingAnalyseThreats {
 	public void printCompostionTree(CompositionAnalysingSettings settings);
 	public Report analyseForPortScanningOrFootPrinting();
 	public Report analyseIPspoofedAttack(); 
-	public Report analyseCertainAttack();
 	public Report analyseConnectionHighChecking();
 	public Report analyseRoutingManipulation();
 	public Report analyseSynAttack();

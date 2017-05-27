@@ -1,0 +1,4 @@
+324001 - There was an error processing the packet. If it is seen frequently, then the endpoint maybe sending out bad packets as part of an attack.
+324003 - The response received does not have a matching request in the request queue and should not be processed further. If it is seen frequently, then the endpoint maybe sending out bad packets as part of an attack.
+324004 - The packet being processed has a version other than the currently supported version, which is 0 or 1. If the version number printed out is an incorrect number and is seen frequently, then the endpoint may be sending out bad packets as part of an attack.
+324006 - he GSN sending the request has exceeded the maximum allowed tunnels created, so no tunnel will be created. Check to see whether the tunnel limit should be increased or if there is a possible attack on the network.

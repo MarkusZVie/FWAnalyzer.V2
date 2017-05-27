@@ -4,8 +4,8 @@ public class DoSReport extends Report{
 	private CompositionCompositionLogRow noIPIndicater;
 	private CompositionCompositionLogRow IPIndicater;
 	
-	public DoSReport(CompositionCompositionLogRow indicater, String typeOfAttac, String description, String[] involvedLogLineCodes, int id ,CompositionCompositionLogRow noIPIndicater,CompositionCompositionLogRow IPIndicater) {
-		super(indicater, typeOfAttac, description, involvedLogLineCodes,id);
+	public DoSReport(CompositionCompositionLogRow indicater, String typeOfAttac, String description, String[] involvedLogLineCodes, int id ,CompositionCompositionLogRow noIPIndicater,CompositionCompositionLogRow IPIndicater,String explanation) {
+		super(indicater, typeOfAttac, description, involvedLogLineCodes,id,explanation);
 		this.IPIndicater = IPIndicater;
 		this.noIPIndicater = noIPIndicater;
 	}

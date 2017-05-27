@@ -1,0 +1,5 @@
+400041 - Proxied RPC Request
+400050 - statd Buffer Overflow
+412002 - This message is generated when the bridge table is full and an attempt is made to add one more entry. The security appliance maintains a separate Layer 2 forwarding table per context and the message is generated whenever a context exceeds its size limit. This might be an attempted attack. Make sure that the new bridge table entries are valid.
+605004 - This message appears after an incorrect login attempt or a failed login to the security appliance. For all logins, three attempts are allowed per session, and the session is terminated after three incorrect attempts. If this message appears infrequently, no action is required. If this message appears frequently, it may indicate an attack.
+733102 - This message indicates that a host has been shunned by the threat detection engine. When the threat-detection scanning-threat shun command is configured, the attacking hosts will be shunned by the threat detection engine.
