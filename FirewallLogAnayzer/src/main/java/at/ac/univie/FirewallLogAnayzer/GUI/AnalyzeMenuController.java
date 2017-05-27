@@ -80,7 +80,7 @@ public class AnalyzeMenuController {
         ObservableList<String> items = FXCollections.observableArrayList(
           "DoS Analysis Graphical",
           "DoS Analysis MPT",
-          "Log Tree Display",
+          "Log Tree Display (" + allLogRows.size() + ")",
           "Certain Attack (" + numberOfThreads.get(0) + ")",
           "DoS (" + numberOfThreads.get(1) + ")",
           "IP-Spoofing (" + numberOfThreads.get(2) + ")",
@@ -220,7 +220,7 @@ public class AnalyzeMenuController {
     	try {
     		
     		spCenter.getChildren().clear();
-    		spCenter.getChildren().add(rvc.getReportViewNode(i, spCenter.getWidth(),allLogRows,prepairedComposion.getReport(i)));
+    		spCenter.getChildren().add(rvc.getReportViewNode(i, spCenter.getWidth(), spCenter.getHeight(),allLogRows,prepairedComposion.getReport(i)));
     		
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

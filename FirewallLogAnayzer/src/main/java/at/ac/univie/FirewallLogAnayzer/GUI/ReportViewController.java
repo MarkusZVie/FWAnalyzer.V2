@@ -27,16 +27,18 @@ public class ReportViewController{
 	private IPreparingCompositionForGui prepairedComposion;
 	private int reportID;
 	private Report report;
-	private Label nullLebel;
+	private Label nullLebel1;
+	private Label nullLebel2;
+	private Label treeInformation;
 	private VBox masterLayout;
 	private ScrollPane scrollPane;
 	private TextArea descriptionReport;
 	
 
-	public Node getReportViewNode(int reportID,double widthValu,ArrayList<LogRow> allLogRows, Report report) {
+	public Node getReportViewNode(int reportID,double widthValu, double heightValue, ArrayList<LogRow> allLogRows, Report report) {
 		this.reportID = reportID;
 		ltvc = new LogTreeViewController();
-		
+		double customHight = heightValue-50;
 		//Loade Reference
 		
 		
@@ -59,21 +61,32 @@ public class ReportViewController{
 		descriptionReport = new TextArea();	
 		masterLayout.getChildren().add(descriptionReport);
 		
+		
+		
 		descriptionReport.setWrapText(true);
 		descriptionReport.setPrefWidth(widthValu- 15);
+		descriptionReport.setPrefHeight(customHight);
 		descriptionReport.setText(report.getReportText());
 		
 		descriptionReport.textProperty().addListener((obs,old,niu)->{
 			 Text text = (Text) descriptionReport.lookup(".text");
-			 descriptionReport.setPrefHeight(text.boundsInParentProperty().get().getMaxY()+10);
+			 double textHeigh = text.boundsInParentProperty().get().getMaxY()+10;
+			 if(textHeigh>customHight){
+				 descriptionReport.setPrefHeight(textHeigh);
+			 }
+			 
 		});
 		
 		//addContent
 		
 		//set Treeview
+		treeInformation = new Label(" \u2193 \u2193 \u2193 Detail Information below \u2193 \u2193 \u2193 ");
+		nullLebel1 = new Label("");
+		nullLebel2 = new Label("");
 		
-		nullLebel = new Label("");
-		masterLayout.getChildren().add(nullLebel);
+		masterLayout.getChildren().add(nullLebel1);
+		masterLayout.getChildren().add(treeInformation);
+		masterLayout.getChildren().add(nullLebel2);
 		
 		ArrayList<LogRow> caseLogRows = report.getIndicater().getAllLogRows();
 		

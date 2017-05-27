@@ -62,14 +62,16 @@ public class LogTreeViewController{
 	private TextArea description;
 	private SimpleIntegerProperty count=new SimpleIntegerProperty(20);
 	private int rowheight=10;
+	private ArrayList<LogRow> caseLogRows;
 	
 	
 	public Node getTreeViewNode(double widthValue, ArrayList<LogRow> caseLogRows) {
+		
 		System.out.println("Ther are Logrows Num: " + caseLogRows.size());
 				
 		//Loade Reference
       
-		
+		this.caseLogRows = caseLogRows;
 		prepairedComposion = new PreparingCompositionForGui();
 		
 		//inizilase Content Attributes
@@ -101,7 +103,7 @@ public class LogTreeViewController{
 		description.textProperty().addListener((obs,old,niu)->{
 		    Text text = (Text) description.lookup(".text");
 		    description.setPrefHeight(text.boundsInParentProperty().get().getMaxY()+10);
-		    description.setMinHeight(scrollPane.getHeight()-2);
+		    //description.setMinHeight(scrollPane.getHeight()-2);
 		});
 	
 		
@@ -128,7 +130,7 @@ public class LogTreeViewController{
 	}
 	
 	private void refreshDescription(TreeItem<String> item){
-		Object[] descriptionResult = prepairedComposion.getDiscription(item,description,treeView);
+		Object[] descriptionResult = prepairedComposion.getDiscription(item,description,treeView,caseLogRows);
 		String descriptionText = (String) descriptionResult[0];
 		description.setText(descriptionText);
 		LineChart<Number, Number> chart = (LineChart<Number, Number>) descriptionResult[1];
@@ -167,7 +169,7 @@ public class LogTreeViewController{
 	
 	private ComboBox<String> createPossibleChoiceList() {
 		ComboBox<String> cb = new ComboBox<>();
-		for(String possibleGroupBy : prepairedComposion.getCasePossibleGroupBys(generateUsedBrouBys())){
+		for(String possibleGroupBy : prepairedComposion.getCasePossibleGroupBys(generateUsedBrouBys(),caseLogRows)){
 			cb.getItems().add(possibleGroupBy);
 		}
 		cb.getItems().add("--none--");								//For Deleting selection
@@ -203,7 +205,7 @@ public class LogTreeViewController{
 	}
 	
 	private void updateTree() {
-		TreeItem<String> newRootTreeItem = prepairedComposion.getRootTreeItem(generateUsedBrouBys());
+		TreeItem<String> newRootTreeItem = prepairedComposion.getRootTreeItem(generateUsedBrouBys(),caseLogRows);
 		treeView.setRoot(newRootTreeItem);
 	}
 	public ComboBox<String> findComboboxByValue(String value){

@@ -54,7 +54,7 @@ import javafx.scene.paint.Color;
 public class PreparingCompositionForGui implements IPreparingCompositionForGui{
 
 	private ICompositionAnalysing compositionAnalysing;
-	private ArrayList<LogRow> allLogRows;
+	private ArrayList<LogRow> allLogRows5;
 	private HashMap<TreeItem<String>, Object[]> contextInformation;
 	private IProcessingAnalyseThreats threatAnalyse;
 	private IBasicFunctions basicFunctions;
@@ -62,7 +62,6 @@ public class PreparingCompositionForGui implements IPreparingCompositionForGui{
 	
 	public PreparingCompositionForGui() {
 		compositionAnalysing = new CompositionAnalysing();
-		allLogRows = LogRows.getInstance().getLogRows();
 		contextInformation = new HashMap<>();
 		threatAnalyse = new ProcessingAnalyseThreats();
 		basicFunctions = new BasicFunctions();
@@ -71,7 +70,7 @@ public class PreparingCompositionForGui implements IPreparingCompositionForGui{
 
 
 	@Override
-	public ArrayList<String> getCasePossibleGroupBys(ArrayList<String> alreadyUsed) {
+	public ArrayList<String> getCasePossibleGroupBys(ArrayList<String> alreadyUsed, ArrayList<LogRow> logRows) {
 		ArrayList<String> casePossibleGroupBys = new ArrayList<>();
 		for(String groupBy: compositionAnalysing.getAllGroupBys()){
 			boolean isUsed = false;
@@ -90,11 +89,11 @@ public class PreparingCompositionForGui implements IPreparingCompositionForGui{
 
 
 	@Override
-	public TreeItem<String> getRootTreeItem(ArrayList<String> groupByList) {
+	public TreeItem<String> getRootTreeItem(ArrayList<String> groupByList, ArrayList<LogRow> logRows) {
 		TreeItem<String> tree = new TreeItem<String>();
 		
 		ArrayList<IGroupByFactory> groupByFactoryList = getGroupByClassList(groupByList);
-		CompositionCompositionLogRow cclr = compositionAnalysing.getHoleCompositionByGroubByList(allLogRows, groupByFactoryList);
+		CompositionCompositionLogRow cclr = compositionAnalysing.getHoleCompositionByGroubByList(logRows, groupByFactoryList);
 		
 		tree=convertCCLRInTree(new TreeItem<String>("Root"),cclr);
 		
@@ -218,7 +217,7 @@ public class PreparingCompositionForGui implements IPreparingCompositionForGui{
 	
 
 	@Override
-	public Object[] getDiscription(TreeItem<String> item, TextArea description, TreeView<String> treeView) {
+	public Object[] getDiscription(TreeItem<String> item, TextArea description, TreeView<String> treeView, ArrayList<LogRow> logRows) {
 		ArrayList<TreeItem<String>> itemTree = new ArrayList<>();
 		StringBuilder sb = new StringBuilder();
 		LineChart<Number, Number> lineChart = null;
@@ -282,7 +281,7 @@ public class PreparingCompositionForGui implements IPreparingCompositionForGui{
 										
 					if( gbf.toString().equals(new GroupBySrcIP().toString())||
 						gbf.toString().equals(new GroupByDestIP().toString())){
-						sb.append(getFrequentAnalyse(item));
+						sb.append(getFrequentAnalyse(item,logRows));
 						
 						AsynchronIPDescriptionLoader aIpLoader = new AsynchronIPDescriptionLoader(lr.getSrcIP(), item, description, treeView, sb.toString());
 						aIpLoader.start();
@@ -299,12 +298,12 @@ public class PreparingCompositionForGui implements IPreparingCompositionForGui{
 		if(item!=null){
 			if(item.getParent()!=null){
 				IGroupByFactory gbf = getGroubBy(item);
-				ArrayList<LogRow> logRows = getLogRows(item);
-				lineChart = getLineChatOfActivity(basicFunctions.getLogBeginDate(allLogRows), basicFunctions.getLogEndDate(allLogRows), gbf.getKey(getLogRow(item)), logRows);
+				ArrayList<LogRow> logRowsPart = getLogRows(item,logRows);
+				lineChart = getLineChatOfActivity(basicFunctions.getLogBeginDate(logRows), basicFunctions.getLogEndDate(logRows), gbf.getKey(getLogRow(item)), logRowsPart);
 				if(item.getChildren()!=null){
 					if(item.getChildren().size()>=1){
 						if(item.getChildren().get(0)!=null){
-							pieChart = getPieChart(getGroubBy(item.getChildren().get(0)), logRows); 
+							pieChart = getPieChart(getGroubBy(item.getChildren().get(0)), logRowsPart); 
 						}
 					}
 				}				
@@ -314,8 +313,8 @@ public class PreparingCompositionForGui implements IPreparingCompositionForGui{
 		return returnContent;
 	}
 
-	private ArrayList<LogRow> getLogRows(TreeItem<String> item) {
-		CompositionCompositionLogRow cclr = compositionAnalysing.getHoleCompositionByGroubByList(allLogRows, getGroupByList(item));
+	private ArrayList<LogRow> getLogRows(TreeItem<String> item, ArrayList<LogRow> logRows) {
+		CompositionCompositionLogRow cclr = compositionAnalysing.getHoleCompositionByGroubByList(logRows, getGroupByList(item));
 		//IGroupByFactory gbf = getGroubBy(item);
 		ArrayList<IGroupByFactory> groupByList = getGroupByList(item);
 		LogRow reprensentiveLogRow = getLogRow(item);
@@ -341,11 +340,11 @@ public class PreparingCompositionForGui implements IPreparingCompositionForGui{
 
 
 
-	private String getFrequentAnalyse(TreeItem<String> item) {
-		CompositionCompositionLogRow cclr = compositionAnalysing.getHoleCompositionByGroubByList(allLogRows, getGroupByList(item));
-		ArrayList<LogRow> logRows = getLogRows(item); // flr getCompositionLogRow(cclr,getGroupByList(item),getLogRow(item));
-		double[] stats = compositionAnalysing.getStatisticsAboutTimeFriquent(logRows, basicFunctions.getLogBeginDate(allLogRows), basicFunctions.getLogEndDate(allLogRows), true);
-		double ammountPerHour = compositionAnalysing.getAmmountPerHour(logRows, basicFunctions.getLogBeginDate(allLogRows), basicFunctions.getLogEndDate(allLogRows));
+	private String getFrequentAnalyse(TreeItem<String> item, ArrayList<LogRow> logRows) {
+		CompositionCompositionLogRow cclr = compositionAnalysing.getHoleCompositionByGroubByList(logRows, getGroupByList(item));
+		ArrayList<LogRow> logRowsPart = getLogRows(item,logRows); // flr getCompositionLogRow(cclr,getGroupByList(item),getLogRow(item));
+		double[] stats = compositionAnalysing.getStatisticsAboutTimeFriquent(logRowsPart, basicFunctions.getLogBeginDate(logRows), basicFunctions.getLogEndDate(logRows), true);
+		double ammountPerHour = compositionAnalysing.getAmmountPerHour(logRowsPart, basicFunctions.getLogBeginDate(logRows), basicFunctions.getLogEndDate(logRows));
 		double threadScore = compositionAnalysing.getThreadScore(stats, ammountPerHour);
 	
 		StringBuilder sb = new StringBuilder();
