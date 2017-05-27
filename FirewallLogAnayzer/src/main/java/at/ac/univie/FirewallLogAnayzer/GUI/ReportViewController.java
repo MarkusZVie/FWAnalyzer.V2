@@ -21,7 +21,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 public class ReportViewController{
-	
+	private LogTreeViewController ltvc;
 	private IPreparingCompositionForGui prepairedComposion;
 	private int reportID;
 	private Report report;
@@ -34,7 +34,7 @@ public class ReportViewController{
 
 	public Node getReportViewNode(int reportID) {
 		this.reportID = reportID;
-		
+		ltvc = new LogTreeViewController();
 		
 		//Loade Reference
 		
@@ -69,7 +69,7 @@ public class ReportViewController{
 		//addContent
 		
 		//set Treeview
-		LogTreeViewController ltvc = new LogTreeViewController();
+		
 		treeView = new StackPane();
 		masterLayout.getChildren().add(ltvc.getTreeViewNode());
 		

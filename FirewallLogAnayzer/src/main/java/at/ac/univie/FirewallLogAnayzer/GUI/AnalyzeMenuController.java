@@ -26,7 +26,9 @@ import java.io.IOException;
  */
 public class AnalyzeMenuController {
 
-
+	private ReportViewController rvc;
+	private LogTreeViewController ltvc;
+	
     @FXML ListView<String> optionList;
 
     @FXML StackPane spCenter;
@@ -36,6 +38,9 @@ public class AnalyzeMenuController {
 
     @FXML
     public void initialize() {
+    	rvc = new ReportViewController();
+    	ltvc = new LogTreeViewController();
+    	
         ObservableList<String> items = FXCollections.observableArrayList(
           "DoS Analysis Graphical",
           "DoS Analysis MPT",
@@ -125,7 +130,7 @@ public class AnalyzeMenuController {
 
     private void createReportView(int i) {
     	try {
-    		ReportViewController rvc = new ReportViewController();
+    		
     		spCenter.getChildren().clear();
     		spCenter.getChildren().add(rvc.getReportViewNode(i));
     		
@@ -138,7 +143,7 @@ public class AnalyzeMenuController {
 
 	private void createTreeView() {
     	try {
-    		LogTreeViewController ltvc = new LogTreeViewController();
+    		
     		spCenter.getChildren().clear();
     		spCenter.getChildren().add(ltvc.getTreeViewNode());
     		
