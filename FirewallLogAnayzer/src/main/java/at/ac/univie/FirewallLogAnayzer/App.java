@@ -79,13 +79,7 @@ public class App
 
 	private static void tempZilaPrositure() {
 		
-		IProcessingAnalyseThreats threadAnalysing = new ProcessingAnalyseThreats();
-		HashMap<String, Double> threadScore = threadAnalysing.analyseForPortScanningOrFootPrinting();
-		ArrayList<HashPairDoubleValue> sortedThreadScore = threadAnalysing.genereateSortAbleFromDoubleHashMap(threadScore);
-		for(HashPairDoubleValue hpdv : sortedThreadScore){
-			System.out.println(hpdv.toString());
-		}
-		threadAnalysing.analyseForDos();
+		
 		
 		
 		

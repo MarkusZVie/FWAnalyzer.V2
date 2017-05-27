@@ -9,11 +9,11 @@ import at.ac.univie.FirewallLogAnayzer.Data.HashPairDoubleValue;
 import at.ac.univie.FirewallLogAnayzer.Data.Report;
 
 public interface IProcessingAnalyseThreats {
-	public HashMap<String, Double> analyseForPortScanningOrFootPrinting();
 	public void printStaticCompostionTree();
 	public ArrayList<HashPairDoubleValue> genereateSortAbleFromDoubleHashMap(HashMap<String, Double> srcMap);
 	public DoSReport analyseForDos();
 	public void printCompostionTree(CompositionAnalysingSettings settings);
+	public Report analyseForPortScanningOrFootPrinting();
 	public Report analyseIPspoofedAttack(); 
 	public Report analyseCertainAttack();
 	public Report analyseConnectionHighChecking();

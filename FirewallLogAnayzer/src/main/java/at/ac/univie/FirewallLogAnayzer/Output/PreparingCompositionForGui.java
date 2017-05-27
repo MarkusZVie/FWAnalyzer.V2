@@ -530,6 +530,8 @@ public class PreparingCompositionForGui implements IPreparingCompositionForGui{
 			return threatAnalyse.analyseWeakIndicaterOfAnAttack();
 		case 11:
 			return threatAnalyse.analyseOtherAttacks();
+		case 12:
+			return threatAnalyse.analyseForPortScanningOrFootPrinting();
 		default:
 			System.out.println("There is an Uniplementet Report (unknown ReportID)");
 			break;

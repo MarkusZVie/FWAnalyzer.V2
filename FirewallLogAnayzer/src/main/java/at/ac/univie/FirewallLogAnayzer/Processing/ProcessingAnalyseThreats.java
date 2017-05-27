@@ -39,22 +39,32 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 	}
 
 	@Override
-	public HashMap<String, Double> analyseForPortScanningOrFootPrinting() {
+	public Report analyseForPortScanningOrFootPrinting() {
+		//define Grouping desiction
+		IGroupByFactory[] subGroups = {	new GroupByExplanation(), 
+										new GroupByrecommendedAction(), 
+										new GroupByProtocol() ,
+										new GroupByLocationCountry(), 
+										new GroupByLocationCity(), 
+										new GroupBySrcIP(), 
+										new GroupByHours()};
 		
-		//create Settings
-		CompositionAnalysingSettings settings = new CompositionAnalysingSettings();
-		settings.setDontCareByRecommendedActionNonRequired(true);
-		settings.setDontCareByNoSrcIP(true);
-		CompositionSelection[] compostionSelection = {new CompositionSelection(new GroupByLogLineCode(), "106023")}; //define which Lines will appier
-		settings.setSelectOnlyGroubedByKey(compostionSelection);
+		//generate completeComposition
+		CompositionAnalysingSettings generellSettings = new CompositionAnalysingSettings();
+		CompositionSelection[] generellCompostionSelection = {
+				new CompositionSelection(new GroupByLogLineCode(), "106023")
+		};
+		generellSettings.setSelectOnlyGroubedByKey(generellCompostionSelection);
+		ArrayList<LogRow> generellFilterdLogRowsBySetting = compositionAnalysing.eliminateUnnecessaryRowsBySetting(allLogRows, generellSettings);
+		CompositionCompositionLogRow generellcclr = compositionAnalysing.groupByLogLine(generellFilterdLogRowsBySetting, new GroupByDescriptionLogLine());
+		generellcclr.makeSubComposition(subGroups);
 		
-		//filter Logs by Settings
-		ArrayList<LogRow> filterdLogRowsBySetting = compositionAnalysing.eliminateUnnecessaryRowsBySetting(allLogRows, settings);
+		String[] involvedLogLineCodes = {"106021"};
+		Report report = new Report(generellcclr, "Scanning and Foot-Printing", " Searching for open Ports and other Weaknesses", involvedLogLineCodes,12);
+		return report;		
+	
 		
-		//create ThreadScore of Time Persistence by IP
-		HashMap<String, Double> thredScore = compositionAnalysing.getSetOfPersistencingTransferingIps(filterdLogRowsBySetting, basicFunctions.getLogBeginDate(filterdLogRowsBySetting), basicFunctions.getLogEndDate(filterdLogRowsBySetting));
-
-		return thredScore;
+		
 		
 		
 		

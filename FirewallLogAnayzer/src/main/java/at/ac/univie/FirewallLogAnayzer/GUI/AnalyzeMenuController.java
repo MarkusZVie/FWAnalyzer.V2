@@ -72,7 +72,7 @@ public class AnalyzeMenuController {
     	
     	
     	 ArrayList<Integer> numberOfThreads = new ArrayList<>();
-         for(int i=0; i<12;i++){
+         for(int i=0; i<13;i++){
          	//add Reports from 0 - 11
          	numberOfThreads.add(prepairedComposion.getReport(i).getIndicater().getAllLogRows().size());
          }
@@ -81,6 +81,7 @@ public class AnalyzeMenuController {
           "DoS Analysis Graphical",
           "DoS Analysis MPT",
           "Log Tree Display (" + allLogRows.size() + ")",
+          "Scanning & Foot-Printing (" + numberOfThreads.get(12) + ")",
           "Certain Attack (" + numberOfThreads.get(0) + ")",
           "DoS (" + numberOfThreads.get(1) + ")",
           "IP-Spoofing (" + numberOfThreads.get(2) + ")",
@@ -158,6 +159,9 @@ public class AnalyzeMenuController {
         }
         if(selectedItem.startsWith("Other Attacks")){
         	createReportView(11);
+        }
+        if(selectedItem.startsWith("Scanning & Foot-Printing")){
+        	createReportView(12);
         }
         
         System.out.println(selectedItem + " default Switch");
