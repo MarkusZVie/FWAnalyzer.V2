@@ -28,6 +28,7 @@ public class AnalyzeMenuController {
 
 	private ReportViewController rvc;
 	private LogTreeViewController ltvc;
+	private final static int[] PADDINGS = {5,5,5,5};
 	
     @FXML ListView<String> optionList;
 
@@ -157,7 +158,7 @@ public class AnalyzeMenuController {
         hb = new VBox();
 
         HBox vb0 = new HBox(20);
-        vb0.setPadding(new Insets(20,20,20,20));
+        vb0.setPadding(new Insets(PADDINGS[0],PADDINGS[1],PADDINGS[2],PADDINGS[3]));
         final String[] cbitems = {"TCP", "icmp"};
         ChoiceBox cb = new ChoiceBox(FXCollections.observableArrayList(
                 "TCP", "icmp")
@@ -209,7 +210,7 @@ public class AnalyzeMenuController {
         hb = new VBox();
 
         HBox vb0 = new HBox(20);
-        vb0.setPadding(new Insets(20,20,20,20));
+        vb0.setPadding(new Insets(PADDINGS[0],PADDINGS[1],PADDINGS[2],PADDINGS[3]));
         final String[] cbitems = {"TCP", "icmp"};
         ChoiceBox cb = new ChoiceBox(FXCollections.observableArrayList(
                 "TCP", "icmp")
@@ -240,19 +241,19 @@ public class AnalyzeMenuController {
         slotValue.setMajorTickUnit(15);
         slotValue.setMinorTickCount(5);
         final Label opacityValue = new Label(Double.toString(slotValue.getValue()));
-        vb1.setPadding(new Insets(15,15,15,15));
+        vb1.setPadding(new Insets(PADDINGS[0],PADDINGS[1],PADDINGS[2],PADDINGS[3]));
         vb1.getChildren().addAll(slotLabel, slotValue, opacityValue);
 
 
         HBox vb2 = new HBox(20);
         Label treshholdLabel = new Label("DoS Treshold");
         final TextField treshold = new TextField();
-        vb2.setPadding(new Insets(15,15,15,15));
+        vb2.setPadding(new Insets(PADDINGS[0],PADDINGS[1],PADDINGS[2],PADDINGS[3]));
         vb2.getChildren().addAll(treshholdLabel, treshold);
 
         HBox vb3 = new HBox(20);
         Button analyzeB = new Button("Analyze on attacks");
-        vb3.setPadding(new Insets(15,15,15,15));
+        vb3.setPadding(new Insets(PADDINGS[0],PADDINGS[1],PADDINGS[2],PADDINGS[3]));
         vb3.getChildren().addAll(analyzeB);
 
         hb.getChildren().addAll(vb0, vb1, vb2, vb3);

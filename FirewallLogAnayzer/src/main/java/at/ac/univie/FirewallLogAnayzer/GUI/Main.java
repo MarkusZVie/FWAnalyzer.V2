@@ -18,7 +18,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         this.primaryStage = primaryStage;
-        this.primaryStage.setTitle("Init Test haha");
+        this.primaryStage.setTitle("Firewall Log Analyzer");
 
         // set resizeable false!
         //primaryStage.setResizable(false);
