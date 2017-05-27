@@ -1,12 +1,16 @@
 package at.ac.univie.FirewallLogAnayzer.GUI;
 
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.StackPane;
 
 public class PageRefeferenceControllerSingelton {
 	
 	
 	private static PageRefeferenceControllerSingelton instance =null;
-	private StackPane treeViewPage;
+	
+	
+	private StackPane referenceMasterPane;
+	private StackPane reportTreeViewPane;
 	private int reportID;
 	
 	
@@ -19,12 +23,12 @@ public class PageRefeferenceControllerSingelton {
 		}
 		return instance;
 	}
-	public void setReference(StackPane spCenter) {
-		treeViewPage = spCenter;
+	public void setReferenceMasterPane(StackPane spCenter) {
+		referenceMasterPane = spCenter;
 		
 	}
-	public StackPane getTreeViewPage() {
-		return treeViewPage;
+	public StackPane getReferenceMasterPane() {
+		return referenceMasterPane;
 	}
 	
 	public int getReportID() {
@@ -33,4 +37,17 @@ public class PageRefeferenceControllerSingelton {
 	public void setReportID(int reportID) {
 		this.reportID = reportID;
 	}
+	public StackPane getReportTreeView() {
+		return reportTreeViewPane;
+	}
+	public void setReportTreeViewPane(StackPane reportTreeViewPane) {
+		this.reportTreeViewPane = reportTreeViewPane;
+	}
+	public void test() {
+		TextArea t = new TextArea();
+		t.setText("asffd");
+		referenceMasterPane.getChildren().add(t);
+		
+	}
+	
 }

@@ -47,9 +47,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-public class LogTreeViewController implements Initializable{
+public class LogTreeViewController{
 	
-	private StackPane frameReference;
 	private IPreparingCompositionForGui prepairedComposion;
 	private HBox topLayout;
 	private BorderPane localLayout;
@@ -64,11 +63,7 @@ public class LogTreeViewController implements Initializable{
 	private int rowheight=10;
 	
 	
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		//for Testing Thing 
-
-		System.out.println("indizilase");
+	public Node getTreeViewNode() {
 		
 		IInputHandler inputHandler = new InputHandler();
         // /Users/josefweber/Desktop/SyslogCatchAll-2017-03-14.txt
@@ -85,7 +80,8 @@ public class LogTreeViewController implements Initializable{
 		
 		
 		//Loade Reference
-		frameReference = PageRefeferenceControllerSingelton.getInstance().getTreeViewPage();
+      
+		
 		prepairedComposion = new PreparingCompositionForGui();
 		
 		//inizilase Content Attributes
@@ -93,7 +89,6 @@ public class LogTreeViewController implements Initializable{
 		
 		//ChrateLayout
 		localLayout = new BorderPane();
-		frameReference.getChildren().add(localLayout);
 		
 		
 		
@@ -139,6 +134,8 @@ public class LogTreeViewController implements Initializable{
         treeView.setMinWidth(250);
 		localLayout.setCenter(treeView);
 		System.out.println("indizilase");
+		
+		return localLayout;
         
 	}
 	

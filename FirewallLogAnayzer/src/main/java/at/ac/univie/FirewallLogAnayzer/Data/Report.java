@@ -50,5 +50,21 @@ public class Report {
 	public void setInvolvedLogLineCodes(String[] involvedLogLineCodes) {
 		this.involvedLogLineCodes = involvedLogLineCodes;
 	}
+
+	public String getReportText() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(typeOfAttac);
+		sb.append(System.lineSeparator());
+		sb.append(System.lineSeparator());
+		sb.append(description);
+		sb.append(System.lineSeparator());
+		sb.append(System.lineSeparator());
+		for(String s: involvedLogLineCodes){
+			sb.append(s);
+		}
+		
+		
+		return sb.toString();
+	}
 	
 }

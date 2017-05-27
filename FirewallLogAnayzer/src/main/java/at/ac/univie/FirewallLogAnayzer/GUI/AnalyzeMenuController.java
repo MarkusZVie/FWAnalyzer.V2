@@ -125,12 +125,11 @@ public class AnalyzeMenuController {
 
     private void createReportView(int i) {
     	try {
-    		PageRefeferenceControllerSingelton.getInstance().setReportID(i);
-    		PageRefeferenceControllerSingelton.getInstance().setReference(spCenter);
+    		ReportViewController rvc = new ReportViewController();
     		spCenter.getChildren().clear();
-    		spCenter.getChildren().add(FXMLLoader.load(getClass().getResource("/ReportView.fxml")));
+    		spCenter.getChildren().add(rvc.getReportViewNode(i));
     		
-		} catch (IOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
@@ -139,11 +138,11 @@ public class AnalyzeMenuController {
 
 	private void createTreeView() {
     	try {
-    		PageRefeferenceControllerSingelton.getInstance().setReference(spCenter);
+    		LogTreeViewController ltvc = new LogTreeViewController();
     		spCenter.getChildren().clear();
-    		spCenter.getChildren().add(FXMLLoader.load(getClass().getResource("/LogTreeView.fxml")));
+    		spCenter.getChildren().add(ltvc.getTreeViewNode());
     		
-		} catch (IOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
