@@ -1,9 +1,13 @@
 package at.ac.univie.FirewallLogAnayzer.GUI;
 
+import at.ac.univie.FirewallLogAnayzer.Data.LogRow;
+import at.ac.univie.FirewallLogAnayzer.Data.LogRows;
 import at.ac.univie.FirewallLogAnayzer.Data.LogTypeSingelton;
 import at.ac.univie.FirewallLogAnayzer.Exceptions.LogIdNotFoundException;
 import at.ac.univie.FirewallLogAnayzer.Input.IInputHandler;
 import at.ac.univie.FirewallLogAnayzer.Input.InputHandler;
+import at.ac.univie.FirewallLogAnayzer.Output.IPreparingCompositionForGui;
+import at.ac.univie.FirewallLogAnayzer.Output.PreparingCompositionForGui;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -20,6 +24,7 @@ import javafx.scene.layout.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by josefweber on 22.05.17.
@@ -28,6 +33,10 @@ public class AnalyzeMenuController {
 
 	private ReportViewController rvc;
 	private LogTreeViewController ltvc;
+	private IPreparingCompositionForGui prepairedComposion;
+	private ArrayList<LogRow> allLogRows;
+	
+	
 	private final static int[] PADDINGS = {5,5,5,5};
 	
     @FXML ListView<String> optionList;
@@ -41,23 +50,49 @@ public class AnalyzeMenuController {
     public void initialize() {
     	rvc = new ReportViewController();
     	ltvc = new LogTreeViewController();
+    	prepairedComposion = new PreparingCompositionForGui();
+    	
+    	
+    	
+    	//Loade LogArray for number of Threats beside names
+    	if(allLogRows==null){
+			IInputHandler inputHandler = new InputHandler();
+	        // /Users/josefweber/Desktop/SyslogCatchAll-2017-03-14.txt
+	        // C:\Users\Lezard\Desktop\SyslogCatchAll-2017-03-14.txt
+	        try {
+	        	inputHandler.loadeFirewallLog("C:\\Users\\Lezard\\Desktop\\activeFWLogs", LogTypeSingelton.getInstance().getSupportedLogTypeList().get(0));
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (LogIdNotFoundException e) {
+				e.printStackTrace();
+			}
+			allLogRows = LogRows.getInstance().getLogRows();
+		}
+    	
+    	
+    	
+    	 ArrayList<Integer> numberOfThreads = new ArrayList<>();
+         for(int i=0; i<12;i++){
+         	//add Reports from 0 - 11
+         	numberOfThreads.add(prepairedComposion.getReport(i).getIndicater().getAllLogRows().size());
+         }
     	
         ObservableList<String> items = FXCollections.observableArrayList(
           "DoS Analysis Graphical",
           "DoS Analysis MPT",
           "Log Tree Display",
-          "Certain Attack",
-          "DoS",
-          "IP-Spoofing",
-          "Connection High Checking",
-          "Routing Manipulation",
-          "Syn-Attack",
-          "ICMP Based Attaks",
-          "TCP Based Attaks",
-          "UDP Based Attaks",
-          "Brute Force",
-          "Weak Indicater of an Attack",
-          "Other Attacks"
+          "Certain Attack (" + numberOfThreads.get(0) + ")",
+          "DoS (" + numberOfThreads.get(1) + ")",
+          "IP-Spoofing (" + numberOfThreads.get(2) + ")",
+          "Connection High Checking (" + numberOfThreads.get(3) + ")",
+          "Routing Manipulation (" + numberOfThreads.get(4) + ")",
+          "Syn-Attack (" + numberOfThreads.get(5) + ")",
+          "ICMP Based Attaks (" + numberOfThreads.get(6) + ")",
+          "TCP Based Attaks (" + numberOfThreads.get(7) + ")",
+          "UDP Based Attaks (" + numberOfThreads.get(8) + ")",
+          "Brute Force (" + numberOfThreads.get(9) + ")",
+          "Weak Indicater of an Attack (" + numberOfThreads.get(10) + ")",
+          "Other Attacks (" + numberOfThreads.get(11) + ")"
         );
 
         optionList.setItems(items);
@@ -77,6 +112,57 @@ public class AnalyzeMenuController {
 
     public void changeSettings(String selectedItem){
         System.out.println("clicked: " + selectedItem);
+       
+        //startsWith method, because the number of Threads disurbed the comparation
+        if(selectedItem.startsWith("DoS Analysis Graphical")){
+        	createACLgraphical();
+        }
+        if(selectedItem.startsWith("DoS Analysis MPT")){
+        	createACLmpt();
+        }
+        if(selectedItem.startsWith("Log Tree Display")){
+        	createTreeView();
+        }
+        if(selectedItem.startsWith("Certain Attack")){
+        	createReportView(0);
+        }
+        if(selectedItem.startsWith("DoS")){
+        	createReportView(1);
+        }
+        if(selectedItem.startsWith("IP-Spoofing")){
+        	createReportView(2);
+        }
+        if(selectedItem.startsWith("Connection High Checking")){
+        	createReportView(3);
+        }
+        if(selectedItem.startsWith("Routing Manipulation")){
+        	createReportView(4);
+        }
+        if(selectedItem.startsWith("Syn-Attack")){
+        	createReportView(5);
+        }
+        if(selectedItem.startsWith("ICMP Based Attaks")){
+        	createReportView(6);
+        }
+        if(selectedItem.startsWith("TCP Based Attaks")){
+        	createReportView(7);
+        }
+        if(selectedItem.startsWith("UDP Based Attaks")){
+        	createReportView(8);
+        }
+        if(selectedItem.startsWith("Brute Force")){
+        	createReportView(9);
+        }
+        if(selectedItem.startsWith("Weak Indicater of an Attack")){
+        	createReportView(10);
+        }
+        if(selectedItem.startsWith("Other Attacks")){
+        	createReportView(11);
+        }
+        
+        System.out.println(selectedItem + " default Switch");
+        
+        /*
         switch (selectedItem) {
             case "DoS Analysis Graphical":
                 createACLgraphical();
@@ -126,6 +212,7 @@ public class AnalyzeMenuController {
             default:
                 System.out.println(selectedItem + " default Switch");
         }
+        */
 
     }
 
@@ -133,7 +220,7 @@ public class AnalyzeMenuController {
     	try {
     		
     		spCenter.getChildren().clear();
-    		spCenter.getChildren().add(rvc.getReportViewNode(i));
+    		spCenter.getChildren().add(rvc.getReportViewNode(i, spCenter.getWidth(),allLogRows,prepairedComposion.getReport(i)));
     		
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -146,7 +233,7 @@ public class AnalyzeMenuController {
     	try {
     		
     		spCenter.getChildren().clear();
-    		spCenter.getChildren().add(ltvc.getTreeViewNode());
+    		spCenter.getChildren().add(ltvc.getTreeViewNode(spCenter.getWidth(),allLogRows));
     		
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

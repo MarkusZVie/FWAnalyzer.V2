@@ -12,6 +12,7 @@ import com.sun.javafx.jmx.MXNodeAlgorithm;
 import com.sun.javafx.jmx.MXNodeAlgorithmContext;
 import com.sun.javafx.sg.prism.NGNode;
 
+import at.ac.univie.FirewallLogAnayzer.Data.LogRow;
 import at.ac.univie.FirewallLogAnayzer.Data.LogTypeSingelton;
 import at.ac.univie.FirewallLogAnayzer.Exceptions.LogIdNotFoundException;
 import at.ac.univie.FirewallLogAnayzer.Input.IInputHandler;
@@ -63,22 +64,9 @@ public class LogTreeViewController{
 	private int rowheight=10;
 	
 	
-	public Node getTreeViewNode() {
-		
-		IInputHandler inputHandler = new InputHandler();
-        // /Users/josefweber/Desktop/SyslogCatchAll-2017-03-14.txt
-        // C:\Users\Lezard\Desktop\SyslogCatchAll-2017-03-14.txt
-        try {
-        	inputHandler.loadeFirewallLog("C:\\Users\\Lezard\\Desktop\\activeFWLogs", LogTypeSingelton.getInstance().getSupportedLogTypeList().get(0));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (LogIdNotFoundException e) {
-			e.printStackTrace();
-		}
-		
-		//End Testing Things
-		
-		
+	public Node getTreeViewNode(double widthValue, ArrayList<LogRow> caseLogRows) {
+		System.out.println("Ther are Logrows Num: " + caseLogRows.size());
+				
 		//Loade Reference
       
 		

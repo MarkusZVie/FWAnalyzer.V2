@@ -2,8 +2,10 @@ package at.ac.univie.FirewallLogAnayzer.GUI;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import at.ac.univie.FirewallLogAnayzer.Data.LogRow;
 import at.ac.univie.FirewallLogAnayzer.Data.Report;
 import at.ac.univie.FirewallLogAnayzer.Output.IPreparingCompositionForGui;
 import at.ac.univie.FirewallLogAnayzer.Output.PreparingCompositionForGui;
@@ -25,14 +27,13 @@ public class ReportViewController{
 	private IPreparingCompositionForGui prepairedComposion;
 	private int reportID;
 	private Report report;
-	
+	private Label nullLebel;
 	private VBox masterLayout;
-	private StackPane treeView;
 	private ScrollPane scrollPane;
 	private TextArea descriptionReport;
 	
 
-	public Node getReportViewNode(int reportID) {
+	public Node getReportViewNode(int reportID,double widthValu,ArrayList<LogRow> allLogRows, Report report) {
 		this.reportID = reportID;
 		ltvc = new LogTreeViewController();
 		
@@ -59,6 +60,7 @@ public class ReportViewController{
 		masterLayout.getChildren().add(descriptionReport);
 		
 		descriptionReport.setWrapText(true);
+		descriptionReport.setPrefWidth(widthValu- 15);
 		descriptionReport.setText(report.getReportText());
 		
 		descriptionReport.textProperty().addListener((obs,old,niu)->{
@@ -70,8 +72,12 @@ public class ReportViewController{
 		
 		//set Treeview
 		
-		treeView = new StackPane();
-		masterLayout.getChildren().add(ltvc.getTreeViewNode());
+		nullLebel = new Label("");
+		masterLayout.getChildren().add(nullLebel);
+		
+		ArrayList<LogRow> caseLogRows = report.getIndicater().getAllLogRows();
+		
+		masterLayout.getChildren().add(ltvc.getTreeViewNode(widthValu-15,caseLogRows));
 		
 		
 		
