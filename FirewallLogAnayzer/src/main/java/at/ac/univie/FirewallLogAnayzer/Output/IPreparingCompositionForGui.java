@@ -1,6 +1,8 @@
 package at.ac.univie.FirewallLogAnayzer.Output;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import at.ac.univie.FirewallLogAnayzer.Data.LogRow;
 import at.ac.univie.FirewallLogAnayzer.Data.Report;
@@ -17,6 +19,12 @@ public interface IPreparingCompositionForGui {
 	public Object[] getDiscription(TreeItem<String> item, TextArea description, TreeView<String> treeView, ArrayList<LogRow> caseLogRows);
 
 	public Report getReport(int reportID);
+
+	public void saveAllLogs(File f);
+
+	public void readParsedFiles(List<File> list);
+
+	public void readAdditionalLogFiles(List<File> list);
 	
 	
 }

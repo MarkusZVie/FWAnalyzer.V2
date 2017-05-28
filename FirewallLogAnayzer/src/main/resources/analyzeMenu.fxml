@@ -33,9 +33,7 @@
   <top>
     <HBox spacing="20.0" BorderPane.alignment="CENTER">
       <children>
-        <Button mnemonicParsing="false" text="Back to File Choose" />
         <Region HBox.hgrow="ALWAYS" />
-        <Button fx:id="loadOnce" mnemonicParsing="false" onAction="#loadOnce" text="load once" textFill="WHITE" />
       </children>
       <BorderPane.margin>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

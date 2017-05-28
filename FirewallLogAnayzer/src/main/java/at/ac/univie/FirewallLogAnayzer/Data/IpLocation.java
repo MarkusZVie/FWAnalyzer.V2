@@ -1,6 +1,9 @@
 package at.ac.univie.FirewallLogAnayzer.Data;
 
-public class IpLocation {
+import java.io.Serializable;
+
+public class IpLocation implements Serializable{
+	private static final long serialVersionUID = 2591657987088128859L;
 	private String countryIsoCode;
 	private String countryName;
 	private String subdivisionName;

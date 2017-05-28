@@ -1,8 +1,10 @@
 package at.ac.univie.FirewallLogAnayzer.Data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class LogRows {
+public class LogRows implements Serializable{
+	private static final long serialVersionUID = -6035879562045698487L;
 	private ArrayList<LogRow> logRows;
 	private static LogRows instance =null;
 	private LogRows(){

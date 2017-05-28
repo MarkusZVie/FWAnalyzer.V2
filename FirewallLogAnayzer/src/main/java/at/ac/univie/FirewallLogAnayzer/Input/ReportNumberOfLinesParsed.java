@@ -29,7 +29,6 @@ public class ReportNumberOfLinesParsed extends Thread{
 			double percentage = ((Double.parseDouble(readedRows+"")/(Double.parseDouble(numberToRead+"")))*100);
 			double percentageRound = Math.round(percentage*100);
 			percentageRound = percentageRound/100;
-			System.out.println("Logrows read: " + readedRows + " of " + numberToRead + " => " + percentageRound + " %");
 			if(fcc!=null){
 				fcc.updateProgressValues(numberToRead, readedRows);
 			}

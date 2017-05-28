@@ -12,4 +12,6 @@ public interface IInputHandler {
 	public void loadeFirewallLog(String logpath,LogType logtype) throws FileNotFoundException, LogIdNotFoundException;
 
 	public void loadeFirewallLog(List<File> fileList, LogType logtype, FileChooseController fcc) throws FileNotFoundException, LogIdNotFoundException;
+
+	public void readParsedFiles(List<File> list);
 }

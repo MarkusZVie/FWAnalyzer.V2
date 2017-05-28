@@ -13,6 +13,8 @@ import at.ac.univie.FirewallLogAnayzer.Exceptions.LogIdNotFoundException;
 import at.ac.univie.FirewallLogAnayzer.Input.AsynchronFileParse;
 import at.ac.univie.FirewallLogAnayzer.Input.IInputHandler;
 import at.ac.univie.FirewallLogAnayzer.Input.InputHandler;
+import at.ac.univie.FirewallLogAnayzer.Output.IPreparingCompositionForGui;
+import at.ac.univie.FirewallLogAnayzer.Output.PreparingCompositionForGui;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -48,8 +50,10 @@ public class FileChooseController {
 	private BorderPane masterLayout;
 	private StackPane logoContainer;
 	private Label secretLable;
+	private IPreparingCompositionForGui pcfg;
 	
 	public Node getFileChooseNode(double windowWidth, double windowHeight, Stage rootStage, BorderPane masterLayout){
+		pcfg = new PreparingCompositionForGui();
 		BorderPane rootLayout = new BorderPane();
 		this.rootStage = rootStage;
 		this.masterLayout = masterLayout;
@@ -88,6 +92,17 @@ public class FileChooseController {
 		chooseSavedFile.setPrefHeight(windowHeight-logoContainer.getHeight());
 		chooseSavedFile.setPrefWidth(windowWidth/2);
 		chooseSavedFile.setStyle("-fx-font-size:50");
+		chooseSavedFile.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+            	List<File> list = fileChooser.showOpenMultipleDialog(rootStage);
+            	readeParsedFile(list);
+            }
+
+			
+
+			
+        });
+		
 		buttonBar.getChildren().add(chooseLogFile);
 		buttonBar.getChildren().add(chooseSavedFile);
 		
@@ -103,7 +118,8 @@ public class FileChooseController {
 		pi.textProperty().addListener((observable, oldValue, newValue) -> {
 			if(newValue.endsWith("(100.0%)")){
 				try {
-					Thread.sleep(1000);
+					Thread.sleep(100);
+					
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -121,6 +137,7 @@ public class FileChooseController {
 		bottemLayout.getChildren().add(pb);
 		bottemLayout.getChildren().add(pi);
 		rootLayout.setBottom(bottemLayout);
+		
 		
 		
 		return rootLayout;
@@ -142,17 +159,17 @@ public class FileChooseController {
 		//pi.setText(s);
 		
 		Platform.runLater(new Runnable() {
-
             @Override
             public void run() {
             	value.setValue(String.valueOf(s));
             }
         });
 		
-		System.out.println(percentageRound);
 	}
 	
 	public synchronized void finishedParsing(){
+		
+		System.out.println("finished");
 		readedRows = numberToRead;
 		updateProgress();
 	}
@@ -161,7 +178,15 @@ public class FileChooseController {
 		return logoContainer;
 	}
 	
-	
+	private void readeParsedFile(List<File> list) {
+		pcfg.readParsedFiles(list);
+		try {
+			Main.changeSceneBorderPane("/analyzeMenu.fxml");
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
 	
 	public void readeFile(List<File> fileList) {
 		AsynchronFileParse afp = new AsynchronFileParse(fileList,this);

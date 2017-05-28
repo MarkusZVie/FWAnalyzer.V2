@@ -1,9 +1,15 @@
 package at.ac.univie.FirewallLogAnayzer.Output;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -11,7 +17,12 @@ import at.ac.univie.FirewallLogAnayzer.Data.CompositionCompositionLogRow;
 import at.ac.univie.FirewallLogAnayzer.Data.CompositionLogRow;
 import at.ac.univie.FirewallLogAnayzer.Data.LogRow;
 import at.ac.univie.FirewallLogAnayzer.Data.LogRows;
+import at.ac.univie.FirewallLogAnayzer.Data.LogType;
+import at.ac.univie.FirewallLogAnayzer.Data.LogTypeSingelton;
 import at.ac.univie.FirewallLogAnayzer.Data.Report;
+import at.ac.univie.FirewallLogAnayzer.Exceptions.LogIdNotFoundException;
+import at.ac.univie.FirewallLogAnayzer.Input.IInputHandler;
+import at.ac.univie.FirewallLogAnayzer.Input.InputHandler;
 import at.ac.univie.FirewallLogAnayzer.Processing.BasicFunctions;
 import at.ac.univie.FirewallLogAnayzer.Processing.CompositionAnalysing;
 import at.ac.univie.FirewallLogAnayzer.Processing.IBasicFunctions;
@@ -58,6 +69,7 @@ public class PreparingCompositionForGui implements IPreparingCompositionForGui{
 	private HashMap<TreeItem<String>, Object[]> contextInformation;
 	private IProcessingAnalyseThreats threatAnalyse;
 	private IBasicFunctions basicFunctions;
+	private IInputHandler inputHandler;
 	
 	
 	public PreparingCompositionForGui() {
@@ -65,6 +77,7 @@ public class PreparingCompositionForGui implements IPreparingCompositionForGui{
 		contextInformation = new HashMap<>();
 		threatAnalyse = new ProcessingAnalyseThreats();
 		basicFunctions = new BasicFunctions();
+		inputHandler = new InputHandler();
 	}
 
 
@@ -535,6 +548,64 @@ public class PreparingCompositionForGui implements IPreparingCompositionForGui{
 			break;
 		}
 		return null;
+	}
+
+
+
+	@Override
+	public void saveAllLogs(File file) {
+		System.out.println(file.getAbsolutePath());
+		
+		//https://www.mkyong.com/java/how-to-write-an-object-to-file-in-java/
+		FileOutputStream fout = null;
+		ObjectOutputStream oos = null;
+		try {
+			fout = new FileOutputStream(file.getAbsolutePath());
+			oos = new ObjectOutputStream(fout);
+			oos.writeObject(LogRows.getInstance().getLogRows());
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		} finally {
+			if (fout != null) {
+				try {
+					fout.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			if (oos != null) {
+				try {
+					oos.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+	}
+
+
+
+	@Override
+	public void readParsedFiles(List<File> list) {
+		inputHandler.readParsedFiles(list);
+		
+	}
+
+
+
+	@Override
+	public void readAdditionalLogFiles(List<File> fileList) {
+		try {
+			inputHandler.loadeFirewallLog(fileList, LogTypeSingelton.getInstance().getSupportedLogTypeList().get(0), null);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (LogIdNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 

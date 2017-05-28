@@ -1,12 +1,14 @@
 package at.ac.univie.FirewallLogAnayzer.Data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
 import at.ac.univie.FirewallLogAnayzer.Processing.BasicFunctions;
 import at.ac.univie.FirewallLogAnayzer.Processing.IBasicFunctions;
 
-public class LogRow {
+public class LogRow implements Serializable{
+	private static final long serialVersionUID = 5320539640497670089L;
 	private String srcIP;
 	private String srcPort;
 	private String destIP;
@@ -24,7 +26,6 @@ public class LogRow {
 	private String internalExternal;
 	private String warningNotice;
 	private IpLocation location;
-	private IBasicFunctions basicFunctions;
 
 	
 
@@ -51,7 +52,6 @@ public class LogRow {
 		this.internalExternal = internalExternal;
 		this.warningNotice = warningNotice;
 		this.location = ipLocation;
-		basicFunctions = new BasicFunctions();
 	}
 	
 	public String getToStringHeadline(){
@@ -81,6 +81,8 @@ public class LogRow {
 		if(protocol==null){
 			protocol=nullWord;
 		}
+
+		IBasicFunctions basicFunctions = new BasicFunctions();
 		String dateTime = basicFunctions.getSimpleDateFormat().format(this.dateTime);
 		if(dateTime==null){
 			dateTime=nullWord;
