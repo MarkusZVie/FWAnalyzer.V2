@@ -40,8 +40,11 @@ public class InputTabController {
     }
 
     public void presschangebtn() throws IOException {
-        System.out.println("Going to Analyze Menu");
-        Main.changeScene("/analyzeMenu.fxml");
+        try {
+            Main.changeSceneBorderPane("/analyzeMenu.fxml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -49,8 +52,6 @@ public class InputTabController {
 
         path = pathfield.getText();
         IInputHandler ih = new InputHandler();
-
-      //  InputInterface di = new Parser(path);
 
         // by typing
         if (pathfield.getText().length() != 0){
@@ -96,9 +97,6 @@ public class InputTabController {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
-        //Test Parsing
-        TemporairProcessing.doSomething();
 
         parsestatus.setText("Parsing Success!");
         // enable next view if parse success

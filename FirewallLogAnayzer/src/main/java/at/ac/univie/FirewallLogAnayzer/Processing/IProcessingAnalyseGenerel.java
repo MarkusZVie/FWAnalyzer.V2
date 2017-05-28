@@ -19,7 +19,7 @@ public interface IProcessingAnalyseGenerel {
 
 	public HashMap<String, ArrayList<DoSData>> messagesOfCountry(DoSDataList processedData);
 
-	public HashMap<String, Integer> sumMessagesPerCountry(HashMap<String, ArrayList<DoSData>> countrymap, String ascdesc);
+	public HashMap<String, Integer> sumMessagesPerCountry(HashMap<String, ArrayList<DoSData>> countrymap);
 
 	public DoSData getSingleIP(DoSDataList processedData, String ip);
 

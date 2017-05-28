@@ -11,6 +11,7 @@ import at.ac.univie.FirewallLogAnayzer.Processing.IProcessingAnalyseGenerel;
 import com.sun.org.apache.xpath.internal.operations.Number;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Side;
@@ -38,9 +39,14 @@ public class DoSControllerGraphical {
     private CategoryAxis xAxis;
     private NumberAxis yAxis;
 
-    private LineChart<String,Number> singleLineChart = null;
+     LineChart<String, Number> singleLineChart = null;
     private CategoryAxis xAxisSingleLine;
     private NumberAxis yAxisSingleLine;
+    @FXML Button prevoiusLine;
+    @FXML Button nextLine;
+    private int currentSlotV;
+    private int loopRange;
+    private int startValue;
 
     private BarChart<String,Number> bc = null;
     private CategoryAxis xxAxisBar;
@@ -65,7 +71,7 @@ public class DoSControllerGraphical {
         da = new AnalyzerDos();
         ddl = da.analyseDos(protocol, 60);
         countrymap = da.messagesOfCountry(ddl);
-        HashMap<String, Integer> countryCount = da.sumMessagesPerCountry(countrymap, "asc");
+        HashMap<String, Integer> countryCount = da.sumMessagesPerCountry(countrymap);
         HashMap<String, Integer> cc = countryCount;
         initpiechart(cc);
     }
@@ -247,10 +253,11 @@ public class DoSControllerGraphical {
     }
 
     public void initLineChartSingle(DoSData singleData){
-        if (singleLineChart == null) {
+        if (singleLineChart == null){
             xAxisSingleLine = new CategoryAxis();
             yAxisSingleLine = new NumberAxis();
-            xAxisSingleLine.setLabel("Time");
+            xAxisSingleLine.setLabel("Log");
+            yAxisSingleLine.setLabel("Differences in s");
         } else {
             singleLineChart.getData().removeAll(singleLineChart.getData());
             singleLineChart.getData().remove(xAxisSingleLine);
@@ -258,19 +265,182 @@ public class DoSControllerGraphical {
         }
         singleLineChart = new LineChart(xAxisSingleLine, yAxisSingleLine);
         singleLineChart.setTitle("differences bewteen message occurance from IP: " + singleData.getMessages().get(0).getSrcIP());
+        singleLineChart.setLegendVisible(false);
 
 
-        XYChart.Series series1 = new XYChart.Series();
-        for (int i = 0; i < singleData.getStd().getDifferences().size(); i++) {
+        startValue = 0;
+        int sizeAll = singleData.getStd().getDifferences().size();
+        loopRange = 100;
+        currentSlotV = 0;
+        if (sizeAll > loopRange) {
+            currentSlotV = 0;
+        } else {
+            loopRange = sizeAll;
+        }
+
+        drawNextLines(singleData, startValue, loopRange);
+
+        nextLine.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                if (nextStartValue(sizeAll)){
+                    apLineSingle.getChildren().remove(singleLineChart);
+                    System.out.println("INcrement" + currentSlotV);
+                    drawNextLines(singleData, startValue, loopRange);
+                }
+
+            }
+
+        });
+
+        prevoiusLine.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                if (prevStartValue(sizeAll)){
+                    apLineSingle.getChildren().remove(singleLineChart);
+                    System.out.println("DEcrement" + currentSlotV);
+                    drawNextLines(singleData, startValue, loopRange);
+                }
+
+            }
+
+        });
+
+
+        /*
+        int tmpA;
+        int tmpB;
+        XYChart.Series<String, Number> series1 = new XYChart.Series();
+        for (int i = startValue; i < loopRange; i++) {
+            //series1 = new XYChart.Series();
+            series1.setName(singleData.getMessages().get(0).getDateTime().toString());
+            String sTmp = Objects.toString(singleData.getMessages().get(i).getDateTime(), null);
+                //System.out.println(sTmp);
+            tmpB = i + 2;tmpA = i + 1;
+            String mtemp = " "+tmpA + "-" + tmpB;
+            series1.getData().add(new XYChart.Data(mtemp, singleData.getStd().getDifferences().get(i)));
+        }
+
+
+        singleLineChart.getData().add(series1);
+        apLineSingle.getChildren().add(singleLineChart);
+
+        final Label caption = new Label("");
+        caption.setTextFill(Color.DARKGRAY);
+        caption.setStyle("-fx-font: 18 arial;");
+
+        for (final XYChart.Data<String, Number> data : series1.getData()){
+            data.getNode().addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    caption.setTranslateX(event.getSceneX()-500);
+                    caption.setTranslateY(event.getSceneY()-300);
+                    caption.setText("Diff. between msg: " + data.getXValue() + " = " + data.getYValue() + "sec");
+                }
+
+            });
+        }
+
+        apLineSingle.getChildren().add(caption);
+        */
+
+
+    }
+
+
+
+
+
+
+
+    public void drawNextLines(DoSData singleData, int startValue, int loopRange){
+        singleLineChart.getData().clear();
+        System.out.println("Draw next lines Startvalue = " + startValue);
+        System.out.println("Draw next lines loopRange = " + loopRange);
+        int toValue = startValue + loopRange;
+        System.out.println("Draw next lines toValue = " + toValue);
+        int tmpA;
+        int tmpB;
+        XYChart.Series<String, Number> series1 = new XYChart.Series();
+        for (int i = startValue; i < toValue; i++) {
             //series1 = new XYChart.Series();
             series1.setName(singleData.getMessages().get(0).getDateTime().toString());
             String sTmp = Objects.toString(singleData.getMessages().get(i).getDateTime(), null);
             //System.out.println(sTmp);
-            series1.getData().add(new XYChart.Data(sTmp, singleData.getStd().getDifferences().get(i)));
-
+            tmpB = i + 2;tmpA = i + 1;
+            String mtemp = " "+tmpA + "-" + tmpB;
+            series1.getData().add(new XYChart.Data(mtemp, singleData.getStd().getDifferences().get(i)));
         }
+
+
         singleLineChart.getData().add(series1);
         apLineSingle.getChildren().add(singleLineChart);
+
+        final Label caption = new Label("");
+        caption.setTextFill(Color.DARKGRAY);
+        caption.setStyle("-fx-font: 18 arial;");
+
+        for (final XYChart.Data<String, Number> data : series1.getData()){
+            data.getNode().addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    caption.setTranslateX(event.getSceneX()-500);
+                    caption.setTranslateY(event.getSceneY()-300);
+                    caption.setText("Diff. between msg: " + data.getXValue() + " = " + data.getYValue() + "sec");
+                }
+
+            });
+        }
+
+        apLineSingle.getChildren().add(caption);
+
+
+    }
+
+    public boolean nextStartValue(int all){
+        if (incrementSlot(all)){
+            int next = currentSlotV * loopRange;
+            if (next > all){
+                return false;
+            } else {
+                startValue = next;
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean incrementSlot(int all){
+        int tmpCurr = currentSlotV+1;
+        if ((tmpCurr * loopRange) + loopRange > all) {
+            System.out.println((tmpCurr * loopRange) + loopRange + " !! W");
+            // set value to all!!
+            // damit die restlichen erquetschten angezeigt werden
+            return false;
+        }
+        currentSlotV++;
+        return true;
+    }
+
+
+
+
+    public boolean prevStartValue(int all){
+        if (decrementSlot()){
+            int next = currentSlotV * loopRange;
+            if (next < all){
+                startValue = next;
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
+    }
+    public boolean decrementSlot(){
+        if (currentSlotV == 0){
+            return false;
+        } else {
+            currentSlotV--;
+            return true;
+        }
     }
 
     public void zoomIp(String country){

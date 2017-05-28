@@ -13,29 +13,14 @@ public class AnalyzerDos implements IProcessingAnalyseGenerel {
 
     @Override
     public DoSDataList analyseDos(String dosProtocolType, int timeSlot) {
-        System.out.println("analyseDos(): Analyse " + dosProtocolType + " Timeslot: " + timeSlot);
 
-        // get Protocol dedicated LogRows
         ArrayList<LogRow> fpl = StaticDos.filterProtocol(dosProtocolType);
-        System.out.println("analyseDos(): " + dosProtocolType + " has filtered items: " + fpl.size());
-        //StaticDos.printFilterProtocol(fpl);
 
+        HashMap<String, ArrayList<LogRow>> map = StaticDos.countIpDenies(fpl);
 
-        // Diff zwischen allen Denies aller IPs gemischt/nicht sortiert nach Prodokoll
-        //  -> relevant für DDoS?
-        // StaticDos.calcTimeInterval(fpl);
-
-        // get Map <IP, List<LogRows>>
-        HashMap map = StaticDos.countIpDenies(fpl);
-        // StaticDos.printHashmap(map);
-
-        // calc Zeitabstände für alle DenyMessages jeder IP
-        //  -> Diff zwischen jeweils einer IP
-        DoSDataList ddlist = StaticDos.manageall(map);
+        DoSDataList ddlist = StaticDos.manageAll(map);
         ddlist.setName(dosProtocolType+"-Data");
 
-        // add time per slot pro DosData in der DDList
-        // auch in manageall machbar
         StaticDos.assignMpt(ddlist, timeSlot);
 
         return ddlist;
@@ -48,21 +33,20 @@ public class AnalyzerDos implements IProcessingAnalyseGenerel {
 
 
     public ArrayList<DoSData> analyzeMpt(DoSDataList processedData, Double criticalValue){
-        ArrayList<DoSData> criticalIp = new ArrayList<>();
+        ArrayList<DoSData> critical = new ArrayList<>();
         boolean tmp = false;
         for (DoSData dd: processedData.getDataEdited()){
             for (int i = 0; i < dd.getMptList().size(); i++) {
                 if (dd.getMptList().get(i) > criticalValue){
-                    //System.out.println("Danger Zone: " + dd.getMessages().get(0).getSrcIP());
                     tmp = true;
                 }
             }
             if (tmp){
-                criticalIp.add(dd);
+                critical.add(dd);
                 tmp = false;
             }
         }
-        return criticalIp;
+        return critical;
     }
 
     public ArrayList<DoSData> sortMessagePerMinute(DoSDataList processedData, String ascdesc){
@@ -110,68 +94,64 @@ public class AnalyzerDos implements IProcessingAnalyseGenerel {
         return dataraw;
     }
 
-    // Hashmap mit Country und Array mit allen DoSData -> return countrymap zurückgeben
-    // Hashmap mit Country und Counts -> return countryCount
-    public HashMap<String, ArrayList<DoSData>> messagesOfCountry(DoSDataList processedData){
-        ArrayList<DoSData> dataraw = processedData.getDataEdited();
-        System.out.println("Sort Countries: " + dataraw.size());
 
+    public HashMap<String, ArrayList<DoSData>> messagesOfCountry(DoSDataList processedData){
+        // Alle rohen DoSData Objekte
+        ArrayList<DoSData> dataraw = processedData.getDataEdited();
         // Hashmap -> Key = Country, Value = Alle IPs mit gleichem Country
         HashMap<String, ArrayList<DoSData>> countrymap = new HashMap<>();
 
-        int failedCountries = 0;
-        ArrayList<DoSData> unassigned = new ArrayList<DoSData>();
+        int check = 0;
+        IpLocation iltemp;
+        ArrayList<DoSData> unassigned = new ArrayList<>();
 
+        // Haupt For Each Schleife
         for (DoSData dd: dataraw) {
-            int check = dd.getMessages().size();
-            if (check > 0) {
-                 IpLocation iltemp = dd.getMessages().get(0).getLocation();
-                if (iltemp == null) {
-                    //System.out.println("    No IpLocation: ");
+            iltemp = dd.getMessages().get(0).getLocation();
+            // Wenn das Objekt IpLocation null ist dann dd in die unassigned Liste speichern
+            if (iltemp == null) {
+                unassigned.add(dd);
+            } else {
+                String check2 = iltemp.getCountryName();
+                // Wenn keine Landname verfügbar ist dann in die Liste unassigned speichern
+                if (check2 == null) {
+                    unassigned.add(dd);
                 } else {
-                    String check2 = iltemp.getCityName();
-                    if (check2 == null) {
-                        //System.out.println("    = null: ");
-                        int ff = dd.getMessages().size();
-                        failedCountries = failedCountries + ff;
-                        unassigned.add(dd);
-                        //failedCountries++;
-
+                    // Wenn der Key noch nicht vorhanden -> neue Liste und in die Hashmap speichern
+                    if (!countrymap.containsKey(dd.getMessages().get(0).getLocation().getCountryName())) {
+                        ArrayList<DoSData> ips = new ArrayList<DoSData>();
+                        ips.add(dd);
+                        countrymap.put(dd.getMessages().get(0).getLocation().getCountryName(), ips);
                     } else {
-                        //System.out.println("    country: " + check2);
-                        if (!countrymap.containsKey(dd.getMessages().get(0).getLocation().getCountryName())) {
-                            ArrayList<DoSData> ips = new ArrayList<DoSData>();
-                            ips.add(dd);
-                            countrymap.put(dd.getMessages().get(0).getLocation().getCountryName(), ips);
-                        } else {
-                            ArrayList<DoSData> r = countrymap.get(dd.getMessages().get(0).getLocation().getCountryName());
-                            r.add(dd);
-                            countrymap.put(dd.getMessages().get(0).getLocation().getCountryName(), r);
-                        }
-
+                        // Wenn der Key bereits vorhanden -> Liste updaten und in die Hashmap speichern
+                        ArrayList<DoSData> r = countrymap.get(dd.getMessages().get(0).getLocation().getCountryName());
+                        r.add(dd);
+                        countrymap.put(dd.getMessages().get(0).getLocation().getCountryName(), r);
                     }
                 }
             }
-            countrymap.put("unassignedMessages", unassigned);
         }
-        System.out.println("hashmap contains Countrys: " + countrymap.size() + " || no country found of Messages: " + failedCountries + " LL" + unassigned.size());
+        // Speichere die Liste der nicht zuweisbaren auch in die Hashmap
+        countrymap.put("unassignedMessages", unassigned);
         return countrymap;
     }
 
-    // zählen aller Messages pro Country, aus der countrymap
-    // Hashmap NUR aus -> Country + MessageCount-aller IPs mit Country
-    public HashMap<String, Integer> sumMessagesPerCountry(HashMap<String, ArrayList<DoSData>> countrymap, String ascdesc){
-        // zählen aller Messages pro Country, aus der countrymap
+
+    public HashMap<String, Integer> sumMessagesPerCountry(HashMap<String, ArrayList<DoSData>> countrymap){
         HashMap<String,Integer> countryCount = new HashMap<String,Integer>();
         int tmpCount = 0;
+        // Hauptschleife für das iterieren der übergebenen Hashmap
         for (Map.Entry<String, ArrayList<DoSData>> entry : countrymap.entrySet()){
             ArrayList<DoSData> alr = entry.getValue();
+            // zurücksetzen des tmpCount für das nächste Land
             tmpCount = 0;
-            for (DoSData c: alr){
-                tmpCount = tmpCount + c.getMessages().size();
+            // Iteriere durch jede Arraylist von DosData Objekten für jede Land
+            for (DoSData dd: alr){
+                // Addiere die Größe aller Messages pro DoSData
+                tmpCount = tmpCount + dd.getMessages().size();
             }
-            countryCount.put(entry.getKey().toString(), tmpCount);
-            //System.out.println("#country: " + entry.getKey().toString() + " | ips: " + entry.getValue().size() + " | having count messages: " + tmpCount);
+            // Schlüssel: Land, Wert: Summe aller Nachrichten aller DoSData
+            countryCount.put(entry.getKey(), tmpCount);
         }
         return countryCount;
     }

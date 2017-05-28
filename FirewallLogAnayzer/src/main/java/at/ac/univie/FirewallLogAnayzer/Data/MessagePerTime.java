@@ -13,9 +13,12 @@ public class MessagePerTime {
         return msgPerSlot;
     }
 
+    // diese Methode liefert ein Array von Integer Werten
+    // Jeder Wert des Arrays basiert auf einem Zeitfenster
     public ArrayList<Integer> calcMsgPerSlot(int minutes, ArrayList<LogRow> messages){
         msgPerSlot = new ArrayList<>();
         int tmpCount = 0;
+        // Berechne das erste Zeitfenster
         Date slotDate = calcNextSlot(minutes, messages.get(0).getDateTime());
 
         for (int i = 0; i < messages.size(); i++) {
@@ -29,7 +32,6 @@ public class MessagePerTime {
                 slotDate = calcNextSlot(minutes, slotDate);
                 while (!messages.get(i).getDateTime().before(slotDate)){
                     slotDate = calcNextSlot(minutes, slotDate);
-                    //System.out.println("Count: " + tmpCount);
                     msgPerSlot.add(tmpCount);
                 }
                 tmpCount++;
@@ -37,16 +39,18 @@ public class MessagePerTime {
         }
         // der letzte Count
         msgPerSlot.add(tmpCount);
-        //System.out.println("Count: " + tmpCount);
         return msgPerSlot;
     }
 
     public Date calcNextSlot(int min, Date ogDate){
         final long ONE_MIN_IN_MS=60000;
         long curTimeMs = ogDate.getTime();
+        // das alte Datum Objekt + den als parameter übergebenen Minuten * einer Minute in ms
+        // ergibt das Neue Datum welches retouniert wird
         Date newDate = new Date(curTimeMs + (min * ONE_MIN_IN_MS));
-        //System.out.println("New Slot: " + newDate.toString());
         return newDate;
     }
 
 }
+
+

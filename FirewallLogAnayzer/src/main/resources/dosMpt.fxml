@@ -18,7 +18,6 @@
                   <Font size="24.0" />
                </font></Label>
             <Region HBox.hgrow="ALWAYS" />
-            <Button fx:id="btnclick" mnemonicParsing="false" text="Button" />
             <Button fx:id="btm" mnemonicParsing="false" onAction="#btmMethod" prefHeight="27.0" prefWidth="141.0" text="Analysis Menu" />
          </children>
          <BorderPane.margin>

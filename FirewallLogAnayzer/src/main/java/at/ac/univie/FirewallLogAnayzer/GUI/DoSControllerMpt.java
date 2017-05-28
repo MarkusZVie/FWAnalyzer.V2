@@ -69,12 +69,6 @@ public class DoSControllerMpt {
         headerLabel.setText(String.valueOf(treshold));
         backToMainBar.setVisible(false);
 
-        btnclick.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-                System.out.println(treshold);
-            }
-        });
-
     }
 
     public void initbarchart(ArrayList<DoSData> critical){
@@ -173,8 +167,32 @@ public class DoSControllerMpt {
 
             bcSingle.getData().add(series1);
         }
-        spBarSingleDetail.getChildren().addAll(bcSingle);
 
+        final Label caption = new Label("");
+        caption.setTextFill(Color.DARKGRAY);
+        caption.setStyle("-fx-font: 18 arial;");
+
+        for (final XYChart.Series<String, Number> data:bcSingle.getData() ){
+            for (final XYChart.Data<String, Number> item: data.getData()){
+                item.getNode().addEventHandler(MouseEvent.MOUSE_MOVED, new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        caption.setTranslateX(event.getSceneX()-500);
+                        caption.setTranslateY(event.getSceneY()-300);
+                        caption.setText("Slot: " + item.getXValue() + " Messages " + item.getYValue());
+                    }
+                });
+
+                item.getNode().addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent e) {
+                        System.out.println("clicked on bar chart .." + item.getXValue());
+                    }
+                });
+            }
+        }
+
+        spBarSingleDetail.getChildren().addAll(bcSingle, caption);
     }
 
     public void setTreshold(double tr){
@@ -211,10 +229,13 @@ public class DoSControllerMpt {
         spBarSingleDetail.setVisible(false);
         spBarChart.setVisible(true);
 
+        spBarSingleDetail.getChildren().removeAll(bcSingle);
+
         if (!bcSingle.getData().isEmpty()){
             System.out.println("Remove Series from Bar Chart Single Detail B");
             bcSingle.getData().remove((bcSingle.getData().size()-1));
             bcSingle.setTitle("");
+            bcSingle.getData().clear();
         }
     }
 }

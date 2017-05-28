@@ -30,26 +30,24 @@ public class StaticDos {
         }
     }
 
-    // Hashmap bestehend aus:
+    // Retouniere Hashmap bestehend aus:
     //		IP = Key
-    //		Arraylist = Value (beinhaltet alle denies der IP)
-    // Alle IPs mit deren Denies
-    public static HashMap<String, ArrayList<LogRow>> countIpDenies(ArrayList<LogRow> denies){
+    //		Arraylist = Value (beinhaltet alle LogRows der IP)
+    static HashMap<String, ArrayList<LogRow>> countIpDenies(ArrayList<LogRow> denies){
         HashMap<String, ArrayList<LogRow>> map = new HashMap<String, ArrayList<LogRow>>();
-
         for (LogRow lr: denies){
+            // Wenn die Map den Schlüssel noch nicht beinhaltet erstelle ein neues Array
             if (!map.containsKey(lr.getSrcIP())){
                 ArrayList<LogRow> rn = new ArrayList<LogRow>();
                 rn.add(lr);
                 map.put(lr.getSrcIP(), rn);
             } else {
+            // Wenn die Map den Schlüssel beinhaltet dann füge die LogRow zum Array hinzu
                 ArrayList<LogRow> r = map.get(lr.getSrcIP());
                 r.add(lr);
                 map.put(lr.getSrcIP(), r);
             }
         }
-
-        System.out.println(">>> Counted IPs: " + map.size());
         return map;
     }
 
@@ -69,35 +67,26 @@ public class StaticDos {
         }
     }
 
-    // Für jede IP (mit deren Deny-LogRows)
-    // nur wenn LogRow > 1 sonst kann keine Zeit verglichen werden
-    public static DoSDataList manageall(HashMap<String, ArrayList<LogRow>> map){
+    // Retouniere DoSDataList bestehend aus DoSData Objekten
+    static DoSDataList manageAll(HashMap<String, ArrayList<LogRow>> map){
         DoSDataList ddl = new DoSDataList();
         for (Map.Entry<String, ArrayList<LogRow>> entry : map.entrySet()){
-
-            // für Jede IP und deren LogRows > 1
-            //      -> Differences
-            //      -> Standardabweichung
-            //      = 1 Objekt DoS Data
             ArrayList<LogRow> alr = entry.getValue();
+            // Relevant sind IP's mit LogRow's > 1 sonst kann keine Zeit verglichen werden
             if (alr.size() > 1){
+                // Weise jedem DoSData Objekt weitere Attribute hinzu
                 ArrayList<Integer> oneIpDifferences = calcTimeInterval(alr);
                 StandardDeviation sData = new StandardDeviation(oneIpDifferences);
-
-                //System.out.println(sData.toString());
-                //System.out.println("---------------");
-
                 DoSData dd = new DoSData(alr, sData);
+                // speichern in der DoSDataList
                 ddl.addDoSData(dd);
             }
         }
         return ddl;
     }
 
-
     // get Single IP from Hashmap DoSDataList
-    public static DoSData getSingleIp(DoSDataList ddl, String ip){
-        //System.out.println("Search for: " + ip);
+    static DoSData getSingleIp(DoSDataList ddl, String ip){
         DoSData singleIp = null;
         for (int i = 0; i < ddl.getDataEdited().size() ; i++) {
             if (ddl.getDataEdited().get(i).getMessages().get(0).getSrcIP().equals(ip)){
@@ -107,25 +96,19 @@ public class StaticDos {
         return singleIp;
     }
 
-
-    // Vergleiche jeweils 2 Zeiten von LogRows und speichere den Wert in ArrayList
-    // Alle die nur eine Zeit haben sind nicht relevant
-    // Return Wert für Analyse -> Varianz
-    public static ArrayList<Integer> calcTimeInterval(ArrayList<LogRow> denies){
-        //System.out.println("  calcTime() for ip: " + denies.get(0).getSrcIP() + " having " + denies.size() + " messages.");
-
+    // Retouniere eine Arraylist von Integer Werten für die spätere DoS Analyse
+    private static ArrayList<Integer> calcTimeInterval(ArrayList<LogRow> denies){
         ArrayList<Integer> differences = new ArrayList<>();
-
         for (int i = 0; i<denies.size(); i++){
+            // übeprüfe ob es ein weiteres Objekt gibt um die zeitliche Differenz zu berechnen
             if (i+1 < denies.size()) {
+                // Vergleiche jeweils 2 Zeiten von LogRows
                 Date dateA = denies.get(i).getDateTime();
                 Date dateB = denies.get(i + 1).getDateTime();
                 long diff = dateB.getTime() - dateA.getTime();
                 long sec = TimeUnit.MILLISECONDS.toSeconds(diff);
-                //System.out.println("# " + denies.get(i).getDateTime().toString() + " - " + denies.get(i).getSrcIP());
-                //System.out.println("# " + denies.get(i + 1).getDateTime().toString() + " - " + denies.get(i + 1).getSrcIP());
-                //System.out.println(i + " Diff in sec.: " + sec);
                 Integer parseLong = (int) (long) sec;
+                // speichere den Wert in die ArrayList differences
                 differences.add(parseLong);
             }
         }
@@ -136,7 +119,10 @@ public class StaticDos {
     // dd -> setMpt -> gibt ein array zurück
     // für das objekt dd -> mptList
     // dort sind alle mpt Berechungen in den min x Abständen
-    public static void assignMpt(DoSDataList ddl, int minutes){
+
+    // Für jedes DoSData Objekt aus der übergebenen DoSDataList
+    // berechne Message Per Time mit den vorgegebenen Minuten-Zeitfenstern
+    static void assignMpt(DoSDataList ddl, int minutes){
         for (DoSData dd: ddl.getDataEdited()){
             dd.setMpt(minutes);
         }
