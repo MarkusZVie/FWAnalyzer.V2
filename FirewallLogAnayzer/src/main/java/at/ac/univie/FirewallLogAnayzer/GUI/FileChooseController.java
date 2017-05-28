@@ -42,10 +42,12 @@ public class FileChooseController {
 	private Label pi;
 	private ProgressBar pb;
 	private Stage rootStage;
-	private long numberOfRows;
+	private long numberToRead;
+	private long readedRows;
 	private StringProperty value = new SimpleStringProperty("");
 	private BorderPane masterLayout;
 	private StackPane logoContainer;
+	private Label secretLable;
 	
 	public Node getFileChooseNode(double windowWidth, double windowHeight, Stage rootStage, BorderPane masterLayout){
 		BorderPane rootLayout = new BorderPane();
@@ -98,6 +100,24 @@ public class FileChooseController {
 		pi.setStyle("-fx-font-size:50");
 		pi.textProperty().bind(value);
 		
+		pi.textProperty().addListener((observable, oldValue, newValue) -> {
+			if(newValue.endsWith("(100.0%)")){
+				try {
+					Thread.sleep(1000);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				System.out.println("allclosed");
+				try {
+					Main.changeSceneBorderPane("/analyzeMenu.fxml");
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+
 		bottemLayout.getChildren().add(pb);
 		bottemLayout.getChildren().add(pi);
 		rootLayout.setBottom(bottemLayout);
@@ -106,13 +126,19 @@ public class FileChooseController {
 		return rootLayout;
 	}
 	
-	public synchronized void updateProgress(long numberToRead, long readedRows){
-		this.numberOfRows = numberToRead;
+	public synchronized void updateProgressValues(long numberToRead, long readedRows){
+		this.numberToRead = numberToRead;
+		this.readedRows = readedRows;
+		updateProgress();
+		
+	}
+	
+	public synchronized void updateProgress(){
 		double percentage = ((Double.parseDouble(readedRows+"")/(Double.parseDouble(numberToRead+"")))*100);
 		double percentageRound = Math.round(percentage*100);
 		percentageRound = percentageRound/100;
 		pb.setProgress(percentageRound/100);
-		String s = readedRows + " of " + numberToRead + " " + percentageRound;
+		String s = readedRows + " of " + numberToRead + "    (" + percentageRound + "%)";
 		//pi.setText(s);
 		
 		Platform.runLater(new Runnable() {
@@ -124,7 +150,11 @@ public class FileChooseController {
         });
 		
 		System.out.println(percentageRound);
-		
+	}
+	
+	public synchronized void finishedParsing(){
+		readedRows = numberToRead;
+		updateProgress();
 	}
 	
 	public StackPane getLogoContainer(){

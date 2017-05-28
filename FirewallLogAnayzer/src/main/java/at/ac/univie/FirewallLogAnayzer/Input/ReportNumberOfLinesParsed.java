@@ -31,7 +31,7 @@ public class ReportNumberOfLinesParsed extends Thread{
 			percentageRound = percentageRound/100;
 			System.out.println("Logrows read: " + readedRows + " of " + numberToRead + " => " + percentageRound + " %");
 			if(fcc!=null){
-				fcc.updateProgress(numberToRead, readedRows);
+				fcc.updateProgressValues(numberToRead, readedRows);
 			}
 			Thread.sleep(100);
 			}

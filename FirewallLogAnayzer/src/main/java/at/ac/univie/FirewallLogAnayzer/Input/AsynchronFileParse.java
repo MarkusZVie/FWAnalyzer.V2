@@ -34,6 +34,7 @@ public class AsynchronFileParse extends Thread{
 		} catch (LogIdNotFoundException e) {
 			e.printStackTrace();
 		}
+        fileChooseController.finishedParsing();
 	}
 	
 	

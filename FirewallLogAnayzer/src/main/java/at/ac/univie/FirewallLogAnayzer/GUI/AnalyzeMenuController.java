@@ -51,23 +51,10 @@ public class AnalyzeMenuController {
     	rvc = new ReportViewController();
     	ltvc = new LogTreeViewController();
     	prepairedComposion = new PreparingCompositionForGui();
+    	allLogRows = LogRows.getInstance().getLogRows();
     	
     	
-    	
-    	//Loade LogArray for number of Threats beside names
-    	if(allLogRows==null){
-			IInputHandler inputHandler = new InputHandler();
-	        // /Users/josefweber/Desktop/SyslogCatchAll-2017-03-14.txt
-	        // C:\Users\Lezard\Desktop\SyslogCatchAll-2017-03-14.txt
-	        try {
-	        	inputHandler.loadeFirewallLog("C:\\Users\\Lezard\\Desktop\\activeFWLogs", LogTypeSingelton.getInstance().getSupportedLogTypeList().get(0));
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (LogIdNotFoundException e) {
-				e.printStackTrace();
-			}
-			allLogRows = LogRows.getInstance().getLogRows();
-		}
+
     	
     	
     	

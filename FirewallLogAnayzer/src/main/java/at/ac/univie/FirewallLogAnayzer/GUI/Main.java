@@ -30,8 +30,8 @@ public class Main extends Application {
         setRootLayout();
         //initFileTab();
         //changeScene("/dosGraphical.fxml");
-        changeSceneBorderPane("/analyzeMenu.fxml");
-        //rootLayout.setCenter(fcc.getFileChooseNode(rootLayout.getWidth(), rootLayout.getHeight(),primaryStage,rootLayout));
+        //changeSceneBorderPane("/analyzeMenu.fxml");
+        rootLayout.setCenter(fcc.getFileChooseNode(rootLayout.getWidth(), rootLayout.getHeight(),primaryStage,rootLayout));
         
     }
     
