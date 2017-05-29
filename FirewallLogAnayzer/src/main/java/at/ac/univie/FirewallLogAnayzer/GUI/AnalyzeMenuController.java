@@ -74,7 +74,7 @@ public class AnalyzeMenuController {
           "DoS Analysis MPT",
           "Log Tree Display (" + allLogRows.size() + ")",
           "Scanning & Foot-Printing (" + numberOfThreads.get(12) + ")",
-          "DoS (" + numberOfThreads.get(1) + ")",
+          "DoS-Attacks (" + numberOfThreads.get(1) + ")",
           "IP-Spoofing (" + numberOfThreads.get(2) + ")",
           "Connection High Checking (" + numberOfThreads.get(3) + ")",
           "Routing Manipulation (" + numberOfThreads.get(4) + ")",
@@ -106,7 +106,7 @@ public class AnalyzeMenuController {
         System.out.println("clicked: " + selectedItem);
        
         //startsWith method, because the number of Threads disurbed the comparation
-        if(selectedItem.startsWith("DoS Analysis Graphical")){
+        if(selectedItem.startsWith("DoS Analysis Graphical")){;
         	createACLgraphical();
         }
         if(selectedItem.startsWith("DoS Analysis MPT")){
@@ -115,7 +115,7 @@ public class AnalyzeMenuController {
         if(selectedItem.startsWith("Log Tree Display")){
         	createTreeView();
         }
-        if(selectedItem.startsWith("DoS")){
+        if(selectedItem.startsWith("DoS-Attacks")){
         	createReportView(1);
         }
         if(selectedItem.startsWith("IP-Spoofing")){
@@ -236,6 +236,7 @@ public class AnalyzeMenuController {
 	}
 
 	public void createACLgraphical(){
+		spCenter.getChildren().clear();
         hb = new VBox();
 
         HBox vb0 = new HBox(20);
@@ -288,6 +289,7 @@ public class AnalyzeMenuController {
     }
 
     public void createACLmpt(){
+    	spCenter.getChildren().clear();
         hb = new VBox();
 
         HBox vb0 = new HBox(20);
