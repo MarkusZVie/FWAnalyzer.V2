@@ -1,0 +1,565 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.2.0" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
+  <class id="1" language="java" name="at.ac.univie.FirewallLogAnayzer.Data.StandardDeviation" project="FWAnalyzer" 
+    file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/Data/StandardDeviation.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="333" width="217" x="4291" y="1318"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" name="at.ac.univie.FirewallLogAnayzer.Data.LogRows" project="FWAnalyzer" 
+    file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/Data/LogRows.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="135" width="197" x="3614" y="1071"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="at.ac.univie.FirewallLogAnayzer.Data.CompositionLogRow" project="FWAnalyzer" 
+    file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/Data/CompositionLogRow.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="135" width="187" x="3387" y="1071"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="at.ac.univie.FirewallLogAnayzer.Data.LogType" project="FWAnalyzer" 
+    file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/Data/LogType.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="189" width="165" x="4642" y="680"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="at.ac.univie.FirewallLogAnayzer.Data.CompositionAnalysingSettings" 
+    project="FWAnalyzer" 
+    file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/Data/CompositionAnalysingSettings.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="189" width="332" x="1675" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="at.ac.univie.FirewallLogAnayzer.Data.LogTypeSingelton" project="FWAnalyzer" 
+    file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/Data/LogTypeSingelton.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="117" width="258" x="4642" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="at.ac.univie.FirewallLogAnayzer.Data.SavedLocationFromIP" project="FWAnalyzer" 
+    file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/Data/SavedLocationFromIP.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="117" width="197" x="3367" y="1318"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="at.ac.univie.FirewallLogAnayzer.Data.DoSData" project="FWAnalyzer" 
+    file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/Data/DoSData.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="207" width="265" x="4291" y="1071"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" name="at.ac.univie.FirewallLogAnayzer.Data.IpLocation" project="FWAnalyzer" 
+    file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/Data/IpLocation.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="369" width="336" x="3490" y="2069"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="at.ac.univie.FirewallLogAnayzer.Data.CiscoAsaCodeSingelton" project="FWAnalyzer" 
+    file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/Data/CiscoAsaCodeSingelton.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="243" width="365" x="658" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="11" language="java" name="at.ac.univie.FirewallLogAnayzer.Data.CompositionCompositionLogRow" 
+    project="FWAnalyzer" 
+    file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/Data/CompositionCompositionLogRow.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="243" width="378" x="3358" y="680"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="12" language="java" name="at.ac.univie.FirewallLogAnayzer.Data.LogRow" project="FWAnalyzer" 
+    file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/Data/LogRow.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="711" width="637" x="3614" y="1318"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="13" language="java" name="at.ac.univie.FirewallLogAnayzer.Data.CiscoAsaCodeExceptions" project="FWAnalyzer" 
+    file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/Data/CiscoAsaCodeExceptions.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="153" width="365" x="41" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="14" language="java" name="at.ac.univie.FirewallLogAnayzer.Data.DoSDataList" project="FWAnalyzer" 
+    file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/Data/DoSDataList.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="189" width="222" x="4326" y="680"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="15" language="java" name="at.ac.univie.FirewallLogAnayzer.Data.MessagePerTime" project="FWAnalyzer" 
+    file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/Data/MessagePerTime.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="153" width="313" x="4548" y="1318"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="16" language="java" name="at.ac.univie.FirewallLogAnayzer.GUI.InputTabController" project="FWAnalyzer" 
+    file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/GUI/InputTabController.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="297" width="162" x="2433" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="17" language="java" name="at.ac.univie.FirewallLogAnayzer.GUI.Main" project="FWAnalyzer" 
+    file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/GUI/Main.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="279" width="249" x="3175" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="18" language="java" name="at.ac.univie.FirewallLogAnayzer.GUI.DoSControllerGraphical" project="FWAnalyzer" 
+    file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/GUI/DoSControllerGraphical.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="603" width="276" x="4326" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="19" language="java" name="at.ac.univie.FirewallLogAnayzer.GUI.DoSControllerMpt" project="FWAnalyzer" 
+    file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/GUI/DoSControllerMpt.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="207" width="162" x="3695" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="20" language="java" name="at.ac.univie.FirewallLogAnayzer.GUI.AnalyzeMenuController" project="FWAnalyzer" 
+    file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/GUI/AnalyzeMenuController.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="207" width="162" x="456" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="21" language="java" name="at.ac.univie.FirewallLogAnayzer.Input.ReportNumberOfLinesParsed" 
+    project="FWAnalyzer" 
+    file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/Input/ReportNumberOfLinesParsed.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="99" width="234" x="5526" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="22" language="java" name="at.ac.univie.FirewallLogAnayzer.Input.IInputHandler" project="FWAnalyzer" 
+    file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/Input/IInputHandler.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="81" width="211" x="4950" y="680"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="23" language="java" name="at.ac.univie.FirewallLogAnayzer.Input.InputHandler" project="FWAnalyzer" 
+    file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/Input/InputHandler.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="99" width="211" x="4950" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="24" language="java" name="at.ac.univie.FirewallLogAnayzer.Input.Parser" project="FWAnalyzer" 
+    file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/Input/Parser.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="207" width="285" x="5201" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="25" language="java" name="at.ac.univie.FirewallLogAnayzer.Input.ParserCisco" project="FWAnalyzer" 
+    file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/Input/ParserCisco.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="351" width="388" x="5364" y="680"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="26" language="java" name="at.ac.univie.FirewallLogAnayzer.Processing.AnalyzerDos" project="FWAnalyzer" 
+    file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/Processing/AnalyzerDos.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="225" width="500" x="2635" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="27" language="java" name="at.ac.univie.FirewallLogAnayzer.Processing.IProcessingAnalyseGenerel" 
+    project="FWAnalyzer" 
+    file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/Processing/IProcessingAnalyseGenerel.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="189" width="500" x="3786" y="680"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="28" language="java" name="at.ac.univie.FirewallLogAnayzer.Processing.StaticDos" project="FWAnalyzer" 
+    file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/Processing/StaticDos.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="225" width="389" x="3897" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="29" language="java" name="at.ac.univie.FirewallLogAnayzer.Processing.BasicFunctions" project="FWAnalyzer" 
+    file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/Processing/BasicFunctions.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="225" width="346" x="2047" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="30" language="java" name="at.ac.univie.FirewallLogAnayzer.Processing.CompositionAnalysing" 
+    project="FWAnalyzer" 
+    file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/Processing/CompositionAnalysing.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="135" width="562" x="1073" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="31" language="java" name="at.ac.univie.FirewallLogAnayzer.Processing.TemporairProcessing" 
+    project="FWAnalyzer" 
+    file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/Processing/TemporairProcessing.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="135" width="191" x="3464" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <association id="32">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="33" name="location">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="34" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="35">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="36" name="instance">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="37" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="13" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="38">    
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="39" name="composition">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="40" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="41">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="42" name="savedLocationFromIp">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="43" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="44">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="45" name="supportedLogTypeList">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="46" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="47">    
+    <end type="SOURCE" refId="23"/>    
+    <end type="TARGET" refId="22"/>  
+  </realization>  
+  <association id="48">    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="49" name="dataEdited">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="50" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="51">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="52" name="logRows">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="53" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="54">    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="55" name="instance">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="56" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="57">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="58" name="content">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="59" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="60">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="61" name="mpt">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="62" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="15" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="63">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="64" name="instance">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="65" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="66">    
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="67" name="ccLogRow">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="68" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="69">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="70" name="messages">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="71" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="72">    
+    <end type="SOURCE" refId="21" navigable="false">      
+      <attribute id="73" name="parser">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="74" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="25" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="75">    
+    <end type="SOURCE" refId="25"/>    
+    <end type="TARGET" refId="24"/>  
+  </generalization>  
+  <association id="76">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="77" name="std">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="78" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="79">    
+    <end type="SOURCE" refId="18" navigable="false">      
+      <attribute id="80" name="ddl">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="81" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="14" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="82">    
+    <end type="SOURCE" refId="18" navigable="false">      
+      <attribute id="83" name="da">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="84" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="27" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="85">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="86" name="instance">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="87" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="88">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="89" name="instance">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="90" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="91">    
+    <end type="SOURCE" refId="26"/>    
+    <end type="TARGET" refId="27"/>  
+  </realization>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

@@ -1,0 +1,10 @@
+Error, by parsing Row:
+2017-03-19 20:40:03	Local4.Warning	192.168.1.112	%ASA-4-713903: IKE Receiver: Runt ISAKMP packet discarded on Port 4500 from 71.6.146.185:38993
+null
+--------------------------------------------
+
+Error, by parsing Row:
+2017-03-19 20:40:19	Local4.Warning	192.168.1.112	%ASA-4-713903: IKE Receiver: Runt ISAKMP packet discarded on Port 4500 from 71.6.146.185:47630
+null
+--------------------------------------------
+
