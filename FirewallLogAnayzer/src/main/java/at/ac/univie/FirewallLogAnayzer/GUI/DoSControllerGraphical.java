@@ -83,6 +83,9 @@ public class DoSControllerGraphical {
 
         backtochartBtn.setVisible(false);
         btn2.setVisible(false);
+
+        nextLine.setVisible(false);
+        prevoiusLine.setVisible(false);
     }
 
     public void backtoMenu() throws IOException {
@@ -117,6 +120,9 @@ public class DoSControllerGraphical {
 
         backtochartBtn.setVisible(true);
         btn2.setVisible(false);
+
+        nextLine.setVisible(false);
+        prevoiusLine.setVisible(false);
 
         if (!singleLineChart.getData().isEmpty()) {
             System.out.println("Remove Series from Single Line Chart");
@@ -274,8 +280,12 @@ public class DoSControllerGraphical {
         currentSlotV = 0;
         if (sizeAll > loopRange) {
             currentSlotV = 0;
+            nextLine.setVisible(true);
+            prevoiusLine.setVisible(true);
         } else {
             loopRange = sizeAll;
+            nextLine.setVisible(false);
+            prevoiusLine.setVisible(false);
         }
 
         drawNextLines(singleData, startValue, loopRange);
@@ -304,50 +314,7 @@ public class DoSControllerGraphical {
 
         });
 
-
-        /*
-        int tmpA;
-        int tmpB;
-        XYChart.Series<String, Number> series1 = new XYChart.Series();
-        for (int i = startValue; i < loopRange; i++) {
-            //series1 = new XYChart.Series();
-            series1.setName(singleData.getMessages().get(0).getDateTime().toString());
-            String sTmp = Objects.toString(singleData.getMessages().get(i).getDateTime(), null);
-                //System.out.println(sTmp);
-            tmpB = i + 2;tmpA = i + 1;
-            String mtemp = " "+tmpA + "-" + tmpB;
-            series1.getData().add(new XYChart.Data(mtemp, singleData.getStd().getDifferences().get(i)));
-        }
-
-
-        singleLineChart.getData().add(series1);
-        apLineSingle.getChildren().add(singleLineChart);
-
-        final Label caption = new Label("");
-        caption.setTextFill(Color.DARKGRAY);
-        caption.setStyle("-fx-font: 18 arial;");
-
-        for (final XYChart.Data<String, Number> data : series1.getData()){
-            data.getNode().addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    caption.setTranslateX(event.getSceneX()-500);
-                    caption.setTranslateY(event.getSceneY()-300);
-                    caption.setText("Diff. between msg: " + data.getXValue() + " = " + data.getYValue() + "sec");
-                }
-
-            });
-        }
-
-        apLineSingle.getChildren().add(caption);
-        */
-
-
     }
-
-
-
-
 
 
 

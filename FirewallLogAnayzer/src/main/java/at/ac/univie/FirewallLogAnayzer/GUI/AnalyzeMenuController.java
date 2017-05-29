@@ -236,11 +236,16 @@ public class AnalyzeMenuController {
 	}
 
 	public void createACLgraphical(){
-		spCenter.getChildren().clear();
         hb = new VBox();
 
+        HBox vbHead = new HBox(20);
+        Label header = new Label("Graphical Analysis");
+        vbHead.setPadding(new Insets(20,20,20,20));
+        vbHead.getChildren().addAll(header);
+
+
         HBox vb0 = new HBox(20);
-        vb0.setPadding(new Insets(PADDINGS[0],PADDINGS[1],PADDINGS[2],PADDINGS[3]));
+        vb0.setPadding(new Insets(20,20,20,20));
         final String[] cbitems = {"TCP", "icmp"};
         ChoiceBox cb = new ChoiceBox(FXCollections.observableArrayList(
                 "TCP", "icmp")
@@ -262,7 +267,7 @@ public class AnalyzeMenuController {
         Button analyzeA = new Button("Graphical analysis");
         vb1.getChildren().addAll(analyzeA);
 
-        hb.getChildren().addAll(vb0, vb1);
+        hb.getChildren().addAll(vbHead, vb0, vb1);
         spCenter.getChildren().addAll(hb);
 
         analyzeA.setOnAction(new EventHandler<ActionEvent>() {
@@ -289,11 +294,15 @@ public class AnalyzeMenuController {
     }
 
     public void createACLmpt(){
-    	spCenter.getChildren().clear();
         hb = new VBox();
 
+        HBox vbHead = new HBox(20);
+        Label header = new Label("Message per Time Analysis");
+        vbHead.setPadding(new Insets(20,20,20,20));
+        vbHead.getChildren().addAll(header);
+
         HBox vb0 = new HBox(20);
-        vb0.setPadding(new Insets(PADDINGS[0],PADDINGS[1],PADDINGS[2],PADDINGS[3]));
+        vb0.setPadding(new Insets(20,20,20,20));
         final String[] cbitems = {"TCP", "icmp"};
         ChoiceBox cb = new ChoiceBox(FXCollections.observableArrayList(
                 "TCP", "icmp")
@@ -324,22 +333,22 @@ public class AnalyzeMenuController {
         slotValue.setMajorTickUnit(15);
         slotValue.setMinorTickCount(5);
         final Label opacityValue = new Label(Double.toString(slotValue.getValue()));
-        vb1.setPadding(new Insets(PADDINGS[0],PADDINGS[1],PADDINGS[2],PADDINGS[3]));
+        vb1.setPadding(new Insets(15,15,15,15));
         vb1.getChildren().addAll(slotLabel, slotValue, opacityValue);
 
 
         HBox vb2 = new HBox(20);
         Label treshholdLabel = new Label("DoS Treshold");
         final TextField treshold = new TextField();
-        vb2.setPadding(new Insets(PADDINGS[0],PADDINGS[1],PADDINGS[2],PADDINGS[3]));
+        vb2.setPadding(new Insets(15,15,15,15));
         vb2.getChildren().addAll(treshholdLabel, treshold);
 
         HBox vb3 = new HBox(20);
-        Button analyzeB = new Button("Analyze on attacks");
-        vb3.setPadding(new Insets(PADDINGS[0],PADDINGS[1],PADDINGS[2],PADDINGS[3]));
+        Button analyzeB = new Button("Analyze on Messages Per Time");
+        vb3.setPadding(new Insets(15,15,15,15));
         vb3.getChildren().addAll(analyzeB);
 
-        hb.getChildren().addAll(vb0, vb1, vb2, vb3);
+        hb.getChildren().addAll(vbHead, vb0, vb1, vb2, vb3);
         spCenter.getChildren().addAll(hb);
 
         slotValue.valueProperty().addListener(new ChangeListener<Number>() {

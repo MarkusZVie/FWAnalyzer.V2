@@ -151,7 +151,7 @@ public class DoSControllerMpt {
         }
         xAxisSingle = new CategoryAxis();
         bcSingle = new BarChart(xAxisSingle, yAxisSingle);
-        bcSingle.setTitle("TITLE");
+        bcSingle.setTitle("Messages per Time");
         xAxisSingle.setLabel("Time Slot");
         yAxisSingle.setLabel("MPT Value");
 
@@ -208,7 +208,7 @@ public class DoSControllerMpt {
     }
 
     public void trigger(){
-        headerLabel.setText("Protocol " + protocol + " Timeslot: " + timeslot + " Treshold: " + treshold);
+        headerLabel.setText("Protocol " + protocol + ", Timeslot: " + timeslot + ", Treshold: " + treshold);
         da = new AnalyzerDos();
         ddl = da.analyseDos(protocol, timeslot);
         ArrayList<DoSData> critical = da.analyzeMpt(ddl, treshold);
