@@ -29,9 +29,11 @@ public class Main extends Application {
     private static IPreparingCompositionForGui pcg;
     private static BorderPane rootLayout;
     private FileChooseController fcc;
+    private AnalyzeMenuController analyzerMC;
     
     @Override
     public void start(Stage primaryStage) throws IOException {
+    	analyzerMC = new AnalyzeMenuController();
     	pcg = new PreparingCompositionForGui();
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Firewall Log Analyzer");

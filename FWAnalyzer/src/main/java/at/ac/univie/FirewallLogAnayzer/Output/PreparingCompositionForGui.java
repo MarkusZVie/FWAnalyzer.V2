@@ -358,7 +358,7 @@ public class PreparingCompositionForGui implements IPreparingCompositionForGui{
 		ArrayList<LogRow> logRowsPart = getLogRows(item,logRows); // flr getCompositionLogRow(cclr,getGroupByList(item),getLogRow(item));
 		double[] stats = compositionAnalysing.getStatisticsAboutTimeFriquent(logRowsPart, basicFunctions.getLogBeginDate(logRows), basicFunctions.getLogEndDate(logRows), true);
 		double ammountPerHour = compositionAnalysing.getAmmountPerHour(logRowsPart, basicFunctions.getLogBeginDate(logRows), basicFunctions.getLogEndDate(logRows));
-		double threadScore = compositionAnalysing.getThreadScore(stats, ammountPerHour);
+		double threadScore = compositionAnalysing.getThreatScore(stats, ammountPerHour);
 	
 		StringBuilder sb = new StringBuilder();
 		

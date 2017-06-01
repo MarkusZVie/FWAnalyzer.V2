@@ -79,20 +79,16 @@ public class CompositionAnalysing implements ICompositionAnalysing{
 				if(!isPartOfSelection){
 					willBeAdded = false;
 				}
-				
-				
 			}
 			if(willBeAdded){
 				filterdList.add(lr);
 			}
 		}
-		
-		
 		return filterdList;
 	}
 	
 	public HashMap<String, Double> getSetOfPersistencingTransferingIps(ArrayList<LogRow> logRows, Date logBegin, Date logEnd){
-		HashMap<String, Double> threadList = new HashMap<>();
+		HashMap<String, Double> threatList = new HashMap<>();
 		CompositionCompositionLogRow cclr = groupByLogLine(logRows, new GroupBySrcIP());
 		HashMap<String,CompositionLogRow> composition = cclr.getComposition();
 		
@@ -100,29 +96,31 @@ public class CompositionAnalysing implements ICompositionAnalysing{
 			if(composition.get(key).getContent().size()>1){				// only possible to get stats by size >1
 				double[] stats = getStatisticsAboutTimeFriquent(composition.get(key).getContent(), logBegin, logEnd,true);
 				double ammountPerHour = getAmmountPerHour(composition.get(key).getContent(), logBegin, logEnd);
-				double threadScore = getThreadScore(stats, ammountPerHour);
-				if(threadList.containsKey(key)){			//defensive
-					if(threadList.get(key)<threadScore){
-						threadList.put(key, threadScore);
+				double threadScore = getThreatScore(stats, ammountPerHour);
+				if(threatList.containsKey(key)){			//defensive
+					if(threatList.get(key)<threadScore){
+						threatList.put(key, threadScore);
 					}
 				}else{
-					threadList.put(key, threadScore);
+					threatList.put(key, threadScore);
 				}
 			}
 		}
-		return threadList;
+		return threatList;
 	}
 	
-	public double getThreadScore(double[] stats, double ammountPerHour){
+	
+	public double getThreatScore(double[] stats, double ammountPerHour){
 		//middle ammountPerHour and aritmetical mean (mean is in sec)
 		double threadScore = (ammountPerHour+(stats[3]/3600))/2;
 		//div by standard devision (is also in sec)
-		threadScore = threadScore/Math.log(((stats[0]/3600))+Math.E);
+		threadScore = threadScore/Math.log(((stats[0]/3600))+Math.E+1);
 		if((threadScore+"").equals("NaN")){
 			threadScore =0;
 		}
 		return threadScore;
 	}
+	
 	
 	@Override
 	public double getAmmountPerHour(ArrayList<LogRow> logRows,Date logBegin, Date logEnd){
@@ -174,7 +172,6 @@ public class CompositionAnalysing implements ICompositionAnalysing{
 		double median = ds.getPercentile(50);
 		double trimedMean = ds.getPercentile(45);
 		double mean = ds.getMean();
-		
 		double[] persistanceStats = {standardDeviation,median,trimedMean,mean};
 		
 		return persistanceStats;
@@ -254,13 +251,13 @@ public class CompositionAnalysing implements ICompositionAnalysing{
 	}
 
 	@Override
-	public CompositionCompositionLogRow getHoleCompositionByGroubByList(ArrayList<LogRow> logRows, ArrayList<IGroupByFactory> groupByList) {
+	public CompositionCompositionLogRow getHoleCompositionByGroubByList(ArrayList<LogRow> logRows, 
+															ArrayList<IGroupByFactory> groupByList) {
 		if(groupByList!=null){
 			CompositionCompositionLogRow cclr = groupByLogLine(logRows, groupByList.get(0));
 			
 			if(groupByList.size()>1){
 				IGroupByFactory[] addtionalGroupBys = new IGroupByFactory[groupByList.size()-1];
-				
 				//skip the First, it is already included
 				int counter =-1;
 				for(IGroupByFactory gbf: groupByList){
@@ -268,8 +265,7 @@ public class CompositionAnalysing implements ICompositionAnalysing{
 						addtionalGroupBys[counter] = gbf;
 					}
 					counter++;
-				}
-							
+				}		
 				cclr.makeSubComposition(addtionalGroupBys);
 			}
 		return cclr;

@@ -16,7 +16,7 @@ public interface ICompositionAnalysing {
 	
 	public HashMap<String, Double> getSetOfPersistencingTransferingIps(ArrayList<LogRow> logRows, Date logBegin, Date logEnd);
 	
-	public double getThreadScore(double[] stats, double ammountPerHour);
+	public double getThreatScore(double[] stats, double ammountPerHour);
 	
 	public double[] getStatisticsAboutTimeFriquent(ArrayList<LogRow> logRows,Date logBegin, Date logEnd, boolean ignoreDayNextDayJumps);
 
