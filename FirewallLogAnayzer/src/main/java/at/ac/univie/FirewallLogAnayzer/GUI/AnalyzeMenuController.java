@@ -70,8 +70,8 @@ public class AnalyzeMenuController {
          }
     	
         ObservableList<String> items = FXCollections.observableArrayList(
-          "DoS Analysis Graphical",
-          "DoS Analysis MPT",
+          "ACL Analysis Graphical",
+          "ACL Analysis MPT",
           "Log Tree Display (" + allLogRows.size() + ")",
           "Scanning & Foot-Printing (" + numberOfThreads.get(12) + ")",
           "DoS-Attacks (" + numberOfThreads.get(1) + ")",
@@ -106,10 +106,10 @@ public class AnalyzeMenuController {
         System.out.println("clicked: " + selectedItem);
        
         //startsWith method, because the number of Threads disurbed the comparation
-        if(selectedItem.startsWith("DoS Analysis Graphical")){;
+        if(selectedItem.startsWith("ACL Analysis Graphical")){;
         	createACLgraphical();
         }
-        if(selectedItem.startsWith("DoS Analysis MPT")){
+        if(selectedItem.startsWith("ACL Analysis MPT")){
         	createACLmpt();
         }
         if(selectedItem.startsWith("Log Tree Display")){
