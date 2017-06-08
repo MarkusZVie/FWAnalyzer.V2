@@ -63,7 +63,7 @@ public class FileChooseController {
 		rootLayout.setCenter(centerLayout);
 		HBox buttonBar = new HBox();
 		logoContainer = new StackPane();
-		Image logo = new Image("FirewallLogAnalyzerLogo.png");
+		Image logo = new Image("Icon.png");
 		ImageView logoView = new ImageView(logo);
 		logoContainer.getChildren().add(logoView);
 		logoContainer.setAlignment(Pos.CENTER);

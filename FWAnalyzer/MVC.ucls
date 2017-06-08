@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.2.0" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
+  <package id="1" language="java" name="at.ac.univie.FirewallLogAnayzer" project="FWAnalyzer" 
+    file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="462" width="1043" x="538" y="293"/>    
+    <display autosize="false" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="2" language="java" name="at.ac.univie.FirewallLogAnayzer.Data" project="FWAnalyzer" 
+    file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/Data" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="50" width="982" x="565" y="606"/>    
+    <display autosize="false" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="3" language="java" name="at.ac.univie.FirewallLogAnayzer.GUI" project="FWAnalyzer" 
+    file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/GUI" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="50" width="981" x="571" y="364"/>    
+    <display autosize="false" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="4" language="java" name="at.ac.univie.FirewallLogAnayzer.Input" project="FWAnalyzer" 
+    file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/Input" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="685" y="484"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="5" language="java" name="at.ac.univie.FirewallLogAnayzer.Output" project="FWAnalyzer" 
+    file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/Output" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1428" y="486"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="6" language="java" name="at.ac.univie.FirewallLogAnayzer.Processing" project="FWAnalyzer" 
+    file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/Processing" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="50" width="369" x="858" y="455"/>    
+    <display autosize="false" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="7" language="java" name="at.ac.univie.FirewallLogAnayzer.Processing.GroupByFactory" project="FWAnalyzer" 
+    file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/Processing/GroupByFactory" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="50" width="367" x="858" y="515"/>    
+    <display autosize="false" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="8" language="java" name="at.ac.univie.FirewallLogAnayzer.Exceptions" project="FWAnalyzer" 
+    file="/FWAnalyzer/src/main/java/at/ac/univie/FirewallLogAnayzer/Exceptions" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="50" width="980" x="567" y="687"/>    
+    <display autosize="false" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>
