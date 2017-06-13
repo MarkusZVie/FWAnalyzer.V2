@@ -161,6 +161,9 @@ public class Main extends Application {
             FXMLLoader loader = new FXMLLoader();
             System.out.println("asd");
             loader.setLocation(Main.class.getResource("/root.fxml"));
+            if(loader.getLocation()==null){
+            	 loader.setLocation(Main.class.getResource("\\root.fxml"));
+            }
             
             rootLayout = (BorderPane) loader.load();
 

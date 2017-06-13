@@ -564,7 +564,7 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 			explanation = basicFunctions.readeFile("GUITextFiles\\OtherAttacks.Explanation.txt")[0];
 		} catch (FileNotFoundException e) {
 			try {
-				explanation = basicFunctions.readeFile("GUITextFiles/OtherAttacks.Explanation.txt")[0];
+				explanation = basicFunctions.readeFile("/GUITextFiles/OtherAttacks.Explanation.txt")[0];
 			} catch (FileNotFoundException e2) {
 				// TODO: handle exception
 				e2.printStackTrace();
