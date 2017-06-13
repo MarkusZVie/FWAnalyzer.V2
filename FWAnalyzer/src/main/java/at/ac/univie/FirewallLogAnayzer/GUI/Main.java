@@ -161,6 +161,7 @@ public class Main extends Application {
             loader.setLocation(Main.class.getResource("/root.fxml"));
             rootLayout = (BorderPane) loader.load();
 
+            
             // Show the scene containing the root layout.
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
