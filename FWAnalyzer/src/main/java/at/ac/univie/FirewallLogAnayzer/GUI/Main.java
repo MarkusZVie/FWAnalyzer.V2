@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 
 import at.ac.univie.FirewallLogAnayzer.Output.IPreparingCompositionForGui;
@@ -158,7 +159,12 @@ public class Main extends Application {
         try {
             // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader();
+            System.out.println("asd");
             loader.setLocation(Main.class.getResource("/root.fxml"));
+            if(loader.getLocation()==null){
+            	loader.setLocation(new URL("src/main/resources/root.fxml"));
+            }
+            System.out.println(loader.getLocation());
             rootLayout = (BorderPane) loader.load();
 
             
