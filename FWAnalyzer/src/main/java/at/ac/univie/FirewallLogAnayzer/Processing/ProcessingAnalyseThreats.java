@@ -563,7 +563,12 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		try {
 			explanation = basicFunctions.readeFile("GUITextFiles\\OtherAttacks.Explanation.txt")[0];
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+			try {
+				explanation = basicFunctions.readeFile("GUITextFiles/OtherAttacks.Explanation.txt")[0];
+			} catch (FileNotFoundException e2) {
+				// TODO: handle exception
+				e2.printStackTrace();
+			}
 			e.printStackTrace();
 		}
 		Report report = new Report(generellcclr, "Other Attacks", "Container of Diffrent Attaks", involvedLogLineCodes,11,explanation);
