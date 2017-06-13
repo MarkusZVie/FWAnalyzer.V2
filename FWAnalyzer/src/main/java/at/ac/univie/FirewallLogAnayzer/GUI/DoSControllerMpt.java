@@ -78,8 +78,8 @@ public class DoSControllerMpt {
         bc = new BarChart(xxAxisBar, yyAxisBar);
 
         //yyAxisBar.setLabel("ACL Denies per Unit");
-        xxAxisBar.setLabel("IP");
-        yyAxisBar.setLabel("Messages");
+        xxAxisBar.setLabel("critical IP-Adresses");
+        yyAxisBar.setLabel("Messages summary per IP");
 
         for (DoSData dd: critical){
             XYChart.Series series1 = new XYChart.Series();
@@ -153,7 +153,7 @@ public class DoSControllerMpt {
         bcSingle = new BarChart(xAxisSingle, yAxisSingle);
         bcSingle.setTitle("Messages per Time");
         xAxisSingle.setLabel("Time Slot");
-        yAxisSingle.setLabel("MPT Value");
+        yAxisSingle.setLabel("Message Per Time Value");
 
         bcSingle.setLegendVisible(false);
 
@@ -179,7 +179,7 @@ public class DoSControllerMpt {
                     public void handle(MouseEvent event) {
                         caption.setTranslateX(event.getSceneX()-500);
                         caption.setTranslateY(event.getSceneY()-300);
-                        caption.setText("Slot: " + item.getXValue() + " Messages " + item.getYValue());
+                        caption.setText("Slot: " + item.getXValue() + " Messages " + item.getYValue() + " ");
                     }
                 });
 
@@ -208,7 +208,7 @@ public class DoSControllerMpt {
     }
 
     public void trigger(){
-        headerLabel.setText("Protocol " + protocol + ", Timeslot: " + timeslot + ", Treshold: " + treshold);
+        headerLabel.setText("Protocol: " + protocol + ", Timeslot: " + timeslot + ", Treshold: " + treshold);
         da = new AnalyzerDos();
         ddl = da.analyseDos(protocol, timeslot);
         ArrayList<DoSData> critical = da.analyzeMpt(ddl, treshold);

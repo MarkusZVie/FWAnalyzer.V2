@@ -159,15 +159,9 @@ public class Main extends Application {
         try {
             // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader();
-            System.out.println("asd");
             loader.setLocation(Main.class.getResource("/root.fxml"));
-            if(loader.getLocation()==null){
-            	 loader.setLocation(Main.class.getResource("\\root.fxml"));
-            }
-            
             rootLayout = (BorderPane) loader.load();
 
-            
             // Show the scene containing the root layout.
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);

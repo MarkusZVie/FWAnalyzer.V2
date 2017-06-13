@@ -67,6 +67,9 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		String explanation="";
 		try {
 			explanation = basicFunctions.readeFile("GUITextFiles\\PortScanningOrFootPrinting.Explanation.txt")[0];
+			if (explanation.equals("")) {
+				explanation = basicFunctions.readeFile("GUITextFiles/PortScanningOrFootPrinting.Explanation.txt")[0];
+			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -185,6 +188,9 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		String explanation="";
 		try {
 			explanation = basicFunctions.readeFile("GUITextFiles\\DoS.Explanation.txt")[0];
+			if (explanation.equals("")) {
+				explanation = basicFunctions.readeFile("GUITextFiles/DoS.Explanation.txt")[0];
+			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -249,6 +255,9 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		String explanation="";
 		try {
 			explanation = basicFunctions.readeFile("GUITextFiles\\IPspoofedAttack.Explanation.txt")[0];
+			if (explanation.equals("")) {
+				explanation = basicFunctions.readeFile("GUITextFiles/IPspoofedAttack.Explanation.txt")[0];
+			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -297,6 +306,9 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		String explanation="";
 		try {
 			explanation = basicFunctions.readeFile("GUITextFiles\\ConnectionHighChecking.Explanation.txt")[0];
+			if (explanation.equals("")) {
+				explanation = basicFunctions.readeFile("GUITextFiles/ConnectionHighChecking.Explanation.txt")[0];
+			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -342,6 +354,9 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		String explanation="";
 		try {
 			explanation = basicFunctions.readeFile("GUITextFiles\\RoutingManipulation.Explanation.txt")[0];
+			if (explanation.equals("")) {
+				explanation = basicFunctions.readeFile("GUITextFiles/RoutingManipulation.Explanation.txt")[0];
+			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -380,6 +395,9 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		String explanation="";
 		try {
 			explanation = basicFunctions.readeFile("GUITextFiles\\SynAttack.Explanation.txt")[0];
+			if (explanation.equals("")) {
+				explanation = basicFunctions.readeFile("GUITextFiles/SynAttack.Explanation.txt")[0];
+			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -416,6 +434,9 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		String explanation = "";
 		try {
 			explanation = basicFunctions.readeFile("GUITextFiles\\WeakIndicaterOfAnAttack.Explanation.txt")[0];
+			if (explanation.equals("")) {
+				explanation = basicFunctions.readeFile("GUITextFiles/WeakIndicaterOfAnAttack.Explanation.txt")[0];
+			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -452,6 +473,9 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		String explanation = "";
 		try {
 			explanation = basicFunctions.readeFile("GUITextFiles\\ICMPBasedAttaks.Explanation.txt")[0];
+			if (explanation.equals("")) {
+				explanation = basicFunctions.readeFile("GUITextFiles/ICMPBasedAttaks.Explanation.txt")[0];
+			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -490,6 +514,9 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		String explanation = "";
 		try {
 			explanation = basicFunctions.readeFile("GUITextFiles\\TCPBasedAttacks.Explanation.txt")[0];
+			if (explanation.equals("")) {
+				explanation = basicFunctions.readeFile("GUITextFiles/TCPBasedAttacks.Explanation.txt")[0];
+			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -525,6 +552,9 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		String explanation = "";
 		try {
 			explanation = basicFunctions.readeFile("GUITextFiles\\UDPBasedAttacks.Explanation.txt")[0];
+			if (explanation.equals("")) {
+				explanation = basicFunctions.readeFile("GUITextFiles/UDPBasedAttacks.Explanation.txt")[0];
+			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -560,17 +590,16 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		
 		String[] involvedLogLineCodes = {"400041","400050","412002","605004,733102"};
 		String explanation = "";
+
 		try {
 			explanation = basicFunctions.readeFile("GUITextFiles\\OtherAttacks.Explanation.txt")[0];
-		} catch (FileNotFoundException e) {
-			try {
-				explanation = basicFunctions.readeFile("/GUITextFiles/OtherAttacks.Explanation.txt")[0];
-			} catch (FileNotFoundException e2) {
-				// TODO: handle exception
-				e2.printStackTrace();
+			if (explanation.equals("")) {
+				explanation = basicFunctions.readeFile("GUITextFiles/OtherAttacks.Explanation.txt")[0];
 			}
+		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+
 		Report report = new Report(generellcclr, "Other Attacks", "Container of Diffrent Attaks", involvedLogLineCodes,11,explanation);
 		return report;	
 		
@@ -603,6 +632,9 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		String explanation = "";
 		try {
 			explanation = basicFunctions.readeFile("GUITextFiles\\BruteForce.Explanation.txt")[0];
+			if (explanation.equals("")) {
+				explanation = basicFunctions.readeFile("GUITextFiles/BruteForce.Explanation.txt")[0];
+			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

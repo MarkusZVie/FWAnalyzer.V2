@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 import at.ac.univie.FirewallLogAnayzer.Data.LogRow;
 import at.ac.univie.FirewallLogAnayzer.Data.LogRows;
 import at.ac.univie.FirewallLogAnayzer.Data.PortScanner.PortScan;
-import com.maxmind.geoip2.DatabaseReader;
+import com.maxmind.geoip2.*;
 import com.maxmind.geoip2.model.CityResponse;
 import com.maxmind.geoip2.record.City;
 import com.maxmind.geoip2.record.Country;
@@ -115,7 +115,14 @@ public class BasicFunctions implements IBasicFunctions{
 			File dbFile = new File(DATABASE_CITY_PATH);
 			// This creates the DatabaseReader object,
 			// which should be reused across lookups.
-			DatabaseReader reader = new DatabaseReader.Builder(dbFile).build();
+			
+			DatabaseReader reader = null;
+			try {
+				reader = new DatabaseReader.Builder(dbFile).build();
+
+			} catch (Exception e){
+				System.out.println(e);
+			}
 			// A IP Address
 			InetAddress ipAddress = InetAddress.getByName(ip);
 			// Get City info

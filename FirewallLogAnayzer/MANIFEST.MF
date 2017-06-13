@@ -1,0 +1,1 @@
+Main-Class: at.ac.univie.FirewallLogAnayzer.GUI.Main

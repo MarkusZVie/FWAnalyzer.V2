@@ -21,6 +21,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -70,8 +71,8 @@ public class AnalyzeMenuController {
          }
     	
         ObservableList<String> items = FXCollections.observableArrayList(
-          "DoS Analysis Graphical",
-          "DoS Analysis MPT",
+          "ACL Analysis Graphical",
+          "ACL Analysis Message Per Time",
           "Log Tree Display (" + allLogRows.size() + ")",
           "Scanning & Foot-Printing (" + numberOfThreads.get(12) + ")",
           "DoS-Attacks (" + numberOfThreads.get(1) + ")",
@@ -106,10 +107,10 @@ public class AnalyzeMenuController {
         System.out.println("clicked: " + selectedItem);
        
         //startsWith method, because the number of Threads disurbed the comparation
-        if(selectedItem.startsWith("DoS Analysis Graphical")){;
+        if(selectedItem.startsWith("ACL Analysis Graphical")){;
         	createACLgraphical();
         }
-        if(selectedItem.startsWith("DoS Analysis MPT")){
+        if(selectedItem.startsWith("ACL Analysis Message Per Time")){
         	createACLmpt();
         }
         if(selectedItem.startsWith("Log Tree Display")){
@@ -239,17 +240,20 @@ public class AnalyzeMenuController {
         hb = new VBox();
 
         HBox vbHead = new HBox(20);
-        Label header = new Label("Graphical Analysis");
+        Label header = new Label("Graphical Analysis of ACL-Denies (Access Control List)");
         vbHead.setPadding(new Insets(20,20,20,20));
         vbHead.getChildren().addAll(header);
 
 
+
+
         HBox vb0 = new HBox(20);
         vb0.setPadding(new Insets(20,20,20,20));
-        final String[] cbitems = {"TCP", "icmp"};
+        final String[] cbitems = {"TCP", "icmp", "udp"};
         ChoiceBox cb = new ChoiceBox(FXCollections.observableArrayList(
-                "TCP", "icmp")
+                "TCP", "icmp", "udp")
         );
+        Label err = new Label("");
         //cb.getSelectionModel().selectFirst();
         final Label selectionLabel = new Label("Protocol");
         final String[] selection = new String[1];
@@ -261,7 +265,7 @@ public class AnalyzeMenuController {
                 selection[0] = cbitems[newValue.intValue()].toString();
             }
         });
-        vb0.getChildren().addAll(selectionLabel, cb);
+        vb0.getChildren().addAll(selectionLabel, cb, err);
 
         HBox vb1 = new HBox(20);
         Button analyzeA = new Button("Graphical analysis");
@@ -274,18 +278,23 @@ public class AnalyzeMenuController {
             @Override public void handle(ActionEvent e) {
                 // Main.changeScene("/dosGraphical.fxml");
 
-                FXMLLoader loader= new FXMLLoader(getClass().getResource("/dosGraphical.fxml"));
-                AnchorPane root = null;
-                try {
-                    root = loader.load();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
+                boolean isSelected = cb.getSelectionModel().isEmpty();
+                if (isSelected){
+                    err.setText("Please choose a Protocol");
+                } else {
+                    FXMLLoader loader= new FXMLLoader(getClass().getResource("/dosGraphical.fxml"));
+                    AnchorPane root = null;
+                    try {
+                        root = loader.load();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                    DoSControllerGraphical ch = loader.getController();
+                    ch.setProtocol(selection[0]);
+                    ch.trigger();
+                    //Scene sceneR = new Scene(root);
+                    Main.simpleSwitchAnchor(root);
                 }
-                DoSControllerGraphical ch = loader.getController();
-                ch.setProtocol(selection[0]);
-                ch.trigger();
-                //Scene sceneR = new Scene(root);
-                Main.simpleSwitchAnchor(root);
 
 
             }
@@ -297,20 +306,21 @@ public class AnalyzeMenuController {
         hb = new VBox();
 
         HBox vbHead = new HBox(20);
-        Label header = new Label("Message per Time Analysis");
+        Label header = new Label("Message per Time Analysis of ACL-Denies (Access Control List)");
         vbHead.setPadding(new Insets(20,20,20,20));
         vbHead.getChildren().addAll(header);
 
         HBox vb0 = new HBox(20);
         vb0.setPadding(new Insets(20,20,20,20));
-        final String[] cbitems = {"TCP", "icmp"};
+        final String[] cbitems = {"TCP", "icmp", "udp"};
         ChoiceBox cb = new ChoiceBox(FXCollections.observableArrayList(
-                "TCP", "icmp")
+                "TCP", "icmp", "udp")
         );
         //cb.getSelectionModel().selectFirst();
         final Label selectionLabel = new Label("Protocol");
         final String[] selection = new String[1];
 
+        Label err = new Label("");
         cb.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
@@ -318,7 +328,7 @@ public class AnalyzeMenuController {
                 selection[0] = cbitems[newValue.intValue()].toString();
             }
         });
-        vb0.getChildren().addAll(selectionLabel, cb);
+        vb0.getChildren().addAll(selectionLabel, cb, err);
 
 
         HBox vb1 = new HBox(20);
@@ -344,9 +354,11 @@ public class AnalyzeMenuController {
         vb2.getChildren().addAll(treshholdLabel, treshold);
 
         HBox vb3 = new HBox(20);
+        Label explanation = new Label("Wie viele Logs (Treshold) dürfen in einem zeitlichen Bereich (Timeslot) maximal passieren.");
+        explanation.setTextFill(Color.GRAY);
         Button analyzeB = new Button("Analyze on Messages Per Time");
         vb3.setPadding(new Insets(15,15,15,15));
-        vb3.getChildren().addAll(analyzeB);
+        vb3.getChildren().addAll(analyzeB,explanation);
 
         hb.getChildren().addAll(vbHead, vb0, vb1, vb2, vb3);
         spCenter.getChildren().addAll(hb);
@@ -366,20 +378,26 @@ public class AnalyzeMenuController {
             @Override public void handle(ActionEvent e) {
                 double parsePrice = Double.parseDouble(treshold.getText());
 
-                FXMLLoader loader= new FXMLLoader(getClass().getResource("/dosMpt.fxml"));
-                BorderPane root = null;
-                try {
-                    root = loader.load();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
+                boolean isSelected = cb.getSelectionModel().isEmpty();
+                if (isSelected){
+                    err.setText("Please choose a Protocol");
+                } else {
+
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/dosMpt.fxml"));
+                    BorderPane root = null;
+                    try {
+                        root = loader.load();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                    DoSControllerMpt ch = loader.getController();
+                    ch.setTreshold(parsePrice);
+                    ch.setTimeslot(((int) slotValue.getValue()));
+                    ch.setProtocol(selection[0]);
+                    ch.trigger();
+                    //Scene sceneR = new Scene(root);
+                    Main.simpleSwitch(root);
                 }
-                DoSControllerMpt ch = loader.getController();
-                ch.setTreshold(parsePrice);
-                ch.setTimeslot(((int) slotValue.getValue()));
-                ch.setProtocol(selection[0]);
-                ch.trigger();
-                //Scene sceneR = new Scene(root);
-                Main.simpleSwitch(root);
             }
         });
     }
