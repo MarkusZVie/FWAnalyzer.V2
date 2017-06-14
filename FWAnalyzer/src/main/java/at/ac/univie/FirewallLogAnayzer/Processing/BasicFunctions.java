@@ -1,11 +1,6 @@
 package at.ac.univie.FirewallLogAnayzer.Processing;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.InetAddress;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -107,19 +102,27 @@ public class BasicFunctions implements IBasicFunctions{
 	}
 	
 	public IpLocation findeLocation(String ip){
-		String DATABASE_CITY_PATH = "./Files/GeoLite2-City.mmdb";
+		String DATABASE_CITY_PATH = "/Files2/GeoLite2-City.mmdb";
 		IpLocation ipLocation;
 		//http://o7planning.org/en/10455/retrieving-geographic-information-based-on-ip-address-using-geoip2-java-api
 		try {
 			// A File object pointing to your GeoLite2 database
-			File dbFile = new File(DATABASE_CITY_PATH);
+
+			//File dbFile = new File(getClass().getResource("/GeoLite2-City.mmdb").toURI());
+
+
+			InputStream dbFile = BasicFunctions.class.getResourceAsStream(DATABASE_CITY_PATH);
+
+
+			//File dbFile = new File(getClass().getResource("/Files2/GeoLite2-City.mmdb").toURI());
+			//File dbFile = new File(this.getClass().getResource("/GeoLite2-City.mmdb").toURI());
+			// File dbFile = new File(DATABASE_CITY_PATH);
+
 			// This creates the DatabaseReader object,
 			// which should be reused across lookups.
-			
 			DatabaseReader reader = null;
 			try {
 				reader = new DatabaseReader.Builder(dbFile).build();
-
 			} catch (Exception e){
 				System.out.println(e);
 			}
@@ -130,23 +133,23 @@ public class BasicFunctions implements IBasicFunctions{
 			// Country Info
 			Country country = response.getCountry();
 			String countryIsoCode = country.getIsoCode();
-			String countryName =  country.getName(); 
+			String countryName =  country.getName();
 			Subdivision subdivision = response.getMostSpecificSubdivision();
 			String subdivisionName = subdivision.getName();
-			String subdivisionIsoCode = subdivision.getIsoCode(); 
+			String subdivisionIsoCode = subdivision.getIsoCode();
 			// City Info.
 			City city = response.getCity();
-			String cityName = city.getName(); 
+			String cityName = city.getName();
 			// Postal info
 			Postal postal = response.getPostal();
 			String postCode = postal.getCode();
 			// Geo Location info.
 			Location location = response.getLocation();
 			// Latitude
-			double latitude = location.getLatitude();     
+			double latitude = location.getLatitude();
 			// Longitude
 			double longitude= location.getLongitude();
-			ipLocation = new IpLocation(countryIsoCode, countryName, subdivisionName, subdivisionIsoCode, cityName, 
+			ipLocation = new IpLocation(countryIsoCode, countryName, subdivisionName, subdivisionIsoCode, cityName,
 										postCode, latitude, longitude);
 			return ipLocation;
 		} catch (Exception e) {

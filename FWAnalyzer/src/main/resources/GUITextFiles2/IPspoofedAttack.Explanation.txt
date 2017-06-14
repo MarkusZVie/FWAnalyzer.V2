@@ -1,0 +1,15 @@
+Indicator of IP-spoofing:
+106017 - The security appliance received a packet with the IP source address equal to the IP destination, and the destination port equal to the source port.
+210011 - Establishing a new connection through the security appliance will result in exceeding at least one of the configured maximum connection limits.
+322001 - The security appliance received a packet from the offending MAC address on the specified interface but the source MAC address in the packet is statically bound to another interface in your configuration.
+322002 -  If the ARP inspection module is enabled, it checks whether a new ARP entry advertised in the packet conforms to the statically configured or dynamically learned IP-MAC address binding before forwarding ARP packets across the security appliance. If this check fails, the ARP inspection module drops the ARP packet and generates this message. This situation may be caused by either ARP spoofing attacks in the network or an invalid configuration (IP-MAC binding).
+322003 - If the ARP inspection module is enabled, it checks whether a new ARP entry advertised in the packet conforms to the statically configured IP-MAC address binding before forwarding ARP packets across the security appliance. If this check fails, the ARP inspection module drops the ARP packet and generates this message. This situation may be caused by either ARP spoofing attacks in the network or an invalid configuration (IP-MAC binding).
+403109 - The module received a spoofed PPTP packet. This may be a hostile event.
+405002 - The security appliance received a packet with the same IP address but a different MAC address from one of its uauth entries, or you configured the vpnclient mac-exempt.
+713256 - When the peer specifies an invalid tunnel group, the ASA will still send message 2 to prevent the peer from gleaning tunnel group information.
+
+Recognised IP-spoofing attack:
+106021 - An attack is in progress. Someone is attempting to spoof an IP address on an inbound connection.
+400007 - IP Fragment Attack
+400008 - IP Impossible Packet
+400009 - IP Fragments Overlap

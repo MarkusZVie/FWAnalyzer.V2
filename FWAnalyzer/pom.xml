@@ -12,6 +12,19 @@
 
 
     <build>
+
+        <resources>
+            <resource>
+                <directory>Files</directory>
+            </resource>
+            <resource>
+                <directory>GUITextFiles</directory>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+
         <plugins>
 
             <plugin>
@@ -26,14 +39,7 @@
                             <mainClass>at.ac.univie.FirewallLogAnayzer.GUI.Main</mainClass>
                         </manifest>
                     </archive>
-                    <resources>
-                        <resource>
-                            <directory>Files/</directory>
-                        </resource>
-                        <resource>
-                            <directory>GUITextFiles</directory>
-                        </resource>
-                    </resources>
+
                 </configuration>
             </plugin>
 

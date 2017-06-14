@@ -1,6 +1,6 @@
 package at.ac.univie.FirewallLogAnayzer.Processing;
 
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.nio.channels.spi.AbstractSelectionKey;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -65,24 +65,62 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		String analyseName="Scanning and Foot-Printing";
 		
 		String explanation="";
-		try {
-			explanation = basicFunctions.readeFile("GUITextFiles\\PortScanningOrFootPrinting.Explanation.txt")[0];
-			if (explanation.equals("")) {
-				explanation = basicFunctions.readeFile("GUITextFiles/PortScanningOrFootPrinting.Explanation.txt")[0];
-			}
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		InputStream dbFile;
+
+
+		//dbFile = BasicFunctions.class.getResourceAsStream("GUITextFiles2\\PortScanningOrFootPrinting.Explanation.txt");
+		//explanation = getStringFromInputStream(dbFile);
+
+		if (explanation.equals("")) {
+			dbFile = BasicFunctions.class.getResourceAsStream("/GUITextFiles2/PortScanningOrFootPrinting.Explanation.txt");
+			explanation = getStringFromInputStream(dbFile);
 		}
+
+
+		//explanation = basicFunctions.readeFile("GUITextFiles\\PortScanningOrFootPrinting.Explanation.txt")[0];
+		/*
+		if (explanation.equals("")) {
+
+            dbFile = BasicFunctions.class.getResourceAsStream("/GUITextFiles2/PortScanningOrFootPrinting.Explanation.txt");
+            explanation = dbFile.toString();
+            //explanation = basicFunctions.readeFile("GUITextFiles/PortScanningOrFootPrinting.Explanation.txt")[0];
+        }
+        */
 		String description="Searching for open Ports and other Weaknesses";
 		Report report = new Report(generellcclr, analyseName, description, involvedLogLineCodes,12,explanation);
 		return report;		
 	
-		
-		
-		
-		
-		
+
+	}
+
+
+	private static String getStringFromInputStream(InputStream is) {
+
+		BufferedReader br = null;
+		StringBuilder sb = new StringBuilder();
+
+		String line;
+		try {
+
+			br = new BufferedReader(new InputStreamReader(is));
+			while ((line = br.readLine()) != null) {
+				sb.append(line);
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+		return sb.toString();
+
 	}
 	
 	@Override
@@ -186,15 +224,13 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 				+ "or network resource unavailable to its intended users by temporarily or indefinitely disrupting services of "
 				+ "a host connected to the Internet";
 		String explanation="";
-		try {
-			explanation = basicFunctions.readeFile("GUITextFiles\\DoS.Explanation.txt")[0];
-			if (explanation.equals("")) {
-				explanation = basicFunctions.readeFile("GUITextFiles/DoS.Explanation.txt")[0];
-			}
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+		InputStream dbFile;
+		dbFile = BasicFunctions.class.getResourceAsStream("/GUITextFiles2/DoS.Explanation.txt");
+		explanation = getStringFromInputStream(dbFile);
+
+
+
 		DoSReport report = new DoSReport(generellcclr, analyseName, description, involvedLogLineCodes,1, doSNoIPcclr, doSIPcclr,explanation);
 		return report;
 		
@@ -253,15 +289,12 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		
 		String[] involvedLogLineCodes = {"106017","210011","403109","713256","106021","322001","322002","322003","400007","400008","400009","405002"};
 		String explanation="";
-		try {
-			explanation = basicFunctions.readeFile("GUITextFiles\\IPspoofedAttack.Explanation.txt")[0];
-			if (explanation.equals("")) {
-				explanation = basicFunctions.readeFile("GUITextFiles/IPspoofedAttack.Explanation.txt")[0];
-			}
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+		InputStream dbFile;
+		dbFile = BasicFunctions.class.getResourceAsStream("/GUITextFiles2/IPspoofedAttack.Explanation.txt");
+		explanation = getStringFromInputStream(dbFile);
+
+
 		Report report = new Report(generellcclr, "IP-Spoofing", "Somebody tries to give himself up as someone else", involvedLogLineCodes,2,explanation);
 		return report;
 	}
@@ -304,15 +337,12 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		
 		String[] involvedLogLineCodes = {"106022","313005","337004","402114","402115","402116","402117","402118","402119","402120","406002","431001","431002","722001"};
 		String explanation="";
-		try {
-			explanation = basicFunctions.readeFile("GUITextFiles\\ConnectionHighChecking.Explanation.txt")[0];
-			if (explanation.equals("")) {
-				explanation = basicFunctions.readeFile("GUITextFiles/ConnectionHighChecking.Explanation.txt")[0];
-			}
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+		InputStream dbFile;
+		dbFile = BasicFunctions.class.getResourceAsStream("/GUITextFiles2/ConnectionHighChecking.Explanation.txt");
+		explanation = getStringFromInputStream(dbFile);
+
+
 		Report report = new Report(generellcclr, "Connection High Checking", "An attacker also might be attempting to append packets from one connection to another as a way to break into the security appliance", involvedLogLineCodes,3,explanation);
 		return report;
 	}
@@ -352,15 +382,12 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		
 		String[] involvedLogLineCodes = {"107001","107002","320001","402114","402115","402116","402117","402118","402119","402120","405001","410002"};
 		String explanation="";
-		try {
-			explanation = basicFunctions.readeFile("GUITextFiles\\RoutingManipulation.Explanation.txt")[0];
-			if (explanation.equals("")) {
-				explanation = basicFunctions.readeFile("GUITextFiles/RoutingManipulation.Explanation.txt")[0];
-			}
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+		InputStream dbFile;
+		dbFile = BasicFunctions.class.getResourceAsStream("/GUITextFiles2/RoutingManipulation.Explanation.txt");
+		explanation = getStringFromInputStream(dbFile);
+
+
 		Report report = new Report(generellcclr, "Routing Manipulation", "It can be producsed by an not well configruated Router, or indicater of an 'Man in the middel attack'", involvedLogLineCodes,4,explanation);
 		return report;
 	}
@@ -393,15 +420,13 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		
 		String[] involvedLogLineCodes = {"201003","201012","733100","733104","733105"};
 		String explanation="";
-		try {
-			explanation = basicFunctions.readeFile("GUITextFiles\\SynAttack.Explanation.txt")[0];
-			if (explanation.equals("")) {
-				explanation = basicFunctions.readeFile("GUITextFiles/SynAttack.Explanation.txt")[0];
-			}
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+		InputStream dbFile;
+		dbFile = BasicFunctions.class.getResourceAsStream("/GUITextFiles2/SynAttack.Explanation.txt");
+		explanation = getStringFromInputStream(dbFile);
+
+
+
 		Report report = new Report(generellcclr, "Syn-Attack", "Subtype of DoS", involvedLogLineCodes,5,explanation);
 		return report;
 	}
@@ -432,15 +457,12 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		
 		String[] involvedLogLineCodes = {"324001","324003","324004", "324006"};
 		String explanation = "";
-		try {
-			explanation = basicFunctions.readeFile("GUITextFiles\\WeakIndicaterOfAnAttack.Explanation.txt")[0];
-			if (explanation.equals("")) {
-				explanation = basicFunctions.readeFile("GUITextFiles/WeakIndicaterOfAnAttack.Explanation.txt")[0];
-			}
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+		InputStream dbFile;
+		dbFile = BasicFunctions.class.getResourceAsStream("/GUITextFiles2/WeakIndicaterOfAnAttack.Explanation.txt");
+		explanation = getStringFromInputStream(dbFile);
+
+
 		Report report = new Report(generellcclr, "Weak Indicater of an Attack", "If those Indicater appiers frequently, it can be the side effect of an attack", involvedLogLineCodes,10,explanation);
 		return report;
 	}
@@ -471,15 +493,12 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		
 		String[] involvedLogLineCodes = {"400023","400024","400025"};
 		String explanation = "";
-		try {
-			explanation = basicFunctions.readeFile("GUITextFiles\\ICMPBasedAttaks.Explanation.txt")[0];
-			if (explanation.equals("")) {
-				explanation = basicFunctions.readeFile("GUITextFiles/ICMPBasedAttaks.Explanation.txt")[0];
-			}
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+		InputStream dbFile;
+		dbFile = BasicFunctions.class.getResourceAsStream("/GUITextFiles2/ICMPBasedAttaks.Explanation.txt");
+		explanation = getStringFromInputStream(dbFile);
+
+
 		Report report = new Report(generellcclr, "ICMP Based Attaks", "Container of Diffrent ICMP Based Attaks", involvedLogLineCodes,6,explanation);
 		return report;
 	}
@@ -512,15 +531,12 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		
 		String[] involvedLogLineCodes = {"400026","400027","400028","710005","710006"};
 		String explanation = "";
-		try {
-			explanation = basicFunctions.readeFile("GUITextFiles\\TCPBasedAttacks.Explanation.txt")[0];
-			if (explanation.equals("")) {
-				explanation = basicFunctions.readeFile("GUITextFiles/TCPBasedAttacks.Explanation.txt")[0];
-			}
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+		InputStream dbFile;
+		dbFile = BasicFunctions.class.getResourceAsStream("/GUITextFiles2/TCPBasedAttacks.Explanation.txt");
+		explanation = getStringFromInputStream(dbFile);
+
+
 		Report report = new Report(generellcclr, "TCP Based Attaks", "Container of Diffrent TCP Based Attaks", involvedLogLineCodes,7,explanation);
 		return report;	}
 
@@ -550,15 +566,13 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		
 		String[] involvedLogLineCodes = {"400031","400032","400033"};
 		String explanation = "";
-		try {
-			explanation = basicFunctions.readeFile("GUITextFiles\\UDPBasedAttacks.Explanation.txt")[0];
-			if (explanation.equals("")) {
-				explanation = basicFunctions.readeFile("GUITextFiles/UDPBasedAttacks.Explanation.txt")[0];
-			}
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+		InputStream dbFile;
+		dbFile = BasicFunctions.class.getResourceAsStream("/GUITextFiles2/UDPBasedAttacks.Explanation.txt");
+		explanation = getStringFromInputStream(dbFile);
+
+
+
 		Report report = new Report(generellcclr, "UDP Based Attaks", "Container of Diffrent UDP Based Attaks", involvedLogLineCodes,8,explanation);
 		return report;	}
 
@@ -591,14 +605,11 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		String[] involvedLogLineCodes = {"400041","400050","412002","605004,733102"};
 		String explanation = "";
 
-		try {
-			explanation = basicFunctions.readeFile("GUITextFiles\\OtherAttacks.Explanation.txt")[0];
-			if (explanation.equals("")) {
-				explanation = basicFunctions.readeFile("GUITextFiles/OtherAttacks.Explanation.txt")[0];
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		InputStream dbFile;
+		dbFile = BasicFunctions.class.getResourceAsStream("/GUITextFiles2/OtherAttacks.Explanation.txt");
+		explanation = getStringFromInputStream(dbFile);
+
+
 
 		Report report = new Report(generellcclr, "Other Attacks", "Container of Diffrent Attaks", involvedLogLineCodes,11,explanation);
 		return report;	
@@ -630,15 +641,12 @@ public class ProcessingAnalyseThreats implements IProcessingAnalyseThreats{
 		
 		String[] involvedLogLineCodes = {"605004","710003"};
 		String explanation = "";
-		try {
-			explanation = basicFunctions.readeFile("GUITextFiles\\BruteForce.Explanation.txt")[0];
-			if (explanation.equals("")) {
-				explanation = basicFunctions.readeFile("GUITextFiles/BruteForce.Explanation.txt")[0];
-			}
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+		InputStream dbFile;
+		dbFile = BasicFunctions.class.getResourceAsStream("/GUITextFiles2/BruteForce.Explanation.txt");
+		explanation = getStringFromInputStream(dbFile);
+
+
 		Report report = new Report(generellcclr, "Brute Force", "No specific Hacke, more Try and Error", involvedLogLineCodes,9,explanation);
 		return report;	
 	}

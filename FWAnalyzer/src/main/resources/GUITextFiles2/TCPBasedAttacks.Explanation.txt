@@ -1,0 +1,5 @@
+400026 - TCP NULL flags
+400027 - TCP SYN+FIN flags
+400028 - TCP FIN only flags
+710005 - This message appears when the security appliance does not have a UDP server that services the UDP request. In networks that heavily utilize broadcasting services such as DHCP, RIP or NetBios, the frequency of this message can be high. If this message appears in excessive number, it may indicate an attack.
+710006 - This message appears when the security appliance does not have an IP server that services the IP protocol request. In networks that heavily utilize broadcasting services such as DHCP, RIP or NetBios, the frequency of this message can be high. If this message appears in excessive numbers, it may indicate an attack.
